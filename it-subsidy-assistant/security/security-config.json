@@ -1,0 +1,69 @@
+{
+  "security": {
+    "owasp": {
+      "enabled": true,
+      "rules": {
+        "injection": "error",
+        "brokenAuthentication": "error",
+        "sensitiveDataExposure": "error",
+        "xmlExternalEntities": "error",
+        "brokenAccessControl": "error",
+        "securityMisconfiguration": "error",
+        "crossSiteScripting": "error",
+        "insecureDeserialization": "error",
+        "knownVulnerabilities": "error",
+        "insufficientLogging": "warn"
+      }
+    },
+    "csp": {
+      "defaultSrc": ["'self'"],
+      "scriptSrc": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+      "styleSrc": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      "fontSrc": ["'self'", "https://fonts.gstatic.com"],
+      "imgSrc": ["'self'", "data:", "https:"],
+      "connectSrc": ["'self'", "https://api.supabase.co"],
+      "frameSrc": ["'none'"],
+      "objectSrc": ["'none'"],
+      "upgradeInsecureRequests": true
+    },
+    "headers": {
+      "X-Frame-Options": "DENY",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "1; mode=block",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+      "Permissions-Policy": "geolocation=(), microphone=(), camera=()"
+    },
+    "rateLimit": {
+      "windowMs": 900000,
+      "max": 100,
+      "message": "Too many requests from this IP"
+    },
+    "gdpr": {
+      "enabled": true,
+      "dataRetentionDays": 730,
+      "consentRequired": true,
+      "dataExportEnabled": true,
+      "dataDeleteEnabled": true,
+      "auditLogEnabled": true
+    },
+    "encryption": {
+      "algorithm": "AES-256-GCM",
+      "keyRotationDays": 90,
+      "saltRounds": 12
+    }
+  },
+  "monitoring": {
+    "enabled": true,
+    "alerts": {
+      "securityIncidents": true,
+      "performanceThreshold": 2000,
+      "errorRateThreshold": 0.05
+    },
+    "logging": {
+      "level": "info",
+      "auditTrail": true,
+      "sensitiveDataMasking": true
+    }
+  }
+}

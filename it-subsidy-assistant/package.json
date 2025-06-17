@@ -1,0 +1,51 @@
+{
+  "name": "it-subsidy-assistant",
+  "version": "1.0.0",
+  "description": "IT補助金検索・資料作成アシストツール（MVP版）",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "test": "npm run test:frontend && npm run test:backend && npm run test:e2e",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && npm test",
+    "test:e2e": "cd tests/e2e && npm test",
+    "test:security": "npm run security:audit && npm run security:scan",
+    "security:audit": "npm audit --audit-level moderate",
+    "security:scan": "cd security && npm run scan",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && npm run lint",
+    "setup": "./scripts/setup.sh",
+    "deploy": "./scripts/deploy.sh"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.0",
+    "concurrently": "^8.2.2",
+    "husky": "^8.0.3",
+    "jest": "^30.0.0",
+    "lint-staged": "^15.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test && npm run test:security"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "author": "Worker3 - DevOps/Security Specialist",
+  "license": "MIT"
+}

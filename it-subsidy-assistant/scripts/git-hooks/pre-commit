@@ -1,0 +1,77 @@
+#!/bin/sh
+# Git pre-commit hook - セキュリティ・品質チェック
+
+set -e
+
+echo "🔍 Pre-commit checks starting..."
+
+# 1. Lint check
+echo "📝 Running lint checks..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ Lint check failed. Please fix the issues and try again."
+  exit 1
+fi
+
+# 2. Type check
+echo "🔍 Running type checks..."
+npm run type-check
+if [ $? -ne 0 ]; then
+  echo "❌ Type check failed. Please fix the issues and try again."
+  exit 1
+fi
+
+# 3. Unit tests
+echo "🧪 Running unit tests..."
+npm run test:unit
+if [ $? -ne 0 ]; then
+  echo "❌ Unit tests failed. Please fix the issues and try again."
+  exit 1
+fi
+
+# 4. Security checks
+echo "🔒 Running security checks..."
+
+# Check for secrets in code
+echo "  🔍 Scanning for secrets..."
+if command -v gitleaks &> /dev/null; then
+  gitleaks detect --source . --verbose
+  if [ $? -ne 0 ]; then
+    echo "❌ Potential secrets detected. Please remove them and try again."
+    exit 1
+  fi
+fi
+
+# Check for hardcoded passwords/keys
+echo "  🔍 Checking for hardcoded credentials..."
+if grep -r -E "(password|secret|key)\s*=\s*['\"][^'\"]+['\"]" --include="*.js" --include="*.ts" --include="*.jsx" --include="*.tsx" src/; then
+  echo "❌ Hardcoded credentials detected. Please use environment variables."
+  exit 1
+fi
+
+# Check for console.log in production code
+echo "  🔍 Checking for console.log statements..."
+if grep -r "console\.log" --include="*.js" --include="*.ts" --include="*.jsx" --include="*.tsx" src/; then
+  echo "⚠️  Console.log statements found. Consider removing them for production."
+fi
+
+# 5. Dependency vulnerability check
+echo "🔍 Checking dependencies for vulnerabilities..."
+npm audit --audit-level=high
+if [ $? -ne 0 ]; then
+  echo "❌ High-severity vulnerabilities found. Please fix them and try again."
+  exit 1
+fi
+
+# 6. Format check
+echo "💅 Checking code formatting..."
+npx prettier --check src/
+if [ $? -ne 0 ]; then
+  echo "❌ Code formatting issues found. Running auto-fix..."
+  npx prettier --write src/
+  echo "✅ Code formatted. Please add the changes and commit again."
+  exit 1
+fi
+
+echo "✅ All pre-commit checks passed!"
+exit 0
