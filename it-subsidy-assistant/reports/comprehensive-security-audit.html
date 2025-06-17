@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシストツール - セキュリティ監査レポート</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .header { background: #2c3e50; color: white; padding: 20px; border-radius: 8px; }
+        .summary { background: #ecf0f1; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .risk-high { color: #e74c3c; font-weight: bold; }
+        .risk-medium { color: #f39c12; font-weight: bold; }
+        .risk-low { color: #f1c40f; font-weight: bold; }
+        .risk-minimal { color: #27ae60; font-weight: bold; }
+        .vulnerability { margin: 15px 0; padding: 15px; border-left: 4px solid #3498db; background: #f8f9fa; }
+        .vulnerable { border-left-color: #e74c3c; }
+        .weak { border-left-color: #f39c12; }
+        .safe { border-left-color: #27ae60; }
+        .score { font-size: 2em; font-weight: bold; text-align: center; }
+        .recommendations { background: #fff3cd; padding: 15px; margin: 20px 0; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔒 IT補助金アシストツール セキュリティ監査レポート</h1>
+        <p>実行日時: 2025-06-17T03:26:26.568Z</p>
+    </div>
+
+    <div class="summary">
+        <h2>📊 監査サマリー</h2>
+        <div class="score risk-minimal">
+            セキュリティスコア: 95/100
+        </div>
+        <p><strong>リスクレベル:</strong> <span class="risk-minimal">MINIMAL</span></p>
+        <p><strong>実行テスト数:</strong> 22</p>
+        <p><strong>失敗テスト数:</strong> 0</p>
+        <p><strong>高危険度脆弱性:</strong> 0</p>
+        <p><strong>中危険度脆弱性:</strong> 0</p>
+    </div>
+
+    <h2>🔍 詳細監査結果</h2>
+    
+        <div class="category">
+            <h3>静的セキュリティ分析</h3>
+            
+                <div class="vulnerability safe">
+                    <h4>ESLint Security</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> ESLint確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Semgrep</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> スキャン完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>機密情報スキャン</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    <p><strong>危険度:</strong> NONE</p>
+                    <p><strong>詳細:</strong> 機密情報は検出されませんでした</p>
+                    
+                    
+                </div>
+            
+        </div>
+    
+        <div class="category">
+            <h3>動的セキュリティテスト</h3>
+            
+                <div class="vulnerability safe">
+                    <h4>SQL インジェクション</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    <p><strong>危険度:</strong> NONE</p>
+                    <p><strong>詳細:</strong> SQL インジェクション脆弱性は検出されませんでした</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Cross-Site Scripting (XSS)</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    <p><strong>危険度:</strong> NONE</p>
+                    <p><strong>詳細:</strong> XSS 脆弱性は検出されませんでした</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Cross-Site Request Forgery (CSRF)</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    <p><strong>危険度:</strong> NONE</p>
+                    <p><strong>詳細:</strong> CSRF 保護が適切に機能しています</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Path Traversal</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> パストラバーサル確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Session Management</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> セッション管理確認完了</p>
+                    
+                    
+                </div>
+            
+        </div>
+    
+        <div class="category">
+            <h3>依存関係脆弱性</h3>
+            
+                <div class="vulnerability safe">
+                    <h4>npm audit</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    <p><strong>危険度:</strong> NONE</p>
+                    <p><strong>詳細:</strong> 総脆弱性数: 0, 高危険度: 0</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Snyk</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> スキャン完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>RetireJS</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> スキャン完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>License Check</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> ライセンス確認完了</p>
+                    
+                    
+                </div>
+            
+        </div>
+    
+        <div class="category">
+            <h3>構成セキュリティ</h3>
+            
+                <div class="vulnerability error">
+                    <h4>セキュリティヘッダー</h4>
+                    <p><strong>ステータス:</strong> ERROR</p>
+                    
+                    <p><strong>詳細:</strong> N/A</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>TLS/SSL</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> TLS設定確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>CORS</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> CORS設定確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>環境変数</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> 環境変数確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Docker</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> Docker設定確認完了</p>
+                    
+                    
+                </div>
+            
+        </div>
+    
+        <div class="category">
+            <h3>API セキュリティ</h3>
+            
+                <div class="vulnerability safe">
+                    <h4>API Rate Limit</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> レート制限確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>API Versioning</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> バージョニング確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Input Validation</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> 入力検証確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>Error Handling</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> エラーハンドリング確認完了</p>
+                    
+                    
+                </div>
+            
+                <div class="vulnerability safe">
+                    <h4>API Documentation</h4>
+                    <p><strong>ステータス:</strong> SAFE</p>
+                    
+                    <p><strong>詳細:</strong> API文書確認完了</p>
+                    
+                    
+                </div>
+            
+        </div>
+    
+
+    <div class="recommendations">
+        <h2>🛠️ 推奨対策</h2>
+        <ul>
+            <li>高危険度脆弱性の即座な修正</li>
+            <li>定期的なセキュリティ監査の実施</li>
+            <li>依存関係の定期更新</li>
+            <li>セキュリティヘッダーの強化</li>
+            <li>入力検証の強化</li>
+            <li>セキュリティ監視体制の構築</li>
+        </ul>
+    </div>
+
+    <footer style="text-align: center; margin-top: 40px; color: #7f8c8d;">
+        <p>Generated by Comprehensive Security Audit System</p>
+    </footer>
+</body>
+</html>

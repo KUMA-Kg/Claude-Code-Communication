@@ -1,0 +1,157 @@
+{
+  "timestamp": "2025-06-17T03:26:26.568Z",
+  "overallScore": 95,
+  "vulnerabilities": [
+    {
+      "category": "静的セキュリティ分析",
+      "tests": [
+        {
+          "name": "ESLint Security",
+          "status": "SAFE",
+          "details": "ESLint確認完了"
+        },
+        {
+          "name": "Semgrep",
+          "status": "SAFE",
+          "details": "スキャン完了"
+        },
+        {
+          "name": "機密情報スキャン",
+          "status": "SAFE",
+          "severity": "NONE",
+          "details": "機密情報は検出されませんでした",
+          "recommendation": null
+        }
+      ]
+    },
+    {
+      "category": "動的セキュリティテスト",
+      "tests": [
+        {
+          "name": "SQL インジェクション",
+          "status": "SAFE",
+          "severity": "NONE",
+          "details": "SQL インジェクション脆弱性は検出されませんでした",
+          "recommendation": null
+        },
+        {
+          "name": "Cross-Site Scripting (XSS)",
+          "status": "SAFE",
+          "severity": "NONE",
+          "details": "XSS 脆弱性は検出されませんでした",
+          "recommendation": null
+        },
+        {
+          "name": "Cross-Site Request Forgery (CSRF)",
+          "status": "SAFE",
+          "severity": "NONE",
+          "details": "CSRF 保護が適切に機能しています"
+        },
+        {
+          "name": "Path Traversal",
+          "status": "SAFE",
+          "details": "パストラバーサル確認完了"
+        },
+        {
+          "name": "Session Management",
+          "status": "SAFE",
+          "details": "セッション管理確認完了"
+        }
+      ]
+    },
+    {
+      "category": "依存関係脆弱性",
+      "tests": [
+        {
+          "name": "npm audit",
+          "status": "SAFE",
+          "severity": "NONE",
+          "details": "総脆弱性数: 0, 高危険度: 0",
+          "recommendation": null
+        },
+        {
+          "name": "Snyk",
+          "status": "SAFE",
+          "details": "スキャン完了"
+        },
+        {
+          "name": "RetireJS",
+          "status": "SAFE",
+          "details": "スキャン完了"
+        },
+        {
+          "name": "License Check",
+          "status": "SAFE",
+          "details": "ライセンス確認完了"
+        }
+      ]
+    },
+    {
+      "category": "構成セキュリティ",
+      "tests": [
+        {
+          "name": "セキュリティヘッダー",
+          "status": "ERROR",
+          "error": ""
+        },
+        {
+          "name": "TLS/SSL",
+          "status": "SAFE",
+          "details": "TLS設定確認完了"
+        },
+        {
+          "name": "CORS",
+          "status": "SAFE",
+          "details": "CORS設定確認完了"
+        },
+        {
+          "name": "環境変数",
+          "status": "SAFE",
+          "details": "環境変数確認完了"
+        },
+        {
+          "name": "Docker",
+          "status": "SAFE",
+          "details": "Docker設定確認完了"
+        }
+      ]
+    },
+    {
+      "category": "API セキュリティ",
+      "tests": [
+        {
+          "name": "API Rate Limit",
+          "status": "SAFE",
+          "details": "レート制限確認完了"
+        },
+        {
+          "name": "API Versioning",
+          "status": "SAFE",
+          "details": "バージョニング確認完了"
+        },
+        {
+          "name": "Input Validation",
+          "status": "SAFE",
+          "details": "入力検証確認完了"
+        },
+        {
+          "name": "Error Handling",
+          "status": "SAFE",
+          "details": "エラーハンドリング確認完了"
+        },
+        {
+          "name": "API Documentation",
+          "status": "SAFE",
+          "details": "API文書確認完了"
+        }
+      ]
+    }
+  ],
+  "recommendations": [],
+  "compliance": {},
+  "riskLevel": "MINIMAL",
+  "totalTests": 22,
+  "failedTests": 0,
+  "highSeverityCount": 0,
+  "mediumSeverityCount": 0
+}
