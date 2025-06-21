@@ -1,0 +1,147 @@
+{
+  "title": "IT導入補助金2025 詳細申請書",
+  "description": "申請に必要な詳細情報を入力してください",
+  "sections": [
+    {
+      "id": "basic_info",
+      "title": "基本情報",
+      "required": true,
+      "questions": [
+        {
+          "id": "company_name",
+          "type": "text",
+          "question": "法人名（商号）",
+          "required": true,
+          "hint": "正式な法人名を入力してください"
+        },
+        {
+          "id": "company_name_kana",
+          "type": "text",
+          "question": "法人名（フリガナ）",
+          "required": true,
+          "hint": "全角カタカナで入力してください"
+        },
+        {
+          "id": "corporate_number",
+          "type": "text",
+          "question": "法人番号",
+          "required": true,
+          "hint": "13桁の法人番号を入力してください"
+        },
+        {
+          "id": "establishment_date",
+          "type": "date",
+          "question": "設立年月日",
+          "required": true
+        },
+        {
+          "id": "capital",
+          "type": "number",
+          "question": "資本金",
+          "required": true,
+          "unit": "円",
+          "hint": "現在の資本金額を入力してください"
+        }
+      ]
+    },
+    {
+      "id": "contact_info",
+      "title": "連絡先情報",
+      "required": true,
+      "questions": [
+        {
+          "id": "representative_name",
+          "type": "text",
+          "question": "代表者氏名",
+          "required": true
+        },
+        {
+          "id": "contact_person",
+          "type": "text",
+          "question": "担当者氏名",
+          "required": true
+        },
+        {
+          "id": "contact_email",
+          "type": "text",
+          "question": "メールアドレス",
+          "required": true,
+          "hint": "連絡可能なメールアドレスを入力してください"
+        },
+        {
+          "id": "contact_phone",
+          "type": "text",
+          "question": "電話番号",
+          "required": true,
+          "hint": "ハイフンなしで入力してください"
+        }
+      ]
+    },
+    {
+      "id": "business_info",
+      "title": "事業内容",
+      "required": true,
+      "questions": [
+        {
+          "id": "business_description",
+          "type": "textarea",
+          "question": "事業内容の詳細",
+          "required": true,
+          "maxLength": 500,
+          "hint": "主な事業内容を具体的に記載してください"
+        },
+        {
+          "id": "employee_count",
+          "type": "number",
+          "question": "従業員数",
+          "required": true,
+          "unit": "名"
+        },
+        {
+          "id": "annual_revenue",
+          "type": "number",
+          "question": "直近年度の売上高",
+          "required": true,
+          "unit": "円"
+        }
+      ]
+    },
+    {
+      "id": "it_implementation",
+      "title": "IT導入計画",
+      "required": true,
+      "questions": [
+        {
+          "id": "it_tool_category",
+          "type": "select",
+          "question": "導入予定のITツールカテゴリ",
+          "required": true,
+          "options": [
+            { "value": "erp", "label": "基幹システム（ERP）" },
+            { "value": "crm", "label": "顧客管理システム（CRM）" },
+            { "value": "inventory", "label": "在庫管理システム" },
+            { "value": "hr", "label": "人事・労務管理システム" },
+            { "value": "accounting", "label": "会計・財務システム" },
+            { "value": "other", "label": "その他" }
+          ]
+        },
+        {
+          "id": "implementation_purpose",
+          "type": "textarea",
+          "question": "IT導入の目的と期待効果",
+          "required": true,
+          "maxLength": 800,
+          "hint": "導入により解決したい課題と期待される効果を具体的に記載してください"
+        },
+        {
+          "id": "implementation_cost",
+          "type": "number",
+          "question": "導入予定費用（概算）",
+          "required": true,
+          "unit": "円",
+          "hint": "ソフトウェア費、導入費用等の合計額"
+        }
+      ]
+    }
+  ]
+}

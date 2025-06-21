@@ -51,41 +51,66 @@ export const QuickActions: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-        クイックアクション
-      </h3>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {actions.map((action) => {
-          const Icon = action.icon;
-          
-          return (
-            <button
-              key={action.id}
-              onClick={() => navigate(action.path)}
-              className="flex items-center p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-left"
-            >
-              <div className="flex-shrink-0">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  action.variant === 'primary' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                }`}>
-                  <Icon className="w-5 h-5" />
+    <div className="card">
+      <div className="card-body">
+        <h3 className="heading-5 mb-md">
+          クイックアクション
+        </h3>
+        
+        <div className="grid grid-cols-2 md:grid-cols-1 gap-md">
+          {actions.map((action) => {
+            const Icon = action.icon;
+            
+            return (
+              <button
+                key={action.id}
+                onClick={() => navigate(action.path)}
+                className="card"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: 'var(--spacing-md)',
+                  textAlign: 'left',
+                  border: '2px solid transparent',
+                  transition: 'all var(--transition-base)',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--color-primary-300)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'transparent';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                <div style={{ flexShrink: 0 }}>
+                  <div className="stat-card-icon" style={{
+                    width: '40px',
+                    height: '40px',
+                    marginBottom: 0,
+                    backgroundColor: action.variant === 'primary' 
+                      ? 'var(--color-primary-500)' 
+                      : 'var(--color-beige-100)',
+                    color: action.variant === 'primary' 
+                      ? 'var(--color-white)' 
+                      : 'var(--color-beige-700)'
+                  }}>
+                    <Icon style={{ width: '20px', height: '20px' }} />
+                  </div>
                 </div>
-              </div>
-              <div className="ml-3 flex-1">
-                <h4 className="text-sm font-medium text-gray-900 dark:text-white">
-                  {action.title}
-                </h4>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  {action.description}
-                </p>
-              </div>
-            </button>
-          );
-        })}
+                <div style={{ marginLeft: 'var(--spacing-md)', flex: 1 }}>
+                  <h4 className="body-regular" style={{ fontWeight: 'var(--font-weight-medium)' }}>
+                    {action.title}
+                  </h4>
+                  <p className="caption" style={{ marginTop: '2px' }}>
+                    {action.description}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

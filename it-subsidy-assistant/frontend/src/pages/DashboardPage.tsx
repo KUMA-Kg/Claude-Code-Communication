@@ -13,18 +13,19 @@ export const DashboardPage: React.FC = () => {
   });
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          ダッシュボード
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          IT補助金申請の進捗と最新情報をご確認ください
-        </p>
-      </div>
+    <div className="page-container">
+      <div className="container">
+        <div className="mb-xl">
+          <h1 className="heading-2 mb-sm">
+            ダッシュボード
+          </h1>
+          <p className="body-large" style={{ color: 'var(--color-gray-600)' }}>
+            IT補助金申請の進捗と最新情報をご確認ください
+          </p>
+        </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-4 md:grid-cols-2 gap-lg mb-xl">
         <StatCard
           title="お気に入り補助金"
           value={favorites.length}
@@ -52,66 +53,85 @@ export const DashboardPage: React.FC = () => {
           trend={{ value: 5, isPositive: true }}
           description="平均"
         />
-      </div>
-
-      {/* Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Quick Actions */}
-        <div className="lg:col-span-1">
-          <QuickActions />
         </div>
 
-        {/* Recent Activity */}
-        <div className="lg:col-span-2">
-          <RecentActivity />
-        </div>
-      </div>
+        {/* Content Grid */}
+        <div className="grid grid-cols-3 md:grid-cols-1 gap-lg">
+          {/* Quick Actions */}
+          <div style={{ gridColumn: 'span 1' }}>
+            <QuickActions />
+          </div>
 
-      {/* Recent Favorites */}
-      {favorites.length > 0 && (
-        <div className="mt-8">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              最近のお気に入り
-            </h3>
-            <div className="space-y-3">
-              {favorites.slice(0, 3).map((favorite) => (
-                <div
-                  key={favorite.id}
-                  className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                >
-                  <div className="flex items-center">
-                    <Heart className="w-4 h-4 text-red-500 mr-3" />
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">
-                        {favorite.name}
-                      </h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {new Intl.NumberFormat('ja-JP', {
-                          style: 'currency',
-                          currency: 'JPY',
-                          minimumFractionDigits: 0,
-                        }).format(favorite.subsidyAmount.min)} ～ {' '}
-                        {new Intl.NumberFormat('ja-JP', {
-                          style: 'currency',
-                          currency: 'JPY',
-                          minimumFractionDigits: 0,
-                        }).format(favorite.subsidyAmount.max)}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
-                    onClick={() => window.location.href = `/subsidy/${favorite.id}`}
-                  >
-                    詳細を見る
-                  </button>
-                </div>
-              ))}
-            </div>
+          {/* Recent Activity */}
+          <div style={{ gridColumn: 'span 2' }}>
+            <RecentActivity />
           </div>
         </div>
-      )}
+
+        {/* Recent Favorites */}
+        {favorites.length > 0 && (
+          <div className="mt-xl">
+            <div className="card">
+              <div className="card-body">
+                <h3 className="heading-5 mb-md">
+                  最近のお気に入り
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
+                  {favorites.slice(0, 3).map((favorite) => (
+                    <div
+                      key={favorite.id}
+                      className="card"
+                      style={{ 
+                        padding: 'var(--spacing-md)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)' }}>
+                        <Heart style={{ width: '16px', height: '16px', color: 'var(--color-error)', fill: 'currentColor' }} />
+                        <div>
+                          <h4 className="body-regular" style={{ fontWeight: 'var(--font-weight-medium)' }}>
+                            {favorite.name}
+                          </h4>
+                          <p className="caption">
+                            {new Intl.NumberFormat('ja-JP', {
+                              style: 'currency',
+                              currency: 'JPY',
+                              minimumFractionDigits: 0,
+                            }).format(favorite.subsidyAmount.min)} ～ {' '}
+                            {new Intl.NumberFormat('ja-JP', {
+                              style: 'currency',
+                              currency: 'JPY',
+                              minimumFractionDigits: 0,
+                            }).format(favorite.subsidyAmount.max)}
+                          </p>
+                        </div>
+                      </div>
+                      <a
+                        href={`/subsidy/${favorite.id}`}
+                        className="body-small"
+                        style={{ 
+                          color: 'var(--color-primary-600)',
+                          fontWeight: 'var(--font-weight-medium)',
+                          textDecoration: 'none'
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = `/subsidy/${favorite.id}`;
+                        }}
+                      >
+                        詳細を見る
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

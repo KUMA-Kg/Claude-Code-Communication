@@ -1,0 +1,515 @@
+{
+  "subsidy_type": "小規模事業者持続化補助金（第17回）",
+  "questionnaire_id": "jizokuka_detailed_application",
+  "version": "1.0.0",
+  "title": "小規模事業者持続化補助金 詳細申請情報",
+  "description": "経営計画書兼補助事業計画書作成のための詳細情報収集",
+  "sections": [
+    {
+      "id": "company_basic_info",
+      "title": "企業基本情報",
+      "required": true,
+      "questions": [
+        {
+          "id": "company_name",
+          "type": "text",
+          "question": "法人名・屋号を正式名称で入力してください",
+          "required": true,
+          "validation": {
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        {
+          "id": "representative_name",
+          "type": "text",
+          "question": "代表者氏名を入力してください",
+          "required": true
+        },
+        {
+          "id": "company_address",
+          "type": "address",
+          "question": "本社所在地",
+          "required": true,
+          "fields": {
+            "postal_code": "郵便番号",
+            "prefecture": "都道府県",
+            "city": "市区町村",
+            "address_detail": "詳細住所"
+          }
+        },
+        {
+          "id": "established_date",
+          "type": "date",
+          "question": "創業・設立年月日",
+          "required": true
+        },
+        {
+          "id": "capital_amount",
+          "type": "number",
+          "question": "資本金または出資金（万円）",
+          "required": false,
+          "unit": "万円",
+          "hint": "個人事業主の場合は記入不要"
+        },
+        {
+          "id": "business_type",
+          "type": "radio",
+          "question": "事業形態",
+          "required": true,
+          "options": [
+            { "value": "corporation", "label": "法人" },
+            { "value": "individual", "label": "個人事業主" }
+          ]
+        },
+        {
+          "id": "annual_revenue",
+          "type": "number",
+          "question": "年間売上高（前年度実績、万円）",
+          "required": true,
+          "unit": "万円"
+        },
+        {
+          "id": "employee_count_detail",
+          "type": "object",
+          "question": "従業員数（詳細）",
+          "required": true,
+          "fields": {
+            "full_time": {
+              "type": "number",
+              "label": "正社員数",
+              "required": true
+            },
+            "part_time": {
+              "type": "number", 
+              "label": "パート・アルバイト数",
+              "required": false
+            }
+          }
+        },
+        {
+          "id": "industry_classification",
+          "type": "select",
+          "question": "主要業種",
+          "required": true,
+          "options": [
+            { "value": "manufacturing", "label": "製造業" },
+            { "value": "wholesale_retail", "label": "卸売業・小売業" },
+            { "value": "accommodation_food", "label": "宿泊業・飲食サービス業" },
+            { "value": "construction", "label": "建設業" },
+            { "value": "transportation", "label": "運輸業" },
+            { "value": "professional_services", "label": "専門・技術サービス業" },
+            { "value": "other_services", "label": "その他のサービス業" },
+            { "value": "other", "label": "その他" }
+          ]
+        },
+        {
+          "id": "chamber_of_commerce",
+          "type": "text",
+          "question": "所属商工会・商工会議所名",
+          "required": true,
+          "hint": "本補助金は商工会・商工会議所の支援が必須です"
+        }
+      ]
+    },
+    {
+      "id": "business_overview",
+      "title": "事業概要",
+      "required": true,
+      "questions": [
+        {
+          "id": "main_business",
+          "type": "textarea",
+          "question": "主要な事業内容",
+          "required": true,
+          "hint": "現在行っている主力事業を具体的に記載",
+          "maxLength": 1000
+        },
+        {
+          "id": "main_products_services",
+          "type": "array",
+          "question": "主要な商品・サービス",
+          "required": true,
+          "item_schema": {
+            "product_name": {
+              "type": "text",
+              "label": "商品・サービス名",
+              "required": true
+            },
+            "description": {
+              "type": "textarea",
+              "label": "詳細・特徴",
+              "maxLength": 300
+            },
+            "target_customer": {
+              "type": "text",
+              "label": "主要顧客層",
+              "required": true
+            },
+            "sales_ratio": {
+              "type": "number",
+              "label": "売上構成比（%）",
+              "unit": "%"
+            }
+          }
+        },
+        {
+          "id": "competitive_advantage",
+          "type": "textarea",
+          "question": "自社の強み・特徴",
+          "required": true,
+          "hint": "競合他社との差別化要因、独自技術、ノウハウ等",
+          "maxLength": 800
+        },
+        {
+          "id": "business_challenges",
+          "type": "textarea",
+          "question": "現在の経営課題",
+          "required": true,
+          "hint": "売上減少、競合激化、人手不足等の課題",
+          "maxLength": 800
+        }
+      ]
+    },
+    {
+      "id": "marketing_strategy",
+      "title": "販路開拓・マーケティング戦略",
+      "required": true,
+      "questions": [
+        {
+          "id": "target_market_analysis",
+          "type": "textarea",
+          "question": "ターゲット市場の分析",
+          "required": true,
+          "hint": "市場規模、顧客ニーズ、市場動向等",
+          "maxLength": 1000
+        },
+        {
+          "id": "new_customer_strategy",
+          "type": "textarea",
+          "question": "新規顧客獲得戦略",
+          "required": true,
+          "hint": "どのような方法で新規顧客を獲得するか",
+          "maxLength": 1000
+        },
+        {
+          "id": "promotion_methods",
+          "type": "multi_select",
+          "question": "実施予定の販促・広告手法",
+          "required": true,
+          "options": [
+            { "value": "website_creation", "label": "ホームページ作成・改良" },
+            { "value": "ec_site", "label": "ECサイト構築" },
+            { "value": "sns_marketing", "label": "SNSマーケティング" },
+            { "value": "online_advertising", "label": "オンライン広告" },
+            { "value": "print_advertising", "label": "チラシ・パンフレット" },
+            { "value": "exhibition", "label": "展示会・見本市出展" },
+            { "value": "direct_mail", "label": "ダイレクトメール" },
+            { "value": "referral_program", "label": "紹介・口コミ促進" },
+            { "value": "other", "label": "その他" }
+          ]
+        },
+        {
+          "id": "digital_transformation",
+          "type": "object",
+          "question": "デジタル化・IT活用計画",
+          "required": false,
+          "fields": {
+            "current_it_usage": {
+              "type": "textarea",
+              "label": "現在のIT活用状況",
+              "maxLength": 500
+            },
+            "planned_it_investment": {
+              "type": "textarea",
+              "label": "予定しているIT投資・デジタル化",
+              "maxLength": 500
+            },
+            "expected_effects": {
+              "type": "textarea",
+              "label": "期待される効果",
+              "maxLength": 500
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "implementation_plan",
+      "title": "補助事業の実施内容",
+      "required": true,
+      "questions": [
+        {
+          "id": "project_title",
+          "type": "text",
+          "question": "補助事業の名称",
+          "required": true,
+          "hint": "事業内容が分かりやすい名称",
+          "maxLength": 100
+        },
+        {
+          "id": "project_purpose",
+          "type": "textarea",
+          "question": "補助事業の目的",
+          "required": true,
+          "hint": "何を解決し、何を実現したいか",
+          "maxLength": 800
+        },
+        {
+          "id": "project_content",
+          "type": "textarea",
+          "question": "補助事業の具体的内容",
+          "required": true,
+          "hint": "どのような取組みを行うか具体的に記載",
+          "maxLength": 1500
+        },
+        {
+          "id": "implementation_schedule",
+          "type": "object",
+          "question": "実施スケジュール",
+          "required": true,
+          "fields": {
+            "start_date": {
+              "type": "date",
+              "label": "事業開始予定日",
+              "required": true
+            },
+            "completion_date": {
+              "type": "date",
+              "label": "事業完了予定日",
+              "required": true
+            },
+            "milestones": {
+              "type": "array",
+              "label": "主要マイルストーン",
+              "item_schema": {
+                "milestone_date": {
+                  "type": "date",
+                  "label": "実施予定日"
+                },
+                "milestone_content": {
+                  "type": "text",
+                  "label": "実施内容"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "success_indicators",
+          "type": "array",
+          "question": "成果指標",
+          "required": true,
+          "hint": "事業の成果をどのように測定するか",
+          "item_schema": {
+            "indicator_name": {
+              "type": "text",
+              "label": "指標名",
+              "required": true
+            },
+            "current_value": {
+              "type": "text",
+              "label": "現在の値",
+              "required": true
+            },
+            "target_value": {
+              "type": "text",
+              "label": "目標値",
+              "required": true
+            },
+            "measurement_method": {
+              "type": "text",
+              "label": "測定方法",
+              "required": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "financial_plan",
+      "title": "資金計画・経費明細",
+      "required": true,
+      "questions": [
+        {
+          "id": "total_project_cost",
+          "type": "number",
+          "question": "補助対象経費総額（税抜）",
+          "required": true,
+          "unit": "円"
+        },
+        {
+          "id": "expense_breakdown",
+          "type": "array",
+          "question": "補助対象経費の内訳",
+          "required": true,
+          "item_schema": {
+            "expense_category": {
+              "type": "select",
+              "label": "経費区分",
+              "options": [
+                { "value": "machinery", "label": "機械装置費" },
+                { "value": "advertising", "label": "広報費" },
+                { "value": "website", "label": "ウェブサイト関連費" },
+                { "value": "exhibition", "label": "展示会等出展費" },
+                { "value": "travel", "label": "旅費" },
+                { "value": "development", "label": "開発費" },
+                { "value": "materials", "label": "資料購入費" },
+                { "value": "rental", "label": "借料" },
+                { "value": "expert", "label": "専門家謝金" },
+                { "value": "design", "label": "設備処分費" },
+                { "value": "outsourcing", "label": "委託・外注費" }
+              ]
+            },
+            "item_name": {
+              "type": "text",
+              "label": "品目・内容",
+              "required": true
+            },
+            "quantity": {
+              "type": "number",
+              "label": "数量"
+            },
+            "unit_price": {
+              "type": "number",
+              "label": "単価（税抜）",
+              "unit": "円"
+            },
+            "amount": {
+              "type": "number",
+              "label": "金額（税抜）",
+              "unit": "円",
+              "required": true
+            },
+            "necessity": {
+              "type": "textarea",
+              "label": "必要性・効果",
+              "maxLength": 300,
+              "required": true
+            }
+          }
+        },
+        {
+          "id": "funding_source",
+          "type": "object",
+          "question": "資金調達計画",
+          "required": true,
+          "fields": {
+            "subsidy_amount": {
+              "type": "calculated",
+              "label": "補助金申請額（円）",
+              "formula": "min(total_project_cost * 0.67, 2000000)",
+              "unit": "円"
+            },
+            "own_funds": {
+              "type": "calculated",
+              "label": "自己負担額（円）",
+              "formula": "total_project_cost - subsidy_amount",
+              "unit": "円"
+            },
+            "funding_method": {
+              "type": "radio",
+              "label": "自己負担分の調達方法",
+              "options": [
+                { "value": "self_funds", "label": "自己資金" },
+                { "value": "loan", "label": "借入" },
+                { "value": "both", "label": "自己資金＋借入" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "business_continuity",
+      "title": "事業継続・発展計画",
+      "required": true,
+      "questions": [
+        {
+          "id": "sustainability_plan",
+          "type": "textarea",
+          "question": "事業の持続可能性",
+          "required": true,
+          "hint": "補助事業終了後の継続・発展計画",
+          "maxLength": 800
+        },
+        {
+          "id": "future_expansion",
+          "type": "textarea",
+          "question": "将来の事業拡大計画",
+          "required": false,
+          "hint": "3年後、5年後の事業展開構想",
+          "maxLength": 800
+        },
+        {
+          "id": "employment_impact",
+          "type": "object",
+          "question": "雇用への影響",
+          "required": false,
+          "fields": {
+            "current_employees": {
+              "type": "number",
+              "label": "現在の従業員数（人）",
+              "unit": "人"
+            },
+            "planned_increase": {
+              "type": "number",
+              "label": "今後3年間の増員予定（人）",
+              "unit": "人"
+            },
+            "employment_plan": {
+              "type": "textarea",
+              "label": "雇用計画の詳細",
+              "maxLength": 500
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "validation_rules": {
+    "cross_validation": [
+      {
+        "rule": "small_business_validation",
+        "condition": "(industry_classification === 'manufacturing' && employee_count_detail.full_time <= 20) || (industry_classification !== 'manufacturing' && employee_count_detail.full_time <= 5)",
+        "error_message": "小規模事業者の従業員数要件を満たしていません（製造業等20人以下、その他5人以下）"
+      },
+      {
+        "rule": "schedule_validation",
+        "condition": "implementation_plan.implementation_schedule.completion_date > implementation_plan.implementation_schedule.start_date",
+        "error_message": "事業完了予定日は開始予定日より後である必要があります"
+      },
+      {
+        "rule": "budget_validation",
+        "condition": "financial_plan.total_project_cost >= 50000 && financial_plan.total_project_cost <= 2000000",
+        "error_message": "補助対象経費は5万円以上200万円以下である必要があります"
+      }
+    ]
+  },
+  "document_mapping": {
+    "business_plan": {
+      "template": "経営計画書兼補助事業計画書①（様式2）",
+      "fields": {
+        "事業者名": "company_basic_info.company_name",
+        "代表者名": "company_basic_info.representative_name",
+        "所在地": "company_basic_info.company_address",
+        "事業内容": "business_overview.main_business",
+        "経営課題": "business_overview.business_challenges",
+        "市場分析": "marketing_strategy.target_market_analysis",
+        "販路開拓戦略": "marketing_strategy.new_customer_strategy",
+        "補助事業内容": "implementation_plan.project_content",
+        "事業計画名": "implementation_plan.project_title",
+        "成果指標": "implementation_plan.success_indicators"
+      }
+    },
+    "expense_plan": {
+      "template": "補助事業計画書②（様式3）",
+      "fields": {
+        "補助対象経費": "financial_plan.expense_breakdown",
+        "総事業費": "financial_plan.total_project_cost",
+        "補助金申請額": "financial_plan.funding_source.subsidy_amount",
+        "自己負担額": "financial_plan.funding_source.own_funds"
+      }
+    }
+  }
+}

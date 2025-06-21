@@ -1,0 +1,310 @@
+{
+  "subsidyType": "IT導入補助金2025",
+  "categories": [
+    {
+      "name": "電子化枠",
+      "description": "紙業務のデジタル化",
+      "subsidyRate": 0.75,
+      "maxAmount": 1500000,
+      "minAmount": 50000
+    },
+    {
+      "name": "通常枠",
+      "description": "一般的なITツール導入",
+      "subsidyRate": 0.5,
+      "maxAmount": 4500000,
+      "minAmount": 50000
+    },
+    {
+      "name": "複数社枠",
+      "description": "複数企業での共同導入",
+      "subsidyRate": 0.6,
+      "maxAmount": 4500000,
+      "minAmount": 50000,
+      "specialConditions": ["2社以上必須"]
+    },
+    {
+      "name": "インボイス枠",
+      "description": "インボイス制度対応",
+      "subsidyRate": 0.75,
+      "maxAmount": 500000,
+      "minAmount": 50000
+    },
+    {
+      "name": "セキュリティ枠",
+      "description": "セキュリティ対策強化",
+      "subsidyRate": 0.5,
+      "maxAmount": 1000000,
+      "minAmount": 50000
+    }
+  ],
+  "testCompanies": [
+    {
+      "id": "it-test-001",
+      "name": "製造業デジタル化株式会社",
+      "industry": "製造業",
+      "employeeCount": 45,
+      "annualRevenue": 350000000,
+      "establishedYear": 2010,
+      "currentChallenges": ["紙ベースの生産管理", "手書き検査記録", "Excel在庫管理"],
+      "targetCategory": "電子化枠",
+      "expectedTools": ["生産管理システム", "品質管理システム", "在庫管理システム"],
+      "paperWorkRatio": 85,
+      "digitalMaturity": "低",
+      "gbizIdStatus": "取得済み",
+      "requiredDocuments": [
+        "履歴事項全部証明書",
+        "決算書（2期分）",
+        "納税証明書",
+        "紙業務改善計画書"
+      ]
+    },
+    {
+      "id": "it-test-002",
+      "name": "小売チェーン効率化有限会社",
+      "industry": "小売業",
+      "employeeCount": 28,
+      "annualRevenue": 180000000,
+      "establishedYear": 2015,
+      "currentChallenges": ["在庫管理の非効率", "顧客データ分析不足", "店舗間連携"],
+      "targetCategory": "通常枠",
+      "expectedTools": ["POSシステム", "顧客管理システム", "データ分析ツール"],
+      "paperWorkRatio": 40,
+      "digitalMaturity": "中",
+      "gbizIdStatus": "申請中",
+      "requiredDocuments": [
+        "履歴事項全部証明書",
+        "決算書（2期分）",
+        "納税証明書",
+        "生産性向上計画書"
+      ]
+    },
+    {
+      "id": "it-test-003",
+      "name": "共同組合システム導入協会",
+      "industry": "サービス業",
+      "employeeCount": 120,
+      "annualRevenue": 850000000,
+      "establishedYear": 2005,
+      "currentChallenges": ["組合員間情報共有", "業務システム統合", "データ標準化"],
+      "targetCategory": "複数社枠",
+      "expectedTools": ["統合基幹システム", "グループウェア", "EDIシステム"],
+      "paperWorkRatio": 30,
+      "digitalMaturity": "中",
+      "gbizIdStatus": "取得済み",
+      "partnerCompanies": 4,
+      "requiredDocuments": [
+        "履歴事項全部証明書",
+        "決算書（2期分）",
+        "納税証明書",
+        "共同導入計画書",
+        "連携企業同意書"
+      ]
+    },
+    {
+      "id": "it-test-004",
+      "name": "インボイス対応急務商店",
+      "industry": "卸売業",
+      "employeeCount": 8,
+      "annualRevenue": 95000000,
+      "establishedYear": 2018,
+      "currentChallenges": ["インボイス制度対応", "請求書電子化", "税務処理効率化"],
+      "targetCategory": "インボイス枠",
+      "expectedTools": ["会計ソフト", "請求書発行システム", "電子帳簿保存システム"],
+      "paperWorkRatio": 70,
+      "digitalMaturity": "低",
+      "gbizIdStatus": "未取得",
+      "invoiceRegistration": "適格請求書発行事業者登録済み",
+      "requiredDocuments": [
+        "履歴事項全部証明書",
+        "決算書（2期分）",
+        "納税証明書",
+        "適格請求書発行事業者登録通知書",
+        "インボイス対応計画書"
+      ]
+    },
+    {
+      "id": "it-test-005",
+      "name": "セキュリティ強化商事",
+      "industry": "情報通信業",
+      "employeeCount": 65,
+      "annualRevenue": 420000000,
+      "establishedYear": 2012,
+      "currentChallenges": ["サイバー攻撃対策", "データ保護強化", "リモートワークセキュリティ"],
+      "targetCategory": "セキュリティ枠",
+      "expectedTools": ["EDR", "SIEM", "ゼロトラストソリューション"],
+      "paperWorkRatio": 20,
+      "digitalMaturity": "高",
+      "gbizIdStatus": "取得済み",
+      "securityIncidents": 1,
+      "requiredDocuments": [
+        "履歴事項全部証明書",
+        "決算書（2期分）",
+        "納税証明書",
+        "情報セキュリティ方針書",
+        "セキュリティ強化計画書"
+      ]
+    }
+  ],
+  "edgeCases": [
+    {
+      "id": "it-edge-001",
+      "name": "境界値テスト_最小企業",
+      "scenario": "従業員1名の最小規模企業",
+      "employeeCount": 1,
+      "annualRevenue": 5000000,
+      "targetCategory": "電子化枠",
+      "expectedResult": "申請可能",
+      "testPoints": ["最小企業規模での申請可能性"]
+    },
+    {
+      "id": "it-edge-002",
+      "name": "境界値テスト_補助金額下限",
+      "scenario": "補助金額が最小額ちょうど",
+      "requestedAmount": 50000,
+      "targetCategory": "通常枠",
+      "expectedResult": "申請可能",
+      "testPoints": ["最小補助金額での申請"]
+    },
+    {
+      "id": "it-edge-003",
+      "name": "境界値テスト_補助金額上限",
+      "scenario": "補助金額が上限額を超過",
+      "requestedAmount": 4500001,
+      "targetCategory": "通常枠",
+      "expectedResult": "エラー_上限超過",
+      "testPoints": ["上限額超過時のバリデーション"]
+    },
+    {
+      "id": "it-edge-004",
+      "name": "エラーケース_GビズID未取得",
+      "scenario": "GビズIDプライム未取得",
+      "gbizIdStatus": "未取得",
+      "expectedResult": "警告_要取得",
+      "testPoints": ["必須要件チェック", "取得期間警告"]
+    },
+    {
+      "id": "it-edge-005",
+      "name": "エラーケース_交付決定前発注",
+      "scenario": "交付決定前に発注・契約済み",
+      "contractStatus": "契約済み",
+      "expectedResult": "エラー_対象外",
+      "testPoints": ["発注タイミングチェック"]
+    }
+  ],
+  "questionFlows": [
+    {
+      "categoryId": "電子化枠",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "現在、紙ベースで行っている業務の割合は？",
+          "type": "radio",
+          "options": [
+            {"value": "high", "text": "80%以上", "points": 3},
+            {"value": "medium", "text": "50-79%", "points": 2},
+            {"value": "low", "text": "50%未満", "points": 1}
+          ],
+          "threshold": 2
+        },
+        {
+          "id": "q2",
+          "text": "デジタル化したい業務は？（複数選択可）",
+          "type": "checkbox",
+          "options": [
+            {"value": "invoice", "text": "請求書・領収書"},
+            {"value": "contract", "text": "契約書・注文書"},
+            {"value": "inventory", "text": "在庫管理"},
+            {"value": "production", "text": "生産管理"},
+            {"value": "quality", "text": "品質管理"}
+          ],
+          "minSelections": 1
+        }
+      ],
+      "judgmentLogic": "q1 >= 2 AND q2.length >= 1"
+    },
+    {
+      "categoryId": "通常枠",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "導入予定のITツールの主な目的は？",
+          "type": "radio",
+          "options": [
+            {"value": "productivity", "text": "生産性向上", "points": 3},
+            {"value": "efficiency", "text": "業務効率化", "points": 3},
+            {"value": "analysis", "text": "データ分析", "points": 2},
+            {"value": "communication", "text": "コミュニケーション改善", "points": 2}
+          ],
+          "threshold": 2
+        }
+      ],
+      "judgmentLogic": "q1 >= 2"
+    },
+    {
+      "categoryId": "複数社枠",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "共同導入する企業数は？",
+          "type": "number",
+          "min": 2,
+          "max": 10,
+          "required": true
+        },
+        {
+          "id": "q2",
+          "text": "共同導入の目的は？",
+          "type": "radio",
+          "options": [
+            {"value": "integration", "text": "システム統合"},
+            {"value": "standardization", "text": "業務標準化"},
+            {"value": "cost_reduction", "text": "コスト削減"},
+            {"value": "data_sharing", "text": "データ共有"}
+          ]
+        }
+      ],
+      "judgmentLogic": "q1 >= 2"
+    }
+  ],
+  "validationRules": [
+    {
+      "field": "employeeCount",
+      "rules": [
+        {"type": "min", "value": 1, "message": "従業員数は1名以上である必要があります"},
+        {"type": "max", "value": 300, "message": "中小企業の範囲を超えています"}
+      ]
+    },
+    {
+      "field": "annualRevenue",
+      "rules": [
+        {"type": "min", "value": 1000000, "message": "年間売上高が低すぎます"},
+        {"type": "max", "value": 10000000000, "message": "中小企業の範囲を超えています"}
+      ]
+    },
+    {
+      "field": "requestedAmount",
+      "rules": [
+        {"type": "min", "value": 50000, "message": "補助金額は5万円以上である必要があります"},
+        {"type": "categoryMax", "message": "選択した枠の上限額を超えています"}
+      ]
+    }
+  ],
+  "performanceMetrics": [
+    {
+      "name": "判定精度",
+      "target": "95%以上",
+      "measurement": "正しい申請枠への判定率"
+    },
+    {
+      "name": "判定速度",
+      "target": "3秒以内",
+      "measurement": "質問開始から判定結果表示まで"
+    },
+    {
+      "name": "書類準備時間",
+      "target": "30分以内",
+      "measurement": "必要書類リスト提示から準備完了まで"
+    }
+  ]
+}

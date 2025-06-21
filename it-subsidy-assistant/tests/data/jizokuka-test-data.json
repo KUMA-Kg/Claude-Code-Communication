@@ -1,0 +1,427 @@
+{
+  "subsidyType": "小規模事業者持続化補助金（第17回）",
+  "eligibilityRequirement": {
+    "employeeLimit": {
+      "commerce_service": 5,
+      "manufacturing": 20,
+      "wholesale": 5,
+      "retail": 5
+    },
+    "description": "小規模事業者のみが対象"
+  },
+  "categories": [
+    {
+      "name": "通常枠",
+      "description": "販路開拓取組",
+      "subsidyRate": 0.667,
+      "maxAmount": 500000,
+      "minAmount": 100000,
+      "conditions": ["販路開拓・生産性向上の取り組み"]
+    },
+    {
+      "name": "賃金引上げ枠",
+      "description": "賃上げ実施",
+      "subsidyRate": 0.667,
+      "subsidyRateDeficit": 0.75,
+      "maxAmount": 2000000,
+      "minAmount": 100000,
+      "conditions": ["事業場内最低賃金を地域別最低賃金より+30円以上", "賃金引上げ計画の策定"]
+    },
+    {
+      "name": "卒業枠",
+      "description": "事業規模拡大",
+      "subsidyRate": 0.667,
+      "maxAmount": 2000000,
+      "minAmount": 100000,
+      "conditions": ["小規模事業者を卒業する具体的な事業計画"]
+    },
+    {
+      "name": "後継者支援枠",
+      "description": "事業承継",
+      "subsidyRate": 0.667,
+      "maxAmount": 2000000,
+      "minAmount": 100000,
+      "conditions": ["代表者が60歳以上", "後継者が決定している"]
+    },
+    {
+      "name": "創業枠",
+      "description": "創業者向け",
+      "subsidyRate": 0.667,
+      "maxAmount": 2000000,
+      "minAmount": 100000,
+      "conditions": ["産業競争力強化法に基づく認定市区町村の創業支援"]
+    }
+  ],
+  "testCompanies": [
+    {
+      "id": "jizo-test-001",
+      "name": "町の小さな印刷屋",
+      "type": "個人事業主",
+      "industry": "製造業",
+      "employeeCount": 3,
+      "annualRevenue": 18000000,
+      "establishedYear": 2010,
+      "currentChallenges": ["新規顧客開拓", "デジタル印刷需要対応", "販売チャネル拡大"],
+      "targetCategory": "通常枠",
+      "salesChannelExpansion": [
+        "ホームページ制作",
+        "オンライン受注システム",
+        "チラシ・カタログ作成"
+      ],
+      "businessForm": "個人事業主",
+      "gbizIdStatus": "取得済み",
+      "supportPlanStatus": "商工会議所で作成予定",
+      "requiredDocuments": [
+        "確定申告書第一表・第二表",
+        "青色申告決算書",
+        "事業支援計画書（商工会議所発行）",
+        "見積書"
+      ]
+    },
+    {
+      "id": "jizo-test-002",
+      "name": "地域密着型美容サロン",
+      "type": "法人",
+      "industry": "サービス業",
+      "employeeCount": 4,
+      "annualRevenue": 22000000,
+      "establishedYear": 2018,
+      "currentChallenges": ["従業員の処遇改善", "技術力向上", "顧客満足度向上"],
+      "targetCategory": "賃金引上げ枠",
+      "wageIncreasePlan": {
+        "currentMinimumWage": 900,
+        "plannedIncrease": 40,
+        "targetMinimumWage": 940,
+        "implementationDate": "2025-04-01"
+      },
+      "businessForm": "有限会社",
+      "isDeficitCompany": false,
+      "gbizIdStatus": "申請中",
+      "supportPlanStatus": "商工会で作成済み",
+      "requiredDocuments": [
+        "貸借対照表・損益計算書",
+        "履歴事項全部証明書",
+        "事業支援計画書（商工会発行）",
+        "賃金引上げ計画書",
+        "見積書"
+      ]
+    },
+    {
+      "id": "jizo-test-003",
+      "name": "急成長ベンチャー商店",
+      "type": "法人",
+      "industry": "小売業",
+      "employeeCount": 4,
+      "annualRevenue": 35000000,
+      "establishedYear": 2020,
+      "currentChallenges": ["事業規模拡大", "従業員増員", "システム強化"],
+      "targetCategory": "卒業枠",
+      "graduationPlan": {
+        "currentEmployees": 4,
+        "targetEmployees": 8,
+        "expansionPlan": "EC事業強化による売上拡大",
+        "targetRevenue": 60000000
+      },
+      "businessForm": "株式会社",
+      "gbizIdStatus": "取得済み",
+      "supportPlanStatus": "商工会議所で作成済み",
+      "requiredDocuments": [
+        "貸借対照表・損益計算書",
+        "履歴事項全部証明書",
+        "事業支援計画書（商工会議所発行）",
+        "事業計画書（卒業計画）",
+        "見積書"
+      ]
+    },
+    {
+      "id": "jizo-test-004",
+      "name": "老舗町工場",
+      "type": "法人",
+      "industry": "製造業",
+      "employeeCount": 12,
+      "annualRevenue": 85000000,
+      "establishedYear": 1975,
+      "currentChallenges": ["事業承継準備", "技術継承", "設備更新"],
+      "targetCategory": "後継者支援枠",
+      "successionPlan": {
+        "currentOwnerAge": 68,
+        "successorAge": 42,
+        "successionSchedule": "2025年12月",
+        "relationshipToSuccessor": "息子"
+      },
+      "businessForm": "有限会社",
+      "gbizIdStatus": "取得済み",
+      "supportPlanStatus": "商工会で作成済み",
+      "requiredDocuments": [
+        "貸借対照表・損益計算書",
+        "履歴事項全部証明書",
+        "事業支援計画書（商工会発行）",
+        "事業承継計画書",
+        "後継者確認書類",
+        "見積書"
+      ]
+    },
+    {
+      "id": "jizo-test-005",
+      "name": "新規開業カフェ",
+      "type": "個人事業主",
+      "industry": "サービス業",
+      "employeeCount": 2,
+      "annualRevenue": 8000000,
+      "establishedYear": 2024,
+      "currentChallenges": ["認知度向上", "集客力強化", "ブランディング"],
+      "targetCategory": "創業枠",
+      "startupSupport": {
+        "supportingMunicipality": "○○市",
+        "certificationDate": "2024-02-15",
+        "supportProgram": "創業スクール修了",
+        "businessStartDate": "2024-03-01"
+      },
+      "businessForm": "個人事業主",
+      "gbizIdStatus": "未取得",
+      "supportPlanStatus": "商工会議所で作成予定",
+      "requiredDocuments": [
+        "確定申告書第一表・第二表",
+        "収支内訳書",
+        "開業届",
+        "認定市区町村証明書",
+        "事業支援計画書（商工会議所発行）",
+        "見積書"
+      ]
+    }
+  ],
+  "edgeCases": [
+    {
+      "id": "jizo-edge-001",
+      "name": "境界値テスト_従業員数上限",
+      "scenario": "製造業で従業員20名（上限ちょうど）",
+      "industry": "製造業",
+      "employeeCount": 20,
+      "expectedResult": "申請可能",
+      "testPoints": ["従業員数上限での申請可能性"]
+    },
+    {
+      "id": "jizo-edge-002",
+      "name": "境界値テスト_従業員数超過",
+      "scenario": "サービス業で従業員6名（上限超過）",
+      "industry": "サービス業",
+      "employeeCount": 6,
+      "expectedResult": "エラー_対象外",
+      "testPoints": ["従業員数制限チェック"]
+    },
+    {
+      "id": "jizo-edge-003",
+      "name": "境界値テスト_補助金額下限",
+      "scenario": "補助金額が最小額ちょうど",
+      "requestedAmount": 100000,
+      "targetCategory": "通常枠",
+      "expectedResult": "申請可能",
+      "testPoints": ["最小補助金額での申請"]
+    },
+    {
+      "id": "jizo-edge-004",
+      "name": "エラーケース_事業支援計画書なし",
+      "scenario": "商工会の事業支援計画書未取得",
+      "supportPlanStatus": "未作成",
+      "expectedResult": "エラー_必須書類不足",
+      "testPoints": ["必須書類チェック"]
+    },
+    {
+      "id": "jizo-edge-005",
+      "name": "エラーケース_交付決定前発注",
+      "scenario": "交付決定前に設備購入済み",
+      "purchaseDate": "2024-01-15",
+      "applicationDate": "2024-02-01",
+      "expectedResult": "エラー_対象外",
+      "testPoints": ["発注タイミングチェック"]
+    },
+    {
+      "id": "jizo-edge-006",
+      "name": "赤字事業者_補助率優遇",
+      "scenario": "赤字事業者の賃金引上げ枠",
+      "targetCategory": "賃金引上げ枠",
+      "isDeficitCompany": true,
+      "expectedSubsidyRate": 0.75,
+      "expectedResult": "補助率3/4適用",
+      "testPoints": ["赤字事業者優遇適用"]
+    }
+  ],
+  "questionFlows": [
+    {
+      "categoryId": "通常枠",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "あなたの事業形態は？",
+          "type": "radio",
+          "options": [
+            {"value": "individual", "text": "個人事業主"},
+            {"value": "corporation", "text": "法人"}
+          ]
+        },
+        {
+          "id": "q2",
+          "text": "従業員数は？（代表者除く）",
+          "type": "number",
+          "min": 0,
+          "max": 50,
+          "industryCheck": true
+        },
+        {
+          "id": "q3",
+          "text": "主な取り組み内容は？",
+          "type": "radio",
+          "options": [
+            {"value": "sales_channel", "text": "販路開拓", "points": 3},
+            {"value": "productivity", "text": "生産性向上", "points": 3},
+            {"value": "both", "text": "両方", "points": 4}
+          ],
+          "threshold": 3
+        }
+      ],
+      "judgmentLogic": "employeeCheck(q1, q2) AND q3 >= 3"
+    },
+    {
+      "categoryId": "賃金引上げ枠",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "事業場内最低賃金の引上げ予定額は？",
+          "type": "number",
+          "min": 30,
+          "max": 200,
+          "unit": "円",
+          "threshold": 30
+        },
+        {
+          "id": "q2",
+          "text": "赤字事業者ですか？",
+          "type": "radio",
+          "options": [
+            {"value": "yes", "text": "はい（補助率3/4）"},
+            {"value": "no", "text": "いいえ（補助率2/3）"}
+          ]
+        }
+      ],
+      "judgmentLogic": "q1 >= 30"
+    },
+    {
+      "categoryId": "卒業枠",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "小規模事業者卒業の具体的計画はありますか？",
+          "type": "radio",
+          "options": [
+            {"value": "yes", "text": "あり", "points": 3},
+            {"value": "planning", "text": "検討中", "points": 2},
+            {"value": "no", "text": "なし", "points": 1}
+          ],
+          "threshold": 3
+        }
+      ],
+      "judgmentLogic": "q1 >= 3"
+    },
+    {
+      "categoryId": "後継者支援枠",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "代表者の年齢は？",
+          "type": "number",
+          "min": 18,
+          "max": 100,
+          "threshold": 60
+        },
+        {
+          "id": "q2",
+          "text": "後継者は決定していますか？",
+          "type": "radio",
+          "options": [
+            {"value": "decided", "text": "決定済み", "points": 3},
+            {"value": "candidate", "text": "候補者あり", "points": 2},
+            {"value": "undecided", "text": "未定", "points": 1}
+          ],
+          "threshold": 3
+        }
+      ],
+      "judgmentLogic": "q1 >= 60 AND q2 >= 3"
+    },
+    {
+      "categoryId": "創業枠",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "産業競争力強化法に基づく創業支援を受けましたか？",
+          "type": "radio",
+          "options": [
+            {"value": "received", "text": "受けた", "points": 3},
+            {"value": "applying", "text": "申請中", "points": 2},
+            {"value": "not_received", "text": "受けていない", "points": 1}
+          ],
+          "threshold": 3
+        },
+        {
+          "id": "q2",
+          "text": "事業開始からの期間は？",
+          "type": "radio",
+          "options": [
+            {"value": "within1year", "text": "1年未満", "points": 3},
+            {"value": "within3years", "text": "3年未満", "points": 2},
+            {"value": "over3years", "text": "3年以上", "points": 1}
+          ],
+          "threshold": 2
+        }
+      ],
+      "judgmentLogic": "q1 >= 3 AND q2 >= 2"
+    }
+  ],
+  "validationRules": [
+    {
+      "field": "employeeCount",
+      "rules": [
+        {"type": "industryLimit", "message": "業種別従業員数制限を超えています"},
+        {"type": "min", "value": 0, "message": "従業員数は0名以上である必要があります"}
+      ]
+    },
+    {
+      "field": "requestedAmount",
+      "rules": [
+        {"type": "min", "value": 100000, "message": "補助金額は10万円以上である必要があります"},
+        {"type": "categoryMax", "message": "選択した枠の上限額を超えています"}
+      ]
+    },
+    {
+      "field": "supportPlan",
+      "rules": [
+        {"type": "required", "message": "事業支援計画書（商工会・商工会議所発行）は必須です"}
+      ]
+    }
+  ],
+  "industryEmployeeLimits": {
+    "製造業": 20,
+    "建設業": 20,
+    "運輸業": 20,
+    "商業": 5,
+    "サービス業": 5,
+    "卸売業": 5,
+    "小売業": 5
+  },
+  "performanceMetrics": [
+    {
+      "name": "従業員数制限チェック精度",
+      "target": "100%",
+      "measurement": "業種別従業員数制限の正確な判定"
+    },
+    {
+      "name": "枠判定精度",
+      "target": "95%以上",
+      "measurement": "最適な申請枠への判定率"
+    },
+    {
+      "name": "必要書類特定精度",
+      "target": "100%",
+      "measurement": "事業形態に応じた必要書類の正確な特定"
+    }
+  ]
+}

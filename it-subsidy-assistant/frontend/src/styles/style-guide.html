@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシストツール - スタイルガイド</title>
+    <link rel="stylesheet" href="../index.css">
+    <style>
+        body {
+            padding: var(--spacing-2xl);
+            background-color: var(--color-gray-50);
+        }
+        
+        .style-section {
+            margin-bottom: var(--spacing-3xl);
+        }
+        
+        .color-swatch {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-right: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            position: relative;
+        }
+        
+        .color-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: var(--spacing-xs);
+            font-size: var(--font-size-xs);
+            text-align: center;
+            border-bottom-left-radius: var(--radius-md);
+            border-bottom-right-radius: var(--radius-md);
+        }
+        
+        .example-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .preview-box {
+            background: var(--color-white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading-1 mb-xl">IT補助金アシストツール スタイルガイド</h1>
+        
+        <!-- Color Palette Section -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">カラーパレット</h2>
+            
+            <h3 class="heading-4 mb-md">Primary Colors - Blue</h3>
+            <div>
+                <span class="color-swatch" style="background-color: var(--color-primary-50);">
+                    <span class="color-label">50</span>
+                </span>
+                <span class="color-swatch" style="background-color: var(--color-primary-200);">
+                    <span class="color-label">200</span>
+                </span>
+                <span class="color-swatch" style="background-color: var(--color-primary-500);">
+                    <span class="color-label">500 (Main)</span>
+                </span>
+                <span class="color-swatch" style="background-color: var(--color-primary-700);">
+                    <span class="color-label">700</span>
+                </span>
+                <span class="color-swatch" style="background-color: var(--color-primary-900);">
+                    <span class="color-label">900</span>
+                </span>
+            </div>
+            
+            <h3 class="heading-4 mb-md mt-lg">Neutral Colors - Beige</h3>
+            <div>
+                <span class="color-swatch" style="background-color: var(--color-beige-50);">
+                    <span class="color-label">50</span>
+                </span>
+                <span class="color-swatch" style="background-color: var(--color-beige-200);">
+                    <span class="color-label">200</span>
+                </span>
+                <span class="color-swatch" style="background-color: var(--color-beige-500);">
+                    <span class="color-label">500 (Main)</span>
+                </span>
+                <span class="color-swatch" style="background-color: var(--color-beige-700);">
+                    <span class="color-label">700</span>
+                </span>
+                <span class="color-swatch" style="background-color: var(--color-beige-900);">
+                    <span class="color-label">900</span>
+                </span>
+            </div>
+        </section>
+        
+        <!-- Typography Section -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">タイポグラフィ</h2>
+            <div class="preview-box">
+                <p class="heading-1">見出し1 - Heading 1</p>
+                <p class="heading-2">見出し2 - Heading 2</p>
+                <p class="heading-3">見出し3 - Heading 3</p>
+                <p class="heading-4">見出し4 - Heading 4</p>
+                <p class="heading-5">見出し5 - Heading 5</p>
+                <p class="body-large">大きい本文 - Body Large</p>
+                <p class="body-regular">通常の本文 - Body Regular</p>
+                <p class="body-small">小さい本文 - Body Small</p>
+                <p class="caption">キャプション - Caption</p>
+            </div>
+        </section>
+        
+        <!-- Button Section -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">ボタン</h2>
+            <div class="preview-box">
+                <h3 class="heading-4 mb-md">ボタンのバリエーション</h3>
+                <div class="gap-md" style="display: flex; flex-wrap: wrap;">
+                    <button class="btn btn-primary btn-lg">Primary Large</button>
+                    <button class="btn btn-primary btn-md">Primary Medium</button>
+                    <button class="btn btn-primary btn-sm">Primary Small</button>
+                    <button class="btn btn-secondary btn-md">Secondary</button>
+                    <button class="btn btn-outline btn-md">Outline</button>
+                    <button class="btn btn-ghost btn-md">Ghost</button>
+                    <button class="btn btn-primary btn-md" disabled>Disabled</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Form Elements Section -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">フォーム要素</h2>
+            <div class="preview-box">
+                <div class="grid grid-cols-2 md:grid-cols-1">
+                    <div class="form-group">
+                        <label class="form-label">メールアドレス</label>
+                        <input type="email" class="form-input" placeholder="example@company.com">
+                        <p class="form-help">会社のメールアドレスを入力してください</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">業種</label>
+                        <select class="form-select">
+                            <option>選択してください</option>
+                            <option>IT・情報通信業</option>
+                            <option>製造業</option>
+                            <option>サービス業</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">事業内容</label>
+                        <textarea class="form-textarea" placeholder="事業内容を詳しく記載してください"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">エラー例</label>
+                        <input type="text" class="form-input" style="border-color: var(--color-error);">
+                        <p class="form-error">このフィールドは必須です</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cards Section -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">カード</h2>
+            <div class="grid grid-cols-2 md:grid-cols-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="heading-4">カードヘッダー</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="body-regular">これは基本的なカードコンポーネントです。ヘッダー、ボディ、フッターの3つのセクションで構成されています。</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-sm">詳細を見る</button>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <span style="font-size: 24px;">📊</span>
+                    </div>
+                    <p class="stat-card-value">12,345</p>
+                    <p class="stat-card-label">総申請数</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Alerts Section -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">アラート</h2>
+            <div class="preview-box">
+                <div class="alert alert-info">
+                    <strong>情報:</strong> これは情報アラートです。重要な情報を伝えるために使用します。
+                </div>
+                <div class="alert alert-success">
+                    <strong>成功:</strong> 操作が正常に完了しました。
+                </div>
+                <div class="alert alert-warning">
+                    <strong>警告:</strong> この操作には注意が必要です。
+                </div>
+                <div class="alert alert-error">
+                    <strong>エラー:</strong> 問題が発生しました。もう一度お試しください。
+                </div>
+            </div>
+        </section>
+        
+        <!-- Badges Section -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">バッジ</h2>
+            <div class="preview-box">
+                <span class="badge badge-primary">Primary</span>
+                <span class="badge badge-secondary">Secondary</span>
+                <span class="badge badge-success">Success</span>
+            </div>
+        </section>
+        
+        <!-- Subsidy Card Example -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">補助金カードの例</h2>
+            <div class="subsidy-card" style="max-width: 600px;">
+                <div class="subsidy-card-header">
+                    <div>
+                        <h3 class="subsidy-card-title">IT導入補助金2024</h3>
+                        <span class="badge badge-primary">デジタル化</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 12px; height: 12px; border-radius: var(--radius-full); background-color: var(--color-success); margin-right: var(--spacing-xs);"></div>
+                            <span class="caption">85%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="subsidy-card-description">
+                    中小企業・小規模事業者が自社の課題やニーズに合ったITツールを導入する経費の一部を補助します。
+                </p>
+                
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+                    <div class="body-small">
+                        補助金額: <strong class="subsidy-card-amount" style="font-size: inherit;">¥300,000 ～ ¥4,500,000</strong>
+                    </div>
+                    <div class="body-small">
+                        補助率: <strong>50%</strong>
+                    </div>
+                    <div class="body-small">
+                        申請期限: 2024年12月31日
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: var(--spacing-md);">
+                    <p class="caption" style="margin-bottom: var(--spacing-xs);">対象企業:</p>
+                    <div class="subsidy-card-tags">
+                        <span class="badge badge-secondary">中小企業</span>
+                        <span class="badge badge-secondary">小規模事業者</span>
+                        <span class="badge badge-secondary">サービス業</span>
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="caption">
+                        主催: 経済産業省
+                    </div>
+                    <button class="btn btn-primary btn-sm">
+                        詳細を見る
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Spacing Section -->
+        <section class="style-section">
+            <h2 class="heading-2 mb-lg">スペーシング</h2>
+            <div class="preview-box">
+                <div style="background: var(--color-primary-100); padding: var(--spacing-xs); margin-bottom: var(--spacing-sm);">spacing-xs (4px)</div>
+                <div style="background: var(--color-primary-200); padding: var(--spacing-sm); margin-bottom: var(--spacing-sm);">spacing-sm (8px)</div>
+                <div style="background: var(--color-primary-300); padding: var(--spacing-md); margin-bottom: var(--spacing-sm);">spacing-md (16px)</div>
+                <div style="background: var(--color-primary-400); padding: var(--spacing-lg); margin-bottom: var(--spacing-sm);">spacing-lg (24px)</div>
+                <div style="background: var(--color-primary-500); padding: var(--spacing-xl); color: white;">spacing-xl (32px)</div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

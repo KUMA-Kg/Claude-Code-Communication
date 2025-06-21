@@ -1,0 +1,166 @@
+{
+  "title": "ものづくり補助金 詳細申請書",
+  "description": "革新的な製品・サービス開発のための詳細情報を入力してください",
+  "sections": [
+    {
+      "id": "basic_info",
+      "title": "基本情報",
+      "required": true,
+      "questions": [
+        {
+          "id": "company_name",
+          "type": "text",
+          "question": "法人名（商号）",
+          "required": true,
+          "hint": "正式な法人名を入力してください"
+        },
+        {
+          "id": "company_name_kana",
+          "type": "text",
+          "question": "法人名（フリガナ）",
+          "required": true,
+          "hint": "全角カタカナで入力してください"
+        },
+        {
+          "id": "corporate_number",
+          "type": "text",
+          "question": "法人番号",
+          "required": true,
+          "hint": "13桁の法人番号を入力してください"
+        },
+        {
+          "id": "establishment_date",
+          "type": "date",
+          "question": "設立年月日",
+          "required": true
+        },
+        {
+          "id": "capital",
+          "type": "number",
+          "question": "資本金",
+          "required": true,
+          "unit": "円"
+        }
+      ]
+    },
+    {
+      "id": "project_overview",
+      "title": "事業計画概要",
+      "required": true,
+      "questions": [
+        {
+          "id": "project_title",
+          "type": "text",
+          "question": "事業計画名",
+          "required": true,
+          "maxLength": 100,
+          "hint": "事業内容が分かる簡潔なタイトル"
+        },
+        {
+          "id": "project_category",
+          "type": "select",
+          "question": "申請枠",
+          "required": true,
+          "options": [
+            { "value": "normal", "label": "通常枠" },
+            { "value": "recovery", "label": "回復型賃上げ・雇用拡大枠" },
+            { "value": "digital", "label": "デジタル枠" },
+            { "value": "green", "label": "グリーン枠" },
+            { "value": "global", "label": "グローバル市場開拓枠" }
+          ]
+        },
+        {
+          "id": "innovation_type",
+          "type": "radio",
+          "question": "革新的サービスの内容",
+          "required": true,
+          "options": [
+            {
+              "value": "new_product",
+              "label": "新商品（試作品）開発",
+              "description": "新たな製品・試作品の開発"
+            },
+            {
+              "value": "new_service",
+              "label": "新サービス開発",
+              "description": "新たなサービスの開発・提供"
+            },
+            {
+              "value": "new_process",
+              "label": "生産プロセス改善",
+              "description": "生産プロセスの改善による生産性向上"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project_details",
+      "title": "事業詳細",
+      "required": true,
+      "questions": [
+        {
+          "id": "current_challenges",
+          "type": "textarea",
+          "question": "現在の課題・問題点",
+          "required": true,
+          "maxLength": 1000,
+          "hint": "解決したい課題を具体的に記載してください"
+        },
+        {
+          "id": "solution_approach",
+          "type": "textarea",
+          "question": "課題解決のアプローチ",
+          "required": true,
+          "maxLength": 1000,
+          "hint": "どのように課題を解決するか具体的に記載してください"
+        },
+        {
+          "id": "expected_outcome",
+          "type": "textarea",
+          "question": "期待される成果・効果",
+          "required": true,
+          "maxLength": 800,
+          "hint": "数値目標を含めて具体的に記載してください"
+        }
+      ]
+    },
+    {
+      "id": "budget_plan",
+      "title": "予算計画",
+      "required": true,
+      "questions": [
+        {
+          "id": "total_project_cost",
+          "type": "number",
+          "question": "事業総額",
+          "required": true,
+          "unit": "円",
+          "hint": "補助対象経費の総額"
+        },
+        {
+          "id": "subsidy_request_amount",
+          "type": "number",
+          "question": "補助金申請額",
+          "required": true,
+          "unit": "円",
+          "hint": "申請する補助金額"
+        },
+        {
+          "id": "equipment_cost",
+          "type": "number",
+          "question": "機械装置・システム構築費",
+          "required": false,
+          "unit": "円"
+        },
+        {
+          "id": "outsourcing_cost",
+          "type": "number",
+          "question": "外注費",
+          "required": false,
+          "unit": "円"
+        }
+      ]
+    }
+  ]
+}

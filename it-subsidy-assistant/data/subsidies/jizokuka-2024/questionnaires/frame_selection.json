@@ -1,0 +1,289 @@
+{
+  "subsidy_type": "小規模事業者持続化補助金（第17回）",
+  "questionnaire_id": "jizokuka_frame_selection",
+  "version": "1.0.0",
+  "title": "小規模事業者持続化補助金 申請枠判定",
+  "description": "事業状況と目的から最適な申請枠を判定します",
+  "questions": [
+    {
+      "id": "q1_business_status",
+      "type": "single_select",
+      "required": true,
+      "question": "あなたの事業状況を教えてください",
+      "options": [
+        {
+          "value": "existing_normal",
+          "label": "既存事業者（通常営業中）",
+          "icon": "🏢",
+          "description": "既に事業を営んでおり、販路開拓を行いたい",
+          "next_questions": ["q2_wage_plan"],
+          "suggested_frame": "tsujyo",
+          "frame_name": "通常枠"
+        },
+        {
+          "value": "existing_wage_increase",
+          "label": "既存事業者（賃上げ実施予定）",
+          "icon": "💰",
+          "description": "従業員の賃金引上げを計画している",
+          "next_questions": ["q2_wage_increase_detail"],
+          "suggested_frame": "chingin",
+          "frame_name": "賃金引上げ枠"
+        },
+        {
+          "value": "planning_expansion",
+          "label": "事業規模拡大を計画",
+          "icon": "📈",
+          "description": "小規模事業者から中規模企業への成長を目指す",
+          "next_questions": ["q2_expansion_plan"],
+          "suggested_frame": "sotsugyo",
+          "frame_name": "卒業枠"
+        },
+        {
+          "value": "succession_planned",
+          "label": "事業承継を予定",
+          "icon": "🤝",
+          "description": "アトツギ甲子園出場者等、事業承継を計画",
+          "next_questions": ["q2_succession_status"],
+          "suggested_frame": "kokeisha",
+          "frame_name": "後継者支援枠"
+        },
+        {
+          "value": "startup",
+          "label": "創業予定・創業間もない",
+          "icon": "🌟",
+          "description": "創業予定または産業競争力強化法に基づく認定市区町村での創業",
+          "next_questions": ["q2_startup_status"],
+          "suggested_frame": "sogyo",
+          "frame_name": "創業枠"
+        }
+      ]
+    },
+    {
+      "id": "q2_wage_plan",
+      "type": "single_select",
+      "required": false,
+      "condition": "q1_business_status === 'existing_normal'",
+      "question": "賃上げの予定はありますか？",
+      "options": [
+        {
+          "value": "no_wage_increase",
+          "label": "特に予定なし"
+        },
+        {
+          "value": "considering_wage_increase",
+          "label": "検討中",
+          "hint": "賃金引上げ枠も検討できます"
+        }
+      ]
+    },
+    {
+      "id": "q2_wage_increase_detail",
+      "type": "single_select",
+      "required": true,
+      "condition": "q1_business_status === 'existing_wage_increase'",
+      "question": "賃上げの計画内容を教えてください",
+      "options": [
+        {
+          "value": "above_minimum",
+          "label": "地域別最低賃金より時間給+50円以上"
+        },
+        {
+          "value": "rate_increase",
+          "label": "給与支給総額を年率3%以上増加"
+        },
+        {
+          "value": "both",
+          "label": "両方実施予定"
+        }
+      ]
+    },
+    {
+      "id": "q2_expansion_plan",
+      "type": "single_select",
+      "required": true,
+      "condition": "q1_business_status === 'planning_expansion'",
+      "question": "どのような規模拡大を計画していますか？",
+      "options": [
+        {
+          "value": "employee_increase",
+          "label": "常時使用する従業員を小規模事業者の定義を超えて雇用"
+        },
+        {
+          "value": "new_business",
+          "label": "新規事業分野への進出"
+        },
+        {
+          "value": "both_expansion",
+          "label": "両方"
+        }
+      ]
+    },
+    {
+      "id": "q2_succession_status",
+      "type": "single_select",
+      "required": true,
+      "condition": "q1_business_status === 'succession_planned'",
+      "question": "事業承継の状況を教えてください",
+      "options": [
+        {
+          "value": "atotsugikoshien",
+          "label": "アトツギ甲子園のファイナリストまたは選出者"
+        },
+        {
+          "value": "within_year",
+          "label": "1年以内に事業承継予定"
+        },
+        {
+          "value": "planning",
+          "label": "事業承継を計画中"
+        }
+      ]
+    },
+    {
+      "id": "q2_startup_status",
+      "type": "single_select",
+      "required": true,
+      "condition": "q1_business_status === 'startup'",
+      "question": "創業の状況を教えてください",
+      "options": [
+        {
+          "value": "planning_to_start",
+          "label": "これから創業予定"
+        },
+        {
+          "value": "recently_started",
+          "label": "創業して間もない（過去3年以内）"
+        },
+        {
+          "value": "certified_support",
+          "label": "特定創業支援等事業の支援を受けた"
+        }
+      ]
+    }
+  ],
+  "frame_determination_rules": {
+    "tsujyo": {
+      "frame_code": "tsujyo",
+      "frame_name": "通常枠",
+      "description": "小規模事業者の販路開拓等の取組を支援",
+      "subsidy_rate": "2/3",
+      "subsidy_limit": "50万円",
+      "required_documents": [
+        "r6_koubover2_ip17.pdf",
+        "r3i_y1.docx",
+        "r3i_y2.docx",
+        "r3i_y3e.xlsx"
+      ],
+      "optional_documents": [
+        "r3i_kisairei_coffee.pdf",
+        "r3i_kisairei_kappou.pdf",
+        "r3i_kisairei_bankin.pdf",
+        "r3i_kisairei_ryokou.pdf",
+        "r3i_kisairei_karaoke.pdf",
+        "r3i_kisairei_shukuhaku.pdf"
+      ]
+    },
+    "chingin": {
+      "frame_code": "chingin",
+      "frame_name": "賃金引上げ枠",
+      "description": "賃上げに取り組む小規模事業者を支援",
+      "subsidy_rate": "2/3（赤字事業者は3/4）",
+      "subsidy_limit": "200万円",
+      "required_documents": [
+        "r6_koubover2_ip17.pdf",
+        "r3i_y1.docx",
+        "r3i_y2.docx",
+        "r3i_y3e.xlsx",
+        "r3i_y8.docx"
+      ],
+      "optional_documents": [
+        "r3i_akaji_hojin.pdf",
+        "r3i_akaji_kojin.pdf",
+        "r3i_chingindaityou_chui.pdf"
+      ]
+    },
+    "sotsugyo": {
+      "frame_code": "sotsugyo",
+      "frame_name": "卒業枠",
+      "description": "事業規模拡大に取り組む小規模事業者を支援",
+      "subsidy_rate": "2/3",
+      "subsidy_limit": "200万円",
+      "required_documents": [
+        "r6_koubover2_ip17.pdf",
+        "r3i_y1.docx",
+        "r3i_y2.docx",
+        "r3i_y3e.xlsx"
+      ],
+      "optional_documents": []
+    },
+    "kokeisha": {
+      "frame_code": "kokeisha",
+      "frame_name": "後継者支援枠",
+      "description": "将来的に事業承継を行う予定の後継者を支援",
+      "subsidy_rate": "2/3",
+      "subsidy_limit": "200万円",
+      "required_documents": [
+        "r6_koubover2_ip17.pdf",
+        "r3i_y1.docx",
+        "r3i_y2.docx",
+        "r3i_y3e.xlsx",
+        "r3i_y9_hojin.docx"
+      ],
+      "optional_documents": [
+        "r3i_y9_kojin.docx",
+        "r3i_y9houjin_chui.pdf",
+        "r3i_y9kojin_chui.pdf"
+      ]
+    },
+    "sogyo": {
+      "frame_code": "sogyo",
+      "frame_name": "創業枠",
+      "description": "創業予定者および創業間もない事業者を支援",
+      "subsidy_rate": "2/3",
+      "subsidy_limit": "200万円",
+      "required_documents": [
+        "r6_koubover2_ip17.pdf",
+        "r6_y2_sogyo1.docx",
+        "r6_y3_sogyo1.xlsx",
+        "r6_checklist_sogyo1.xlsx"
+      ],
+      "optional_documents": [
+        "r6_y6_sogyo1.docx",
+        "r6_y7.docx",
+        "r6_y8_sogyo1.docx",
+        "r6_y30_sogyo1.xlsx",
+        "r6_kisai1_sogyo1.pdf",
+        "r6_kisai2_sogyo1.pdf",
+        "r6_kisai3_sogyo1.pdf",
+        "r6_kisai4_sogyo1.pdf"
+      ]
+    }
+  },
+  "common_required_documents": [
+    "r6_koubover2_ip17.pdf",
+    "r6_kitei_250425_ip.pdf"
+  ],
+  "conditional_documents": {
+    "age_over_60": [
+      "r3i_y9_hojin.docx",
+      "r3i_y9_kojin.docx"
+    ],
+    "specific_area": [
+      "r3i_y5.docx"
+    ],
+    "certified_support": [
+      "r3i_y6.docx",
+      "r3i_y7.docx"
+    ],
+    "data_utilization": [
+      "r3i_rdmb_sample.pdf",
+      "r3i_tgdt_sample.pdf"
+    ]
+  },
+  "important_notes": [
+    "商工会・商工会議所の支援を受けることが必須です",
+    "電子申請（Jグランツ）にはGビズIDプライムが必要です",
+    "従業員数は業種により上限が異なります（商業・サービス業：5人以下、製造業その他：20人以下）",
+    "代表者が満60歳以上の場合は事業承継診断票の提出が必要です"
+  ]
+}

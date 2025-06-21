@@ -1,0 +1,229 @@
+{
+  "subsidy_type": "IT導入補助金2025",
+  "questionnaire_id": "it_donyu_frame_selection",
+  "version": "1.0.0",
+  "title": "IT導入補助金 申請枠判定",
+  "description": "最小の質問で最適な申請枠を判定します",
+  "questions": [
+    {
+      "id": "q1_main_challenge",
+      "type": "single_select",
+      "required": true,
+      "question": "どのような課題を解決したいですか？",
+      "options": [
+        {
+          "value": "digitalization",
+          "label": "紙の業務をデジタル化したい",
+          "icon": "📄",
+          "description": "請求書、契約書、受発注などの電子化",
+          "next_questions": ["q2_digitalization_target"],
+          "suggested_frame": "denshi",
+          "frame_name": "電子化枠"
+        },
+        {
+          "value": "security",
+          "label": "セキュリティを強化したい",
+          "icon": "🔒",
+          "description": "サイバー攻撃対策、情報漏洩防止",
+          "next_questions": [],
+          "suggested_frame": "security",
+          "frame_name": "セキュリティ枠"
+        },
+        {
+          "value": "invoice",
+          "label": "インボイス制度に対応したい",
+          "icon": "📊",
+          "description": "適格請求書発行、経理業務効率化",
+          "next_questions": [],
+          "suggested_frame": "invoice",
+          "frame_name": "インボイス枠"
+        },
+        {
+          "value": "collaboration",
+          "label": "複数企業で共同導入したい",
+          "icon": "🤝",
+          "description": "グループ企業、取引先との連携",
+          "next_questions": ["q2_company_count", "q2_company_relationship"],
+          "suggested_frame": "fukusu",
+          "frame_name": "複数社枠"
+        },
+        {
+          "value": "general",
+          "label": "業務全般を効率化したい",
+          "icon": "💼",
+          "description": "在庫管理、顧客管理、生産性向上など",
+          "next_questions": [],
+          "suggested_frame": "tsujyo",
+          "frame_name": "通常枠"
+        }
+      ]
+    },
+    {
+      "id": "q2_digitalization_target",
+      "type": "multi_select",
+      "required": false,
+      "condition": "q1_main_challenge === 'digitalization'",
+      "question": "電子化したい業務を選択してください（複数選択可）",
+      "options": [
+        {
+          "value": "order_management",
+          "label": "受発注業務"
+        },
+        {
+          "value": "invoice_issuance",
+          "label": "請求書発行"
+        },
+        {
+          "value": "contract_management",
+          "label": "契約書締結"
+        },
+        {
+          "value": "inventory_management",
+          "label": "在庫管理"
+        },
+        {
+          "value": "other_documents",
+          "label": "その他帳票類"
+        }
+      ]
+    },
+    {
+      "id": "q2_company_count",
+      "type": "single_select",
+      "required": true,
+      "condition": "q1_main_challenge === 'collaboration'",
+      "question": "何社で共同申請しますか？",
+      "validation": {
+        "min": 2,
+        "message": "複数社枠は最低2社以上の共同申請が必要です"
+      },
+      "options": [
+        {
+          "value": "2",
+          "label": "2社"
+        },
+        {
+          "value": "3",
+          "label": "3社"
+        },
+        {
+          "value": "4",
+          "label": "4社"
+        },
+        {
+          "value": "5_or_more",
+          "label": "5社以上"
+        }
+      ]
+    },
+    {
+      "id": "q2_company_relationship",
+      "type": "multi_select",
+      "required": true,
+      "condition": "q1_main_challenge === 'collaboration'",
+      "question": "申請企業間の関係を教えてください（複数選択可）",
+      "options": [
+        {
+          "value": "group_company",
+          "label": "グループ会社"
+        },
+        {
+          "value": "continuous_transaction",
+          "label": "継続的な取引関係"
+        },
+        {
+          "value": "same_supply_chain",
+          "label": "同一サプライチェーン"
+        },
+        {
+          "value": "joint_business",
+          "label": "共同事業の実施"
+        }
+      ]
+    }
+  ],
+  "frame_determination_rules": {
+    "denshi": {
+      "frame_code": "denshi",
+      "frame_name": "電子化枠",
+      "required_documents": [
+        "it2025_koubo_denshi.pdf",
+        "it2025_kitei_denshi.pdf",
+        "it2025_torihiki_denshi.xlsx",
+        "it2025_torihiki_denshi.pdf"
+      ],
+      "optional_documents": [
+        "it2025_chingin_houkoku.xlsx"
+      ]
+    },
+    "security": {
+      "frame_code": "security",
+      "frame_name": "セキュリティ枠",
+      "required_documents": [
+        "it2025_koubo_security.pdf",
+        "it2025_kitei_security.pdf",
+        "it2025_torihiki_security.xlsx",
+        "it2025_torihiki_security.pdf"
+      ],
+      "optional_documents": [
+        "it2025_chingin_houkoku.xlsx"
+      ]
+    },
+    "invoice": {
+      "frame_code": "invoice",
+      "frame_name": "インボイス枠",
+      "required_documents": [
+        "it2025_koubo_invoice.pdf",
+        "it2025_kitei_invoice.pdf"
+      ],
+      "optional_documents": [
+        "it2025_chingin_houkoku.xlsx"
+      ]
+    },
+    "fukusu": {
+      "frame_code": "fukusu",
+      "frame_name": "複数社枠",
+      "required_documents": [
+        "it2025_koubo_fukusu.pdf",
+        "it2025_kitei_fukusu.pdf",
+        "it2025_manual_kofu_fukusu.pdf",
+        "it2025_sentei_gaibu_fukusu.docx",
+        "it2025_sentei_it_fukusu.docx",
+        "it2025_yoshikikeisan_fukusu.xlsx"
+      ],
+      "optional_documents": [
+        "it2025_chingin_houkoku.xlsx"
+      ]
+    },
+    "tsujyo": {
+      "frame_code": "tsujyo",
+      "frame_name": "通常枠",
+      "required_documents": [
+        "it2025_koubo_tsujyo.pdf",
+        "it2025_kitei_tsujyo.pdf"
+      ],
+      "optional_documents": [
+        "it2025_chingin_houkoku.xlsx"
+      ]
+    }
+  },
+  "common_required_documents": [
+    "it2025_manual_kofu.pdf",
+    "it2025_manual_jisseki.pdf",
+    "it2025_kakuninjikou_jisseki.pdf"
+  ],
+  "category_documents": {
+    "category_5": [
+      "it2025_jisshinaiyosetsumei_cate5.xlsx",
+      "it2025_kakakusetsumei_cate5.xlsx"
+    ],
+    "category_6": [
+      "it2025_jisshinaiyosetsumei_cate6.xlsx",
+      "it2025_kakakusetsumei_cate6.xlsx"
+    ],
+    "category_7": [
+      "it2025_jisshinaiyosetsumei_cate7.xlsx",
+      "it2025_kakakusetsumei_cate7.xlsx"
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { UserModel } from '@/models/User';
 import { JWTManager } from '@/utils/jwt';
@@ -34,7 +34,7 @@ const registerValidation = [
     .withMessage('Name must be between 2 and 100 characters long')
 ];
 
-router.post('/login', loginValidation, asyncHandler(async (req, res) => {
+router.post('/login', loginValidation, asyncHandler(async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw validationErrorHandler(errors.array());
@@ -93,7 +93,7 @@ router.post('/login', loginValidation, asyncHandler(async (req, res) => {
   res.json(response);
 }));
 
-router.post('/register', registerValidation, asyncHandler(async (req, res) => {
+router.post('/register', registerValidation, asyncHandler(async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw validationErrorHandler(errors.array());
@@ -141,7 +141,7 @@ router.post('/register', registerValidation, asyncHandler(async (req, res) => {
   }
 }));
 
-router.post('/refresh', asyncHandler(async (req, res) => {
+router.post('/refresh', asyncHandler(async (req: Request, res: Response) => {
   const authHeader = req.headers.authorization;
   const refreshToken = JWTManager.extractTokenFromHeader(authHeader);
 
@@ -202,7 +202,7 @@ router.post('/refresh', asyncHandler(async (req, res) => {
   res.json(response);
 }));
 
-router.post('/logout', authenticate, asyncHandler(async (req, res) => {
+router.post('/logout', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const authHeader = req.headers.authorization;
   const refreshToken = req.body.refreshToken;
 
@@ -224,7 +224,7 @@ router.post('/logout', authenticate, asyncHandler(async (req, res) => {
   });
 }));
 
-router.get('/me', authenticate, asyncHandler(async (req, res) => {
+router.get('/me', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const user = (req as any).user;
 
   res.json({

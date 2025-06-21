@@ -1,0 +1,163 @@
+{
+  "title": "小規模事業者持続化補助金 詳細申請書",
+  "description": "販路開拓・業務効率化のための詳細情報を入力してください",
+  "sections": [
+    {
+      "id": "basic_info",
+      "title": "基本情報",
+      "required": true,
+      "questions": [
+        {
+          "id": "company_name",
+          "type": "text",
+          "question": "事業者名（商号）",
+          "required": true,
+          "hint": "個人事業主の場合は屋号または氏名"
+        },
+        {
+          "id": "company_name_kana",
+          "type": "text",
+          "question": "事業者名（フリガナ）",
+          "required": true,
+          "hint": "全角カタカナで入力してください"
+        },
+        {
+          "id": "business_type",
+          "type": "radio",
+          "question": "事業形態",
+          "required": true,
+          "options": [
+            { "value": "corporation", "label": "法人" },
+            { "value": "individual", "label": "個人事業主" }
+          ]
+        },
+        {
+          "id": "establishment_date",
+          "type": "date",
+          "question": "創業年月日",
+          "required": true
+        },
+        {
+          "id": "employee_count",
+          "type": "number",
+          "question": "従業員数",
+          "required": true,
+          "unit": "名",
+          "hint": "常時使用する従業員数"
+        }
+      ]
+    },
+    {
+      "id": "business_overview",
+      "title": "事業概要",
+      "required": true,
+      "questions": [
+        {
+          "id": "main_business",
+          "type": "textarea",
+          "question": "主な事業内容",
+          "required": true,
+          "maxLength": 500,
+          "hint": "提供している商品・サービスを具体的に記載"
+        },
+        {
+          "id": "target_customers",
+          "type": "textarea",
+          "question": "主な顧客層",
+          "required": true,
+          "maxLength": 300,
+          "hint": "ターゲットとなる顧客を具体的に記載"
+        },
+        {
+          "id": "sales_area",
+          "type": "select",
+          "question": "主な商圏",
+          "required": true,
+          "options": [
+            { "value": "local", "label": "地域内（市区町村内）" },
+            { "value": "prefecture", "label": "都道府県内" },
+            { "value": "regional", "label": "地方ブロック内" },
+            { "value": "national", "label": "全国" },
+            { "value": "international", "label": "海外含む" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sales_expansion_plan",
+      "title": "販路開拓計画",
+      "required": true,
+      "questions": [
+        {
+          "id": "current_issues",
+          "type": "textarea",
+          "question": "現在の経営課題",
+          "required": true,
+          "maxLength": 800,
+          "hint": "売上・集客等の課題を具体的に記載"
+        },
+        {
+          "id": "expansion_strategy",
+          "type": "textarea",
+          "question": "販路開拓の取組内容",
+          "required": true,
+          "maxLength": 1000,
+          "hint": "具体的な販路開拓の方法・手段を記載"
+        },
+        {
+          "id": "expected_results",
+          "type": "textarea",
+          "question": "期待される効果",
+          "required": true,
+          "maxLength": 600,
+          "hint": "売上増加見込み等を数値を含めて記載"
+        }
+      ]
+    },
+    {
+      "id": "budget_details",
+      "title": "経費明細",
+      "required": true,
+      "questions": [
+        {
+          "id": "total_cost",
+          "type": "number",
+          "question": "補助事業に要する経費総額",
+          "required": true,
+          "unit": "円"
+        },
+        {
+          "id": "subsidy_amount",
+          "type": "number",
+          "question": "補助金申請額",
+          "required": true,
+          "unit": "円",
+          "hint": "補助率2/3以内"
+        },
+        {
+          "id": "advertising_cost",
+          "type": "number",
+          "question": "広報費",
+          "required": false,
+          "unit": "円",
+          "hint": "チラシ・Web広告等"
+        },
+        {
+          "id": "website_cost",
+          "type": "number",
+          "question": "ウェブサイト関連費",
+          "required": false,
+          "unit": "円",
+          "hint": "ホームページ制作・改修費等"
+        },
+        {
+          "id": "exhibition_cost",
+          "type": "number",
+          "question": "展示会等出展費",
+          "required": false,
+          "unit": "円"
+        }
+      ]
+    }
+  ]
+}

@@ -22,40 +22,40 @@ export const StatCard: React.FC<StatCardProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md ${className}`}>
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+    <div className={`stat-card ${className}`}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+        <div style={{ flex: 1 }}>
+          <p className="stat-card-label">
             {title}
           </p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+          <p className="stat-card-value">
             {value}
           </p>
           {description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="caption mt-sm">
               {description}
             </p>
           )}
           {trend && (
-            <div className="flex items-center mt-2">
+            <div style={{ display: 'flex', alignItems: 'center', marginTop: 'var(--spacing-sm)' }}>
               <span
-                className={`text-sm font-medium ${
-                  trend.isPositive
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-red-600 dark:text-red-400'
-                }`}
+                style={{
+                  fontSize: 'var(--font-size-sm)',
+                  fontWeight: 'var(--font-weight-medium)',
+                  color: trend.isPositive ? 'var(--color-success)' : 'var(--color-error)'
+                }}
               >
                 {trend.isPositive ? '+' : ''}{trend.value}%
               </span>
-              <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">
+              <span className="caption" style={{ marginLeft: 'var(--spacing-xs)' }}>
                 前月比
               </span>
             </div>
           )}
         </div>
-        <div className="ml-4">
-          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-            <Icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+        <div style={{ marginLeft: 'var(--spacing-md)' }}>
+          <div className="stat-card-icon">
+            <Icon style={{ width: '24px', height: '24px' }} />
           </div>
         </div>
       </div>

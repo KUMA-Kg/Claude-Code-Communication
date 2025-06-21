@@ -253,12 +253,12 @@ export class SubsidyModel {
         return [];
       }
 
-      return data?.map(item => ({
-        id: item.subsidies.id,
-        name: item.subsidies.name,
+      return data?.map((item: any) => ({
+        id: item.subsidies?.id,
+        name: item.subsidies?.name,
         subsidyAmount: {
-          min: item.subsidies.subsidy_amount_min,
-          max: item.subsidies.subsidy_amount_max
+          min: item.subsidies?.subsidy_amount_min,
+          max: item.subsidies?.subsidy_amount_max
         },
         addedAt: new Date(item.created_at)
       })) || [];

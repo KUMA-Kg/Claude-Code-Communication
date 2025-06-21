@@ -16,10 +16,10 @@ export class JWTManager {
     };
 
     return jwt.sign(payload, env.JWT_SECRET, {
-      expiresIn: this.ACCESS_TOKEN_EXPIRES_IN,
+      expiresIn: this.ACCESS_TOKEN_EXPIRES_IN as string,
       issuer: 'it-subsidy-assistant',
       audience: 'it-subsidy-assistant-client'
-    });
+    } as jwt.SignOptions);
   }
 
   public static generateRefreshToken(): string {
@@ -70,7 +70,7 @@ export class JWTManager {
     return jwt.sign(
       { tokenId },
       env.JWT_REFRESH_SECRET,
-      { expiresIn: this.REFRESH_TOKEN_EXPIRES_IN }
+      { expiresIn: this.REFRESH_TOKEN_EXPIRES_IN as string } as jwt.SignOptions
     );
   }
 

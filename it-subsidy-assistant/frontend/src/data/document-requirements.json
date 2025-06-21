@@ -1,0 +1,186 @@
+{
+  "document_requirements": {
+    "it_donyu": {
+      "subsidy_name": "IT導入補助金",
+      "documents": [
+        {
+          "id": "implementation_description",
+          "name": "実施内容説明書",
+          "category": "category_based",
+          "description": "ITツールの導入内容と効果を説明する書類",
+          "required_for_categories": ["category_5", "category_6", "category_7"],
+          "template_questions": [
+            "導入するITツールの詳細",
+            "現在の業務課題",
+            "期待される効果",
+            "利用予定ユーザー数"
+          ]
+        },
+        {
+          "id": "price_description", 
+          "name": "価格説明書",
+          "category": "category_based",
+          "description": "ITツールの価格詳細を説明する書類",
+          "required_for_categories": ["category_5", "category_6", "category_7"],
+          "template_questions": [
+            "ツール使用料",
+            "導入・設定費用", 
+            "保守・サポート費用",
+            "補助金申請額"
+          ]
+        },
+        {
+          "id": "transaction_documents",
+          "name": "取引関係書類",
+          "category": "frame_based",
+          "description": "電子化・セキュリティ枠で必要な取引書類",
+          "required_for_frames": ["denshi", "security"],
+          "template_questions": [
+            "取引先との契約書類",
+            "電子化対象の取引書類",
+            "セキュリティ要件"
+          ]
+        }
+      ]
+    },
+    "monozukuri": {
+      "subsidy_name": "ものづくり補助金",
+      "documents": [
+        {
+          "id": "business_plan",
+          "name": "事業計画書",
+          "category": "universal",
+          "description": "革新的な取組みの事業計画を記載",
+          "required_for_all": true,
+          "template_questions": [
+            "事業計画名",
+            "革新性の内容",
+            "競合優位性",
+            "市場分析",
+            "設備投資計画",
+            "付加価値額の向上計画"
+          ]
+        },
+        {
+          "id": "wage_increase_plan",
+          "name": "大幅な賃上げに係る計画書",
+          "category": "frame_based", 
+          "description": "回復型賃上げ・雇用拡大枠で必要",
+          "required_for_frames": ["kaifuku"],
+          "template_questions": [
+            "現在の賃金水準",
+            "賃上げ計画",
+            "雇用拡大計画",
+            "業況回復の根拠"
+          ]
+        },
+        {
+          "id": "funding_confirmation",
+          "name": "資金調達に係る確認書",
+          "category": "conditional",
+          "description": "自己資金以外で資金調達する場合に必要",
+          "required_when": "external_funding",
+          "template_questions": [
+            "調達予定額",
+            "調達方法",
+            "調達先",
+            "返済計画"
+          ]
+        }
+      ]
+    },
+    "jizokuka": {
+      "subsidy_name": "小規模事業者持続化補助金",
+      "documents": [
+        {
+          "id": "business_management_plan",
+          "name": "経営計画書兼補助事業計画書①",
+          "category": "universal",
+          "description": "事業概要と補助事業計画を記載",
+          "required_for_all": true,
+          "template_questions": [
+            "事業概要",
+            "現在の経営課題",
+            "市場分析",
+            "販路開拓戦略",
+            "補助事業の内容",
+            "事業の持続可能性"
+          ]
+        },
+        {
+          "id": "expense_plan",
+          "name": "補助事業計画書②",
+          "category": "universal", 
+          "description": "経費明細と資金計画を記載",
+          "required_for_all": true,
+          "template_questions": [
+            "補助対象経費の内訳",
+            "各経費の必要性",
+            "補助金申請額",
+            "自己負担額"
+          ]
+        },
+        {
+          "id": "wage_increase_application",
+          "name": "賃金引上げ枠申請書",
+          "category": "frame_based",
+          "description": "賃金引上げ枠申請時に必要",
+          "required_for_frames": ["chingin"],
+          "template_questions": [
+            "現在の賃金状況",
+            "賃上げ計画",
+            "対象従業員",
+            "賃上げの根拠"
+          ]
+        },
+        {
+          "id": "succession_diagnosis",
+          "name": "事業承継診断票",
+          "category": "conditional",
+          "description": "代表者が60歳以上の場合に必要",
+          "required_when": "ceo_over_60",
+          "template_questions": [
+            "事業承継の予定",
+            "後継者の有無",
+            "承継準備状況",
+            "承継支援の必要性"
+          ]
+        }
+      ]
+    }
+  },
+  "decision_rules": {
+    "it_donyu": {
+      "category_determination": {
+        "category_5": "情報収集・分析・活用システム（顧客管理、在庫管理等）",
+        "category_6": "営業支援システム（営業管理、見積作成等）", 
+        "category_7": "バックオフィス系システム（会計、人事等）"
+      },
+      "frame_determination": {
+        "tsujyo": "一般的なITツール導入",
+        "denshi": "紙書類の電子化が主目的",
+        "security": "セキュリティ強化が主目的",
+        "invoice": "インボイス制度対応が主目的",
+        "fukusu": "複数企業での共同導入"
+      }
+    },
+    "monozukuri": {
+      "frame_determination": {
+        "tsujyo": "革新的な製品・サービス開発",
+        "kaifuku": "業況回復と賃上げ・雇用拡大",
+        "digital": "DXに資する革新的開発",
+        "green": "環境に配慮した革新的開発", 
+        "global": "海外市場開拓を目的とした開発"
+      }
+    },
+    "jizokuka": {
+      "frame_determination": {
+        "tsujyo": "一般的な販路開拓",
+        "chingin": "賃金引上げを伴う販路開拓",
+        "sotsugyo": "事業規模拡大を目指す取組み",
+        "kokeisha": "事業承継を見据えた取組み",
+        "sogyo": "創業間もない事業者の取組み"
+      }
+    }
+  }
+}

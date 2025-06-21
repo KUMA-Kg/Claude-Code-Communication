@@ -1,0 +1,108 @@
+{
+  "testCompanies": [
+    {
+      "id": "test-company-001",
+      "name": "株式会社テスト製造業",
+      "industry": "製造業",
+      "employeeCount": 50,
+      "annualRevenue": 500000000,
+      "establishedYear": 2010,
+      "hasITDepartment": false,
+      "currentITLevel": "low",
+      "challenges": ["紙ベースの在庫管理", "手書き伝票", "Excel管理"],
+      "targetBranch": "電子化枠",
+      "description": "典型的な中小製造業。紙ベースの業務が多く、デジタル化を検討中"
+    },
+    {
+      "id": "test-company-002",
+      "name": "有限会社サイバーセキュリティ不安商社",
+      "industry": "卸売・小売業",
+      "employeeCount": 30,
+      "annualRevenue": 300000000,
+      "establishedYear": 2005,
+      "hasITDepartment": false,
+      "currentITLevel": "medium",
+      "challenges": ["サイバー攻撃への不安", "情報漏洩リスク", "セキュリティ知識不足"],
+      "targetBranch": "セキュリティ枠",
+      "description": "ECサイト運営でセキュリティに不安を抱える企業"
+    },
+    {
+      "id": "test-company-003",
+      "name": "インボイス対応急務商店",
+      "industry": "小売業",
+      "employeeCount": 10,
+      "annualRevenue": 100000000,
+      "establishedYear": 2015,
+      "hasITDepartment": false,
+      "currentITLevel": "low",
+      "challenges": ["インボイス制度対応", "請求書管理", "適格請求書発行"],
+      "targetBranch": "インボイス枠",
+      "description": "インボイス制度への対応が急務の小規模事業者"
+    },
+    {
+      "id": "test-company-004",
+      "name": "協同組合デジタル化推進会",
+      "industry": "サービス業",
+      "employeeCount": 200,
+      "annualRevenue": 1000000000,
+      "establishedYear": 1990,
+      "hasITDepartment": true,
+      "currentITLevel": "medium",
+      "challenges": ["グループ企業間の情報共有", "システム統合", "業務標準化"],
+      "targetBranch": "複数社枠",
+      "description": "複数の関連企業で共同システム導入を検討"
+    },
+    {
+      "id": "test-company-005",
+      "name": "総合効率化サービス株式会社",
+      "industry": "サービス業",
+      "employeeCount": 100,
+      "annualRevenue": 800000000,
+      "establishedYear": 2000,
+      "hasITDepartment": true,
+      "currentITLevel": "medium",
+      "challenges": ["業務効率化", "コスト削減", "生産性向上"],
+      "targetBranch": "通常枠",
+      "description": "一般的な業務効率化を目指す中堅企業"
+    },
+    {
+      "id": "test-company-006",
+      "name": "境界値テスト零細企業",
+      "industry": "その他",
+      "employeeCount": 1,
+      "annualRevenue": 10000000,
+      "establishedYear": 2023,
+      "hasITDepartment": false,
+      "currentITLevel": "none",
+      "challenges": ["すべて手作業", "IT導入経験なし"],
+      "targetBranch": "電子化枠",
+      "description": "最小規模の企業（境界値テスト用）"
+    },
+    {
+      "id": "test-company-007",
+      "name": "大規模IT先進企業グループ",
+      "industry": "情報通信業",
+      "employeeCount": 5000,
+      "annualRevenue": 50000000000,
+      "establishedYear": 1980,
+      "hasITDepartment": true,
+      "currentITLevel": "high",
+      "challenges": ["レガシーシステム更新", "DX推進", "AI活用"],
+      "targetBranch": "通常枠",
+      "description": "大企業グループ（上限値テスト用）"
+    },
+    {
+      "id": "test-company-008",
+      "name": "複合課題対応企業",
+      "industry": "製造業",
+      "employeeCount": 75,
+      "annualRevenue": 600000000,
+      "establishedYear": 2008,
+      "hasITDepartment": false,
+      "currentITLevel": "low",
+      "challenges": ["紙業務", "セキュリティ不安", "インボイス対応"],
+      "targetBranch": "判定必要",
+      "description": "複数の課題を抱え、申請枠の選択が必要な企業"
+    }
+  ]
+}

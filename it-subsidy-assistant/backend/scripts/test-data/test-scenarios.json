@@ -1,0 +1,166 @@
+{
+  "testScenarios": [
+    {
+      "id": "scenario-001",
+      "name": "電子化枠判定シナリオ",
+      "companyId": "test-company-001",
+      "initialQuestion": "どのような課題を解決したいですか？",
+      "expectedAnswer": "紙ベースの業務をデジタル化したい",
+      "followUpQuestions": [
+        {
+          "question": "現在の紙業務の割合は？",
+          "answer": "80%以上",
+          "expectedBranch": "電子化枠"
+        }
+      ],
+      "expectedTools": ["電子帳簿システム", "在庫管理システム", "電子契約システム"],
+      "expectedSubsidyRate": 0.5,
+      "expectedMaxAmount": 1500000
+    },
+    {
+      "id": "scenario-002",
+      "name": "セキュリティ枠判定シナリオ",
+      "companyId": "test-company-002",
+      "initialQuestion": "どのような課題を解決したいですか？",
+      "expectedAnswer": "サイバーセキュリティを強化したい",
+      "followUpQuestions": [
+        {
+          "question": "過去にセキュリティインシデントは？",
+          "answer": "なし（予防的対策）",
+          "expectedBranch": "セキュリティ枠"
+        }
+      ],
+      "expectedTools": ["EDR", "WAF", "セキュリティ監視サービス"],
+      "expectedSubsidyRate": 0.5,
+      "expectedMaxAmount": 1000000
+    },
+    {
+      "id": "scenario-003",
+      "name": "インボイス枠判定シナリオ",
+      "companyId": "test-company-003",
+      "initialQuestion": "どのような課題を解決したいですか？",
+      "expectedAnswer": "インボイス制度に対応したい",
+      "followUpQuestions": [],
+      "expectedBranch": "インボイス枠",
+      "expectedTools": ["会計ソフト", "請求書発行システム", "電子帳簿保存システム"],
+      "expectedSubsidyRate": 0.5,
+      "expectedMaxAmount": 500000
+    },
+    {
+      "id": "scenario-004",
+      "name": "複数社枠判定シナリオ",
+      "companyId": "test-company-004",
+      "initialQuestion": "導入形態は？",
+      "expectedAnswer": "複数企業での共同導入",
+      "followUpQuestions": [
+        {
+          "question": "参加企業数は？",
+          "answer": "5社",
+          "expectedBranch": "複数社枠"
+        }
+      ],
+      "expectedTools": ["グループウェア", "共同EDIシステム", "統合基幹システム"],
+      "expectedSubsidyRate": 0.5,
+      "expectedMaxAmount": 3000000
+    },
+    {
+      "id": "scenario-005",
+      "name": "通常枠判定シナリオ",
+      "companyId": "test-company-005",
+      "initialQuestion": "どのような課題を解決したいですか？",
+      "expectedAnswer": "業務全般の効率化",
+      "followUpQuestions": [],
+      "expectedBranch": "通常枠",
+      "expectedTools": ["ERP", "CRM", "BIツール"],
+      "expectedSubsidyRate": 0.5,
+      "expectedMaxAmount": 2000000
+    },
+    {
+      "id": "scenario-006",
+      "name": "境界値テスト（最小企業）",
+      "companyId": "test-company-006",
+      "initialQuestion": "どのような課題を解決したいですか？",
+      "expectedAnswer": "基本的なIT化を進めたい",
+      "followUpQuestions": [
+        {
+          "question": "従業員数は？",
+          "answer": "1名",
+          "validation": "最小値での申請可能性確認"
+        }
+      ],
+      "expectedBranch": "電子化枠",
+      "expectedTools": ["クラウド会計", "請求書作成ツール"],
+      "expectedSubsidyRate": 0.5,
+      "expectedMaxAmount": 300000
+    },
+    {
+      "id": "scenario-007",
+      "name": "複合課題の優先順位判定",
+      "companyId": "test-company-008",
+      "initialQuestion": "最も優先したい課題は？",
+      "expectedAnswer": "複数の課題があり優先順位をつけたい",
+      "followUpQuestions": [
+        {
+          "question": "最も緊急性の高い課題は？",
+          "answer": "インボイス対応（期限あり）",
+          "expectedBranch": "インボイス枠"
+        },
+        {
+          "question": "他の課題への対応は？",
+          "answer": "段階的に対応予定",
+          "recommendation": "まずインボイス枠で申請、その後他の枠も検討"
+        }
+      ],
+      "expectedTools": ["統合型業務システム（インボイス対応）"],
+      "expectedSubsidyRate": 0.5,
+      "expectedMaxAmount": 1000000
+    },
+    {
+      "id": "scenario-008",
+      "name": "申請不適格判定シナリオ",
+      "companyId": "test-company-007",
+      "initialQuestion": "企業規模を教えてください",
+      "expectedAnswer": "従業員5000名、大企業",
+      "followUpQuestions": [
+        {
+          "question": "中小企業基本法の定義に該当しますか？",
+          "answer": "いいえ",
+          "expectedResult": "申請不可",
+          "reason": "IT導入補助金は中小企業・小規模事業者が対象"
+        }
+      ],
+      "expectedBranch": "申請不可",
+      "expectedTools": [],
+      "expectedSubsidyRate": 0,
+      "expectedMaxAmount": 0
+    }
+  ],
+  "boundaryTestCases": [
+    {
+      "name": "従業員数境界値",
+      "tests": [
+        {"value": 0, "expected": "エラー（最小1名必要）"},
+        {"value": 1, "expected": "申請可能"},
+        {"value": 300, "expected": "申請可能（製造業の上限）"},
+        {"value": 301, "expected": "業種確認必要"}
+      ]
+    },
+    {
+      "name": "補助金額境界値",
+      "tests": [
+        {"value": 29999, "expected": "エラー（最小3万円）"},
+        {"value": 30000, "expected": "申請可能"},
+        {"value": 2000000, "expected": "申請可能（通常枠上限）"},
+        {"value": 2000001, "expected": "エラー（上限超過）"}
+      ]
+    },
+    {
+      "name": "補助率境界値",
+      "tests": [
+        {"type": "通常", "rate": 0.5, "expected": "正常"},
+        {"type": "小規模事業者", "rate": 0.667, "expected": "正常"},
+        {"type": "エラーケース", "rate": 0.8, "expected": "エラー（最大2/3）"}
+      ]
+    }
+  ]
+}

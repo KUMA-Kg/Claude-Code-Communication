@@ -55,7 +55,7 @@ export const useSubsidySearch = () => {
   }, [executeSearch]);
 
   const handleLoadMore = useCallback(() => {
-    if (searchResults?.pagination.page < searchResults.pagination.totalPages) {
+    if (searchResults && searchResults.pagination && searchResults.pagination.page < searchResults.pagination.totalPages) {
       setSearchParams(prev => ({
         ...prev,
         page: prev.page! + 1,
@@ -73,7 +73,7 @@ export const useSubsidySearch = () => {
   }, []);
 
   const handleFavoriteToggle = useCallback((subsidyId: string) => {
-    const isFavorite = favorites.some(fav => fav.id === subsidyId);
+    const isFavorite = Array.isArray(favorites) && favorites.some((fav: any) => fav.id === subsidyId);
     
     if (isFavorite) {
       removeFromFavoritesMutation.mutate(subsidyId);
@@ -89,7 +89,7 @@ export const useSubsidySearch = () => {
       ? allSubsidies 
       : searchResults?.subsidies || [];
 
-  const favoriteIds = favorites.map(fav => fav.id);
+  const favoriteIds = Array.isArray(favorites) ? favorites.map((fav: any) => fav.id) : [];
 
   return {
     // Search state

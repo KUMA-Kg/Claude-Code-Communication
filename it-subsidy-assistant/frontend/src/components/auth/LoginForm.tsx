@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { LoginRequest } from '../../types/api';
+import { ApiError } from '../../lib/api';
 
 export const LoginForm: React.FC = () => {
-  const { login, isLoading } = useAuth();
+  const { login, isLoading, apiConnected, checkApiConnection } = useAuth();
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
     password: '',
   });
   const [errors, setErrors] = useState<Partial<LoginRequest>>({});
   const [submitError, setSubmitError] = useState<string>('');
+  const [isRetrying, setIsRetrying] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,18 +61,28 @@ export const LoginForm: React.FC = () => {
     try {
       await login(formData);
     } catch (error) {
-      setSubmitError(
-        error instanceof Error ? error.message : 'ログインに失敗しました'
-      );
+      if (error instanceof ApiError) {
+        setSubmitError(error.message);
+        
+        // ネットワークエラーの場合、接続状態を再確認
+        if (error.code === 'NETWORK_ERROR') {
+          checkApiConnection();
+        }
+      } else {
+        setSubmitError(
+          error instanceof Error ? error.message : 'ログインに失敗しました'
+        );
+      }
     }
   };
 
   return (
-    <div className="w-full max-w-md">
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">ログイン</h2>
+    <div style={{ width: '100%', maxWidth: '400px' }}>
+      <div className="card">
+        <div className="card-body">
+          <h2 className="heading-3 text-center mb-lg">ログイン</h2>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit}>
           <Input
             type="email"
             name="email"
@@ -96,8 +108,26 @@ export const LoginForm: React.FC = () => {
           />
 
           {submitError && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {submitError}
+            <div className="alert alert-error">
+              <div style={{ marginBottom: '8px' }}>{submitError}</div>
+              {!apiConnected && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={async () => {
+                    setIsRetrying(true);
+                    const connected = await checkApiConnection();
+                    if (connected) {
+                      setSubmitError('');
+                    }
+                    setIsRetrying(false);
+                  }}
+                  isLoading={isRetrying}
+                  style={{ marginTop: '8px' }}
+                >
+                  接続を再試行
+                </Button>
+              )}
             </div>
           )}
 
@@ -106,19 +136,28 @@ export const LoginForm: React.FC = () => {
             variant="primary"
             size="lg"
             isLoading={isLoading}
-            className="w-full"
+            disabled={!apiConnected}
+            style={{ width: '100%' }}
           >
-            ログイン
+            {apiConnected ? 'ログイン' : 'サーバーに接続できません'}
           </Button>
-        </form>
+          </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            アカウントをお持ちでない方は{' '}
-            <a href="/signup" className="text-blue-600 hover:text-blue-800 font-medium">
-              新規登録
-            </a>
-          </p>
+          <div className="text-center mt-lg">
+            <p className="body-small">
+              アカウントをお持ちでない方は{' '}
+              <a href="/signup" style={{ 
+                color: 'var(--color-primary-600)', 
+                fontWeight: 'var(--font-weight-medium)',
+                textDecoration: 'none'
+              }} 
+              onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+              onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+              >
+                新規登録
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>

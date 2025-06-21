@@ -23,35 +23,41 @@ export const SearchPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+    <div className="page-container">
+      <div className="hero-section">
+        <div className="container">
+          <h1 className="hero-title">
             補助金検索
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="hero-subtitle">
             あなたの企業に最適な補助金を見つけましょう
           </p>
         </div>
+      </div>
 
-        <div className="mb-8">
-          <SearchFilters
-            filters={searchParams}
-            onFiltersChange={handleFiltersChange}
-            onSearch={handleSearch}
+      <div className="container">
+        <div className="section">
+          <div className="card mb-xl">
+            <div className="card-body">
+              <SearchFilters
+                filters={searchParams}
+                onFiltersChange={handleFiltersChange}
+                onSearch={handleSearch}
+                isLoading={isSearching}
+              />
+            </div>
+          </div>
+
+          <SearchResults
+            subsidies={subsidies}
+            favorites={favoriteIds}
             isLoading={isSearching}
+            pagination={pagination}
+            onFavoriteToggle={handleFavoriteToggle}
+            onViewDetails={handleViewDetails}
+            onLoadMore={handleLoadMore}
           />
         </div>
-
-        <SearchResults
-          subsidies={subsidies}
-          favorites={favoriteIds}
-          isLoading={isSearching}
-          pagination={pagination}
-          onFavoriteToggle={handleFavoriteToggle}
-          onViewDetails={handleViewDetails}
-          onLoadMore={handleLoadMore}
-        />
       </div>
     </div>
   );

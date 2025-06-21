@@ -1,0 +1,361 @@
+{
+  "testSuite": "補助金システム境界値・エラーケース総合テスト",
+  "version": "1.0.0",
+  "categories": [
+    {
+      "name": "従業員数境界値テスト",
+      "description": "各補助金の従業員数制限チェック",
+      "testCases": [
+        {
+          "id": "emp-001",
+          "name": "IT導入補助金_従業員数下限",
+          "subsidyType": "IT導入補助金",
+          "input": {"employeeCount": 1, "industry": "製造業"},
+          "expected": {"result": "合格", "message": "申請可能"},
+          "description": "最小従業員数での申請可能性"
+        },
+        {
+          "id": "emp-002",
+          "name": "IT導入補助金_従業員数上限（製造業）",
+          "subsidyType": "IT導入補助金",
+          "input": {"employeeCount": 300, "industry": "製造業"},
+          "expected": {"result": "合格", "message": "申請可能"},
+          "description": "製造業の中小企業上限"
+        },
+        {
+          "id": "emp-003",
+          "name": "IT導入補助金_従業員数超過",
+          "subsidyType": "IT導入補助金",
+          "input": {"employeeCount": 301, "industry": "製造業"},
+          "expected": {"result": "不合格", "message": "中小企業の範囲を超えています"},
+          "description": "中小企業定義超過"
+        },
+        {
+          "id": "emp-004",
+          "name": "小規模事業者持続化_従業員数上限（製造業）",
+          "subsidyType": "小規模事業者持続化補助金",
+          "input": {"employeeCount": 20, "industry": "製造業"},
+          "expected": {"result": "合格", "message": "申請可能"},
+          "description": "小規模事業者の製造業上限"
+        },
+        {
+          "id": "emp-005",
+          "name": "小規模事業者持続化_従業員数超過（製造業）",
+          "subsidyType": "小規模事業者持続化補助金",
+          "input": {"employeeCount": 21, "industry": "製造業"},
+          "expected": {"result": "不合格", "message": "小規模事業者の範囲を超えています"},
+          "description": "小規模事業者定義超過"
+        },
+        {
+          "id": "emp-006",
+          "name": "小規模事業者持続化_従業員数上限（サービス業）",
+          "subsidyType": "小規模事業者持続化補助金",
+          "input": {"employeeCount": 5, "industry": "サービス業"},
+          "expected": {"result": "合格", "message": "申請可能"},
+          "description": "小規模事業者のサービス業上限"
+        },
+        {
+          "id": "emp-007",
+          "name": "小規模事業者持続化_従業員数超過（サービス業）",
+          "subsidyType": "小規模事業者持続化補助金",
+          "input": {"employeeCount": 6, "industry": "サービス業"},
+          "expected": {"result": "不合格", "message": "小規模事業者の範囲を超えています"},
+          "description": "小規模事業者定義超過"
+        }
+      ]
+    },
+    {
+      "name": "補助金額境界値テスト",
+      "description": "各補助金の金額制限チェック",
+      "testCases": [
+        {
+          "id": "amt-001",
+          "name": "IT導入補助金_最小額",
+          "subsidyType": "IT導入補助金",
+          "category": "通常枠",
+          "input": {"requestedAmount": 50000},
+          "expected": {"result": "合格", "message": "申請可能"},
+          "description": "最小補助金額"
+        },
+        {
+          "id": "amt-002",
+          "name": "IT導入補助金_最小額未満",
+          "subsidyType": "IT導入補助金",
+          "category": "通常枠",
+          "input": {"requestedAmount": 49999},
+          "expected": {"result": "不合格", "message": "補助金額は5万円以上である必要があります"},
+          "description": "最小額未満エラー"
+        },
+        {
+          "id": "amt-003",
+          "name": "IT導入補助金_通常枠上限",
+          "subsidyType": "IT導入補助金",
+          "category": "通常枠",
+          "input": {"requestedAmount": 4500000},
+          "expected": {"result": "合格", "message": "申請可能"},
+          "description": "通常枠上限額"
+        },
+        {
+          "id": "amt-004",
+          "name": "IT導入補助金_通常枠上限超過",
+          "subsidyType": "IT導入補助金",
+          "category": "通常枠",
+          "input": {"requestedAmount": 4500001},
+          "expected": {"result": "不合格", "message": "通常枠の上限額（450万円）を超えています"},
+          "description": "上限額超過エラー"
+        },
+        {
+          "id": "amt-005",
+          "name": "ものづくり補助金_最小額",
+          "subsidyType": "ものづくり補助金",
+          "category": "通常枠",
+          "input": {"requestedAmount": 1000000},
+          "expected": {"result": "合格", "message": "申請可能"},
+          "description": "最小補助金額"
+        },
+        {
+          "id": "amt-006",
+          "name": "ものづくり補助金_最小額未満",
+          "subsidyType": "ものづくり補助金",
+          "category": "通常枠",
+          "input": {"requestedAmount": 999999},
+          "expected": {"result": "不合格", "message": "補助金額は100万円以上である必要があります"},
+          "description": "最小額未満エラー"
+        },
+        {
+          "id": "amt-007",
+          "name": "小規模事業者持続化_通常枠上限",
+          "subsidyType": "小規模事業者持続化補助金",
+          "category": "通常枠",
+          "input": {"requestedAmount": 500000},
+          "expected": {"result": "合格", "message": "申請可能"},
+          "description": "通常枠上限額"
+        },
+        {
+          "id": "amt-008",
+          "name": "小規模事業者持続化_通常枠上限超過",
+          "subsidyType": "小規模事業者持続化補助金",
+          "category": "通常枠",
+          "input": {"requestedAmount": 500001},
+          "expected": {"result": "不合格", "message": "通常枠の上限額（50万円）を超えています"},
+          "description": "上限額超過エラー"
+        }
+      ]
+    },
+    {
+      "name": "補助率計算テスト",
+      "description": "各補助金の補助率計算精度",
+      "testCases": [
+        {
+          "id": "rate-001",
+          "name": "IT導入補助金_電子化枠補助率",
+          "subsidyType": "IT導入補助金",
+          "category": "電子化枠",
+          "input": {"totalCost": 1000000},
+          "expected": {"subsidyRate": 0.75, "subsidyAmount": 750000},
+          "description": "電子化枠の補助率3/4"
+        },
+        {
+          "id": "rate-002",
+          "name": "小規模事業者持続化_賃金引上げ枠（黒字）",
+          "subsidyType": "小規模事業者持続化補助金",
+          "category": "賃金引上げ枠",
+          "input": {"totalCost": 1000000, "isDeficit": false},
+          "expected": {"subsidyRate": 0.667, "subsidyAmount": 667000},
+          "description": "賃金引上げ枠の補助率2/3（黒字事業者）"
+        },
+        {
+          "id": "rate-003",
+          "name": "小規模事業者持続化_賃金引上げ枠（赤字）",
+          "subsidyType": "小規模事業者持続化補助金",
+          "category": "賃金引上げ枠",
+          "input": {"totalCost": 1000000, "isDeficit": true},
+          "expected": {"subsidyRate": 0.75, "subsidyAmount": 750000},
+          "description": "賃金引上げ枠の補助率3/4（赤字事業者）"
+        },
+        {
+          "id": "rate-004",
+          "name": "ものづくり補助金_回復型賃上げ枠",
+          "subsidyType": "ものづくり補助金",
+          "category": "回復型賃上げ・雇用拡大枠",
+          "input": {"totalCost": 10000000},
+          "expected": {"subsidyRate": 0.67, "subsidyAmount": 6700000},
+          "description": "回復型賃上げ枠の補助率2/3"
+        }
+      ]
+    },
+    {
+      "name": "必要書類チェックテスト",
+      "description": "必要書類の妥当性検証",
+      "testCases": [
+        {
+          "id": "doc-001",
+          "name": "GビズIDプライム未取得",
+          "subsidyType": "全補助金共通",
+          "input": {"gbizIdStatus": "未取得"},
+          "expected": {"result": "警告", "message": "GビズIDプライムの取得が必要です（2-3週間）"},
+          "description": "必須要件の事前チェック"
+        },
+        {
+          "id": "doc-002",
+          "name": "履歴事項全部証明書期限切れ",
+          "subsidyType": "全補助金共通（法人）",
+          "input": {"certificateIssueDate": "2024-01-01", "currentDate": "2024-05-01"},
+          "expected": {"result": "不合格", "message": "履歴事項全部証明書は3ヶ月以内発行のものが必要です"},
+          "description": "書類有効期限チェック"
+        },
+        {
+          "id": "doc-003",
+          "name": "小規模事業者持続化_事業支援計画書なし",
+          "subsidyType": "小規模事業者持続化補助金",
+          "input": {"supportPlanStatus": "未作成"},
+          "expected": {"result": "不合格", "message": "事業支援計画書（商工会・商工会議所発行）は必須です"},
+          "description": "必須書類不足エラー"
+        },
+        {
+          "id": "doc-004",
+          "name": "相見積要件チェック",
+          "subsidyType": "ものづくり補助金",
+          "input": {"equipmentCost": 2000000, "quotationCount": 1},
+          "expected": {"result": "不合格", "message": "50万円以上の設備には相見積が必要です"},
+          "description": "相見積要件違反"
+        }
+      ]
+    },
+    {
+      "name": "タイミング制約テスト",
+      "description": "申請・発注タイミングの制約チェック",
+      "testCases": [
+        {
+          "id": "time-001",
+          "name": "交付決定前発注エラー",
+          "subsidyType": "全補助金共通",
+          "input": {"orderDate": "2024-01-15", "grantDecisionDate": "2024-02-01"},
+          "expected": {"result": "不合格", "message": "交付決定前の発注・契約は補助対象外です"},
+          "description": "発注タイミング違反"
+        },
+        {
+          "id": "time-002",
+          "name": "申請期限チェック",
+          "subsidyType": "全補助金共通",
+          "input": {"submissionTime": "17:01", "deadline": "17:00"},
+          "expected": {"result": "不合格", "message": "申請期限を過ぎています"},
+          "description": "申請期限違反"
+        },
+        {
+          "id": "time-003",
+          "name": "GビズID取得期間警告",
+          "subsidyType": "全補助金共通",
+          "input": {"gbizIdStatus": "未取得", "applicationDeadline": "2024-03-15", "currentDate": "2024-03-01"},
+          "expected": {"result": "警告", "message": "GビズID取得に2-3週間必要です。申請期限に間に合わない可能性があります"},
+          "description": "取得期間不足警告"
+        }
+      ]
+    },
+    {
+      "name": "特殊条件テスト",
+      "description": "各補助金固有の特殊条件チェック",
+      "testCases": [
+        {
+          "id": "spec-001",
+          "name": "IT導入補助金_複数社枠_企業数不足",
+          "subsidyType": "IT導入補助金",
+          "category": "複数社枠",
+          "input": {"partnerCompanies": 1},
+          "expected": {"result": "不合格", "message": "複数社枠は2社以上での申請が必要です"},
+          "description": "複数社枠の要件不適合"
+        },
+        {
+          "id": "spec-002",
+          "name": "ものづくり補助金_付加価値額成長率不足",
+          "subsidyType": "ものづくり補助金",
+          "category": "通常枠",
+          "input": {"valueAddedGrowthRate": 2.8},
+          "expected": {"result": "不合格", "message": "付加価値額年率3%以上の向上が必要です"},
+          "description": "CAGR要件不適合"
+        },
+        {
+          "id": "spec-003",
+          "name": "小規模事業者持続化_後継者支援枠_年齢不足",
+          "subsidyType": "小規模事業者持続化補助金",
+          "category": "後継者支援枠",
+          "input": {"ownerAge": 59},
+          "expected": {"result": "不合格", "message": "代表者が60歳以上である必要があります"},
+          "description": "年齢要件不適合"
+        },
+        {
+          "id": "spec-004",
+          "name": "小規模事業者持続化_賃金引上げ枠_引上げ額不足",
+          "subsidyType": "小規模事業者持続化補助金",
+          "category": "賃金引上げ枠",
+          "input": {"wageIncrease": 25},
+          "expected": {"result": "不合格", "message": "事業場内最低賃金を30円以上引き上げる必要があります"},
+          "description": "賃金引上げ額不足"
+        }
+      ]
+    },
+    {
+      "name": "統合シナリオテスト",
+      "description": "複数条件を組み合わせた複雑なシナリオ",
+      "testCases": [
+        {
+          "id": "integration-001",
+          "name": "完全適合企業",
+          "subsidyType": "IT導入補助金",
+          "category": "電子化枠",
+          "input": {
+            "employeeCount": 50,
+            "industry": "製造業",
+            "requestedAmount": 1000000,
+            "paperWorkRatio": 85,
+            "gbizIdStatus": "取得済み",
+            "certificateValid": true
+          },
+          "expected": {"result": "合格", "subsidyRate": 0.75, "subsidyAmount": 750000},
+          "description": "全条件を満たす理想的なケース"
+        },
+        {
+          "id": "integration-002",
+          "name": "複数エラー組み合わせ",
+          "subsidyType": "小規模事業者持続化補助金",
+          "category": "通常枠",
+          "input": {
+            "employeeCount": 6,
+            "industry": "サービス業",
+            "requestedAmount": 50000,
+            "gbizIdStatus": "未取得",
+            "supportPlanStatus": "未作成"
+          },
+          "expected": {
+            "result": "不合格",
+            "errors": [
+              "小規模事業者の範囲を超えています",
+              "補助金額は10万円以上である必要があります",
+              "GビズIDプライムの取得が必要です",
+              "事業支援計画書は必須です"
+            ]
+          },
+          "description": "複数の要件違反が同時に発生するケース"
+        }
+      ]
+    }
+  ],
+  "testExecutionSettings": {
+    "timeout": 5000,
+    "retryCount": 3,
+    "parallelExecution": true,
+    "reportFormat": "json",
+    "coverageThreshold": {
+      "statements": 95,
+      "branches": 90,
+      "functions": 95,
+      "lines": 95
+    }
+  },
+  "automationScripts": {
+    "runAllTests": "npm run test:boundary",
+    "runByCategory": "npm run test:boundary -- --category=",
+    "generateReport": "npm run test:boundary -- --reporter=html",
+    "continuousIntegration": "npm run test:boundary -- --ci --coverage"
+  }
+}

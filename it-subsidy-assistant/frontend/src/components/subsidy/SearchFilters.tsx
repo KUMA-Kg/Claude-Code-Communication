@@ -29,16 +29,16 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-      <h3 className="text-lg font-semibold mb-4">検索条件</h3>
+    <div>
+      <h3 className="heading-4 mb-lg">検索条件</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        <div>
-          <label className="block text-sm font-medium mb-1">企業規模</label>
+      <div className="grid grid-cols-3 md:grid-cols-1 gap-md mb-lg">
+        <div className="form-group">
+          <label className="form-label">企業規模</label>
           <select
             value={filters.companySize || ''}
             onChange={handleInputChange('companySize')}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-select"
           >
             <option value="">選択してください</option>
             <option value="小規模事業者">小規模事業者</option>
@@ -47,12 +47,12 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">業種</label>
+        <div className="form-group">
+          <label className="form-label">業種</label>
           <select
             value={filters.industry || ''}
             onChange={handleInputChange('industry')}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-select"
           >
             <option value="">選択してください</option>
             <option value="IT">IT・情報通信業</option>
@@ -64,12 +64,12 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">地域</label>
+        <div className="form-group">
+          <label className="form-label">地域</label>
           <select
             value={filters.region || ''}
             onChange={handleInputChange('region')}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-select"
           >
             <option value="">選択してください</option>
             <option value="東京都">東京都</option>
@@ -107,12 +107,12 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           step="1"
         />
 
-        <div>
-          <label className="block text-sm font-medium mb-1">申請期限</label>
+        <div className="form-group">
+          <label className="form-label">申請期限</label>
           <select
             value={filters.deadline || ''}
             onChange={handleInputChange('deadline')}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-select"
           >
             <option value="">選択してください</option>
             <option value="1month">1ヶ月以内</option>
@@ -123,13 +123,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-end">
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Button
           onClick={onSearch}
           variant="primary"
           size="lg"
           isLoading={isLoading}
-          className="px-8"
+          style={{ paddingLeft: 'var(--spacing-xl)', paddingRight: 'var(--spacing-xl)' }}
         >
           検索
         </Button>

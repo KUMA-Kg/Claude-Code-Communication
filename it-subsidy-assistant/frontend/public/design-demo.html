@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシストツール - デザインデモ</title>
+    <link rel="stylesheet" href="../src/index.css">
+    <style>
+        /* Demo specific styles */
+        .demo-section {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+        
+        .demo-section:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-2xl);
+        }
+        
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .feature-card {
+            background: var(--color-white);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--spacing-lg);
+            background: var(--color-primary-100);
+            color: var(--color-primary-600);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        
+        .demo-navbar {
+            background: var(--color-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Navbar -->
+    <nav class="demo-navbar">
+        <div class="container">
+            <div class="navbar-container">
+                <a href="#" class="navbar-brand">
+                    <div class="stat-card-icon" style="width: 40px; height: 40px; margin-bottom: 0;">
+                        <span style="font-weight: bold; font-size: 16px;">IT</span>
+                    </div>
+                    <span>補助金アシストツール</span>
+                </a>
+                
+                <ul class="navbar-nav">
+                    <li><a href="#hero" class="navbar-link">ホーム</a></li>
+                    <li><a href="#features" class="navbar-link">機能</a></li>
+                    <li><a href="#search" class="navbar-link">検索</a></li>
+                    <li><a href="#contact" class="navbar-link">お問い合わせ</a></li>
+                </ul>
+                
+                <button class="btn btn-primary btn-md">無料で始める</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section" style="padding: 100px 0;">
+        <div class="container">
+            <div class="fade-in" style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: var(--spacing-lg);">
+                    中小企業のIT導入を<br>
+                    <span style="color: var(--color-primary-600);">補助金</span>でサポート
+                </h1>
+                <p class="hero-subtitle" style="font-size: 1.25rem; margin-bottom: var(--spacing-2xl);">
+                    最適な補助金をAIがマッチング。申請書類も自動生成。<br>
+                    IT導入の費用負担を大幅に軽減します。
+                </p>
+                <div style="display: flex; gap: var(--spacing-md); justify-content: center;">
+                    <button class="btn btn-primary btn-lg">無料で診断を始める</button>
+                    <button class="btn btn-outline btn-lg">資料をダウンロード</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="demo-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--spacing-2xl);">
+                <h2 class="heading-2">3つの特徴</h2>
+                <p class="body-large" style="color: var(--color-gray-600); margin-top: var(--spacing-sm);">
+                    補助金申請の手間を大幅に削減する機能を提供
+                </p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="heading-4">AIマッチング</h3>
+                    <p class="body-regular" style="color: var(--color-gray-600); margin-top: var(--spacing-sm);">
+                        企業情報と事業計画から、最適な補助金を自動でマッチング
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3 class="heading-4">書類自動生成</h3>
+                    <p class="body-regular" style="color: var(--color-gray-600); margin-top: var(--spacing-sm);">
+                        申請に必要な書類を自動で生成。記入ミスを防ぎます
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3 class="heading-4">データ管理</h3>
+                    <p class="body-regular" style="color: var(--color-gray-600); margin-top: var(--spacing-sm);">
+                        過去の申請データを保存。再申請時の手間を削減
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Demo Section -->
+    <section id="search" class="demo-section" style="background: var(--color-gray-50);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--spacing-2xl);">
+                <h2 class="heading-2">補助金を探す</h2>
+                <p class="body-large" style="color: var(--color-gray-600); margin-top: var(--spacing-sm);">
+                    条件を入力して、あなたの企業に最適な補助金を見つけましょう
+                </p>
+            </div>
+            
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="card-body">
+                    <div class="grid grid-cols-2 gap-md">
+                        <div class="form-group">
+                            <label class="form-label">企業規模</label>
+                            <select class="form-select">
+                                <option>選択してください</option>
+                                <option>小規模事業者</option>
+                                <option>中小企業</option>
+                                <option>中堅企業</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">業種</label>
+                            <select class="form-select">
+                                <option>選択してください</option>
+                                <option>IT・情報通信業</option>
+                                <option>製造業</option>
+                                <option>サービス業</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">投資予定額</label>
+                            <input type="number" class="form-input" placeholder="5,000,000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">地域</label>
+                            <select class="form-select">
+                                <option>選択してください</option>
+                                <option>東京都</option>
+                                <option>大阪府</option>
+                                <option>愛知県</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: var(--spacing-lg);">
+                        <button class="btn btn-primary btn-lg" style="padding-left: var(--spacing-2xl); padding-right: var(--spacing-2xl);">
+                            補助金を検索
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Preview -->
+    <section class="demo-section">
+        <div class="container">
+            <h3 class="heading-3 mb-lg">検索結果の例</h3>
+            
+            <div class="grid grid-cols-2 md:grid-cols-1 gap-lg">
+                <!-- Sample Subsidy Card 1 -->
+                <div class="subsidy-card">
+                    <div class="subsidy-card-header">
+                        <div>
+                            <h3 class="subsidy-card-title">IT導入補助金2024</h3>
+                            <span class="badge badge-primary">デジタル化</span>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: var(--color-success); margin-right: 4px;"></div>
+                            <span class="caption">95%</span>
+                        </div>
+                    </div>
+                    
+                    <p class="subsidy-card-description">
+                        中小企業・小規模事業者が自社の課題やニーズに合ったITツールを導入する経費の一部を補助
+                    </p>
+                    
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <p class="body-small">補助金額: <strong>¥300,000 ～ ¥4,500,000</strong></p>
+                        <p class="body-small">補助率: <strong>75%</strong></p>
+                        <p class="body-small">申請期限: 2024年12月31日</p>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-sm" style="width: 100%;">詳細を見る</button>
+                </div>
+                
+                <!-- Sample Subsidy Card 2 -->
+                <div class="subsidy-card">
+                    <div class="subsidy-card-header">
+                        <div>
+                            <h3 class="subsidy-card-title">ものづくり補助金</h3>
+                            <span class="badge badge-secondary">設備投資</span>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: var(--color-warning); margin-right: 4px;"></div>
+                            <span class="caption">78%</span>
+                        </div>
+                    </div>
+                    
+                    <p class="subsidy-card-description">
+                        革新的サービス開発・試作品開発・生産プロセスの改善を行う中小企業を支援
+                    </p>
+                    
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <p class="body-small">補助金額: <strong>¥1,000,000 ～ ¥10,000,000</strong></p>
+                        <p class="body-small">補助率: <strong>50%</strong></p>
+                        <p class="body-small">申請期限: 2024年11月30日</p>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-sm" style="width: 100%;">詳細を見る</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="demo-section" style="background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-beige-50) 100%); text-align: center;">
+        <div class="container">
+            <h2 class="heading-2 mb-md">今すぐ無料で始めましょう</h2>
+            <p class="body-large mb-xl" style="color: var(--color-gray-700);">
+                登録は簡単30秒。クレジットカードは不要です。
+            </p>
+            <button class="btn btn-primary btn-lg" style="padding: var(--spacing-md) var(--spacing-2xl);">
+                無料アカウントを作成
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--color-gray-900); color: var(--color-white); padding: var(--spacing-2xl) 0;">
+        <div class="container">
+            <div style="text-align: center;">
+                <p class="body-small">© 2024 IT補助金アシストツール. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

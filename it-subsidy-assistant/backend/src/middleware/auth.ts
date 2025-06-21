@@ -118,3 +118,6 @@ export const optionalAuth = async (
     next();
   }
 };
+
+// エイリアス（既存のコードとの互換性のため）
+export const authenticateOptional = optionalAuth;

@@ -1,5 +1,3 @@
-import { logger } from '@/utils/logger';
-
 export interface Environment {
   NODE_ENV: string;
   PORT: number;
@@ -40,22 +38,27 @@ export const validateEnvironment = (): Environment => {
     'JWT_REFRESH_SECRET'
   ];
 
+  console.log('🔍 Validating environment variables...');
+  
   const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
   
   if (missingVars.length > 0) {
-    logger.error(`Missing required environment variables: ${missingVars.join(', ')}`);
+    console.error(`❌ Missing required environment variables: ${missingVars.join(', ')}`);
+    console.error('Please check your .env file and ensure all required variables are set.');
     process.exit(1);
   }
 
   if (process.env.JWT_SECRET && process.env.JWT_SECRET.length < 32) {
-    logger.error('JWT_SECRET must be at least 32 characters long');
+    console.error('❌ JWT_SECRET must be at least 32 characters long');
     process.exit(1);
   }
 
   if (process.env.JWT_REFRESH_SECRET && process.env.JWT_REFRESH_SECRET.length < 32) {
-    logger.error('JWT_REFRESH_SECRET must be at least 32 characters long');
+    console.error('❌ JWT_REFRESH_SECRET must be at least 32 characters long');
     process.exit(1);
   }
+
+  console.log('✅ All required environment variables are valid');
 
   return {
     NODE_ENV: process.env.NODE_ENV || 'development',
@@ -65,7 +68,7 @@ export const validateEnvironment = (): Environment => {
     SUPABASE_URL: process.env.SUPABASE_URL!,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    DATABASE_URL: process.env.DATABASE_URL!,
+    DATABASE_URL: process.env.DATABASE_URL || `postgresql://postgres:[YOUR-PASSWORD]@db.${process.env.SUPABASE_URL?.split('//')[1]?.split('.')[0]}.supabase.co:5432/postgres`,
     
     JWT_SECRET: process.env.JWT_SECRET!,
     JWT_EXPIRE_TIME: process.env.JWT_EXPIRE_TIME || '1h',
@@ -89,4 +92,19 @@ export const validateEnvironment = (): Environment => {
   };
 };
 
-export const env = validateEnvironment();
+// 初回呼び出し時のみvalidateEnvironmentを実行
+let _env: Environment | null = null;
+
+export const getEnv = (): Environment => {
+  if (!_env) {
+    _env = validateEnvironment();
+  }
+  return _env;
+};
+
+// 互換性のためenvもエクスポート（遅延評価）
+export const env = new Proxy({} as Environment, {
+  get(target, prop) {
+    return getEnv()[prop as keyof Environment];
+  }
+});

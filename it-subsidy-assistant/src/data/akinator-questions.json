@@ -1,0 +1,209 @@
+{
+  "title": "補助金適用判定 - 基礎情報収集",
+  "description": "5つの簡単な質問で、あなたの事業に最適な補助金を判定します",
+  "questions": [
+    {
+      "id": "q1_business_type",
+      "question": "あなたの事業について教えてください",
+      "type": "single_select",
+      "required": true,
+      "options": [
+        {
+          "value": "existing_business",
+          "label": "既に事業を営んでいる",
+          "icon": "🏢",
+          "description": "継続的に事業活動を行っている"
+        },
+        {
+          "value": "startup_planning",
+          "label": "これから創業予定",
+          "icon": "🌟",
+          "description": "事業開始を計画している"
+        },
+        {
+          "value": "startup_recent", 
+          "label": "創業して間もない（3年以内）",
+          "icon": "🚀",
+          "description": "最近事業を開始した"
+        }
+      ]
+    },
+    {
+      "id": "q2_main_challenge",
+      "question": "現在直面している最大の課題は何ですか？",
+      "type": "single_select", 
+      "required": true,
+      "options": [
+        {
+          "value": "sales_expansion",
+          "label": "売上拡大・新規顧客獲得",
+          "icon": "📈",
+          "description": "販路開拓やマーケティング強化が必要"
+        },
+        {
+          "value": "efficiency_improvement",
+          "label": "業務効率化・デジタル化",
+          "icon": "💻",
+          "description": "ITツール導入や業務プロセス改善が必要"
+        },
+        {
+          "value": "product_innovation",
+          "label": "新製品・サービス開発",
+          "icon": "💡",
+          "description": "革新的な製品やサービスの開発が必要"
+        },
+        {
+          "value": "cost_reduction",
+          "label": "コスト削減・生産性向上",
+          "icon": "⚡",
+          "description": "設備投資や工程改善でコスト削減したい"
+        },
+        {
+          "value": "hr_improvement",
+          "label": "人材確保・従業員処遇改善",
+          "icon": "👥",
+          "description": "賃上げや雇用拡大を計画している"
+        }
+      ]
+    },
+    {
+      "id": "q3_company_size",
+      "question": "会社の規模を教えてください",
+      "type": "single_select",
+      "required": true,
+      "options": [
+        {
+          "value": "small_individual",
+          "label": "個人事業主または従業員5人以下",
+          "icon": "👤",
+          "description": "小規模事業者"
+        },
+        {
+          "value": "small_company",
+          "label": "従業員6-20人の小規模企業",
+          "icon": "👥",
+          "description": "小規模企業"
+        },
+        {
+          "value": "medium_company",
+          "label": "従業員21-300人の中小企業",
+          "icon": "🏢",
+          "description": "中小企業"
+        },
+        {
+          "value": "large_company",
+          "label": "従業員300人超の企業",
+          "icon": "🏭",
+          "description": "大企業（一部補助金対象外）"
+        }
+      ]
+    },
+    {
+      "id": "q4_investment_budget",
+      "question": "想定している投資予算はどの程度ですか？",
+      "type": "single_select",
+      "required": true,
+      "options": [
+        {
+          "value": "budget_small",
+          "label": "50万円以下",
+          "icon": "💰",
+          "description": "小規模な投資"
+        },
+        {
+          "value": "budget_medium",
+          "label": "50万円 - 500万円",
+          "icon": "💴",
+          "description": "中規模な投資"
+        },
+        {
+          "value": "budget_large",
+          "label": "500万円 - 3000万円",
+          "icon": "💎",
+          "description": "大規模な投資"
+        },
+        {
+          "value": "budget_huge",
+          "label": "3000万円以上",
+          "icon": "🏦",
+          "description": "非常に大規模な投資"
+        },
+        {
+          "value": "budget_unknown",
+          "label": "まだ決まっていない",
+          "icon": "❓",
+          "description": "予算は柔軟に検討"
+        }
+      ]
+    },
+    {
+      "id": "q5_urgency",
+      "question": "いつ頃から取り組みを開始したいですか？",
+      "type": "single_select",
+      "required": true,
+      "options": [
+        {
+          "value": "urgent_immediate",
+          "label": "すぐに開始したい（1-2ヶ月以内）",
+          "icon": "🔥",
+          "description": "緊急性が高い"
+        },
+        {
+          "value": "urgent_soon",
+          "label": "近いうちに開始したい（3-6ヶ月以内）",
+          "icon": "⏰",
+          "description": "比較的急いでいる"
+        },
+        {
+          "value": "planning_phase",
+          "label": "計画を立てて準備したい（6ヶ月-1年以内）",
+          "icon": "📅",
+          "description": "計画的に進めたい"
+        },
+        {
+          "value": "long_term",
+          "label": "長期的に検討したい（1年以上先）",
+          "icon": "🎯",
+          "description": "将来的な計画"
+        }
+      ]
+    }
+  ],
+  "scoring_weights": {
+    "it_donyu": {
+      "efficiency_improvement": 40,
+      "small_company": 20,
+      "medium_company": 30,
+      "budget_small": 10,
+      "budget_medium": 30,
+      "urgent_immediate": 20,
+      "urgent_soon": 25,
+      "existing_business": 15
+    },
+    "monozukuri": {
+      "product_innovation": 40,
+      "cost_reduction": 30,
+      "medium_company": 25,
+      "small_company": 20,
+      "budget_medium": 20,
+      "budget_large": 30,
+      "planning_phase": 20,
+      "existing_business": 15
+    },
+    "jizokuka": {
+      "sales_expansion": 40,
+      "small_individual": 35,
+      "small_company": 25,
+      "budget_small": 30,
+      "budget_medium": 20,
+      "startup_planning": 20,
+      "startup_recent": 25,
+      "existing_business": 10
+    }
+  },
+  "threshold_scores": {
+    "high_match": 70,
+    "medium_match": 50,
+    "low_match": 30
+  }
+}

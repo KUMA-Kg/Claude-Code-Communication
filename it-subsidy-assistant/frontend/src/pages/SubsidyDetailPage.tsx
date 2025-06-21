@@ -6,7 +6,6 @@ import { Button } from '../components/ui/Button';
 import { 
   ArrowLeft, 
   Heart, 
-  HeartFilled, 
   Calendar, 
   DollarSign, 
   Building, 
@@ -153,11 +152,7 @@ export const SubsidyDetailPage: React.FC = () => {
               variant={isFavorite ? "danger" : "secondary"}
               className="flex items-center"
             >
-              {isFavorite ? (
-                <HeartFilled className="w-4 h-4 mr-1" />
-              ) : (
-                <Heart className="w-4 h-4 mr-1" />
-              )}
+              <Heart className={`w-4 h-4 mr-1 ${isFavorite ? 'fill-current' : ''}`} />
               {isFavorite ? 'お気に入りから削除' : 'お気に入りに追加'}
             </Button>
             

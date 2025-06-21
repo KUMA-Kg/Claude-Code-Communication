@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシスタント - デモ</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .demo-link {
+            display: inline-block;
+            background: white;
+            color: #333;
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        .demo-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .feature h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .feature p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .flow-steps {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 40px;
+            backdrop-filter: blur(10px);
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        .step-number {
+            background: #4CAF50;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        .step-content {
+            flex: 1;
+            text-align: left;
+        }
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .step-description {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏢 IT補助金アシスタント</h1>
+        <p class="subtitle">6つの質問で補助金を診断し、申請書類を自動生成します</p>
+        
+        <a href="http://localhost:5173/" class="demo-link">
+            🚀 デモを開始する
+        </a>
+
+        <div class="flow-steps">
+            <h2>📋 申請フロー</h2>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">6つの基礎質問</div>
+                    <div class="step-description">事業形態、従業員数、課題などを選択</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">補助金選択</div>
+                    <div class="step-description">最適な補助金3つから選択</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">必要書類判定</div>
+                    <div class="step-description">詳細質問に基づく書類判定</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">書類作成</div>
+                    <div class="step-description">基本情報入力で申請書類生成</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">書類ダウンロード</div>
+                    <div class="step-description">入力済みExcel・参考資料をダウンロード</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🎯 3つの補助金</h3>
+                <p>IT導入補助金、ものづくり補助金、持続化補助金に対応</p>
+            </div>
+            <div class="feature">
+                <h3>📊 自動判定</h3>
+                <p>回答内容に基づく最適な補助金の自動推薦</p>
+            </div>
+            <div class="feature">
+                <h3>📝 書類自動生成</h3>
+                <p>入力情報から申請書類を自動作成</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 60px; opacity: 0.8; font-size: 14px;">
+            <p>💡 このデモは開発環境で動作しています</p>
+            <p>🔗 フロントエンド: <a href="http://localhost:5173/" style="color: #FFE082;">http://localhost:5173/</a></p>
+        </div>
+    </div>
+</body>
+</html>

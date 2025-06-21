@@ -1,9 +1,13 @@
 import winston from 'winston';
-import { env } from '@/config/environment';
 import path from 'path';
 import fs from 'fs';
 
-const logDir = path.dirname(env.LOG_FILE);
+// デフォルト値を使用して初期化
+const LOG_FILE = process.env.LOG_FILE || './logs/app.log';
+const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+const logDir = path.dirname(LOG_FILE);
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }
@@ -27,12 +31,12 @@ const consoleFormat = winston.format.combine(
 );
 
 const logger = winston.createLogger({
-  level: env.LOG_LEVEL,
+  level: LOG_LEVEL,
   format: logFormat,
   defaultMeta: { service: 'it-subsidy-assistant-backend' },
   transports: [
     new winston.transports.File({
-      filename: env.LOG_FILE,
+      filename: LOG_FILE,
       maxsize: 10485760, // 10MB
       maxFiles: 5,
       tailable: true
@@ -47,13 +51,13 @@ const logger = winston.createLogger({
   ]
 });
 
-if (env.NODE_ENV !== 'production') {
+if (NODE_ENV !== 'production') {
   logger.add(new winston.transports.Console({
     format: consoleFormat
   }));
 }
 
-if (env.NODE_ENV === 'test') {
+if (NODE_ENV === 'test') {
   logger.transports.forEach((transport) => {
     transport.silent = true;
   });

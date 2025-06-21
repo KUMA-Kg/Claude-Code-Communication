@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金診断ツール</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f9fafb;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: white;
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        header h1 {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 24px;
+            color: #1f2937;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            margin-bottom: 32px;
+        }
+        
+        .progress-bar-bg {
+            background-color: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            background-color: #2563eb;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: #1f2937;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option-button {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-size: 16px;
+        }
+        
+        .option-button:hover {
+            background-color: #eff6ff;
+            border-color: #2563eb;
+        }
+        
+        .option-icon {
+            font-size: 24px;
+        }
+        
+        .option-label {
+            flex: 1;
+            color: #374151;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .back-button:hover {
+            color: #1f2937;
+        }
+        
+        /* 結果画面のスタイル */
+        .result-container {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .result-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        .result-title {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+        
+        .result-subtitle {
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+        
+        .subsidy-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .subsidy-card.recommended {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        
+        .subsidy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .subsidy-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .recommended-badge {
+            background-color: #2563eb;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 12px;
+        }
+        
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .score-high { background-color: #d1fae5; color: #065f46; }
+        .score-medium { background-color: #fef3c7; color: #92400e; }
+        .score-low { background-color: #e5e7eb; color: #6b7280; }
+        
+        .subsidy-info {
+            display: flex;
+            gap: 32px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+        
+        .info-item {
+            color: #6b7280;
+        }
+        
+        .info-value {
+            font-weight: bold;
+            color: #1f2937;
+            margin-left: 4px;
+        }
+        
+        .select-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 16px;
+        }
+        
+        .select-button:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .restart-button {
+            background: none;
+            border: none;
+            color: #6b7280;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IT補助金アシスタント</h1>
+    </header>
+    
+    <div class="container">
+        <div id="question-screen" class="card">
+            <div class="progress-bar">
+                <div class="progress-bar-bg">
+                    <div id="progress-fill" class="progress-bar-fill" style="width: 16.67%"></div>
+                </div>
+                <p id="progress-text" class="progress-text">質問 1 / 6</p>
+            </div>
+            
+            <h2 id="question-text">あなたの事業の現在の状況を教えてください</h2>
+            
+            <div id="options" class="options"></div>
+            
+            <button id="back-button" class="back-button" style="display: none">
+                ← 前の質問に戻る
+            </button>
+        </div>
+        
+        <div id="result-screen" class="card" style="display: none">
+            <div class="result-container">
+                <div class="result-icon">✅</div>
+                <h2 class="result-title">診断完了！</h2>
+                <p class="result-subtitle">あなたに最適な補助金をご提案します</p>
+            </div>
+            
+            <div id="subsidy-results"></div>
+            
+            <button class="restart-button" onclick="restart()">もう一度診断する</button>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+            {
+                id: 1,
+                question: "あなたの事業の現在の状況を教えてください",
+                options: [
+                    { value: "existing", label: "既に事業を運営している", icon: "🏢" },
+                    { value: "planning", label: "これから創業予定", icon: "🚀" },
+                    { value: "startup", label: "創業して3年以内", icon: "🌱" }
+                ]
+            },
+            {
+                id: 2,
+                question: "従業員数（パート・アルバイト含む）を教えてください",
+                options: [
+                    { value: "solo", label: "1人（個人事業主）", icon: "👤" },
+                    { value: "micro", label: "2〜5人", icon: "👥" },
+                    { value: "small", label: "6〜20人", icon: "👨‍👩‍👧‍👦" },
+                    { value: "medium", label: "21〜100人", icon: "🏢" },
+                    { value: "large", label: "101人以上", icon: "🏛️" }
+                ]
+            },
+            {
+                id: 3,
+                question: "主な事業分野を教えてください",
+                options: [
+                    { value: "manufacturing", label: "製造業", icon: "🏭" },
+                    { value: "retail", label: "小売業", icon: "🛍️" },
+                    { value: "service", label: "サービス業", icon: "🤝" },
+                    { value: "it", label: "情報通信業", icon: "💻" },
+                    { value: "construction", label: "建設業", icon: "🏗️" },
+                    { value: "other", label: "その他", icon: "📋" }
+                ]
+            },
+            {
+                id: 4,
+                question: "今回の投資で実現したいことは？（最も重要なもの）",
+                options: [
+                    { value: "digital", label: "業務のデジタル化・効率化", icon: "🖥️" },
+                    { value: "sales", label: "売上拡大・新規顧客開拓", icon: "📈" },
+                    { value: "product", label: "新製品・サービス開発", icon: "💡" },
+                    { value: "facility", label: "設備投資・生産性向上", icon: "⚙️" },
+                    { value: "security", label: "セキュリティ強化", icon: "🔒" }
+                ]
+            },
+            {
+                id: 5,
+                question: "想定している投資予算を教えてください",
+                options: [
+                    { value: "under50", label: "50万円未満", icon: "💰" },
+                    { value: "50to100", label: "50万円〜100万円", icon: "💰💰" },
+                    { value: "100to500", label: "100万円〜500万円", icon: "💰💰💰" },
+                    { value: "500to1000", label: "500万円〜1000万円", icon: "💰💰💰💰" },
+                    { value: "over1000", label: "1000万円以上", icon: "💰💰💰💰💰" }
+                ]
+            },
+            {
+                id: 6,
+                question: "いつから取り組みを開始したいですか？",
+                options: [
+                    { value: "asap", label: "すぐに開始したい（1ヶ月以内）", icon: "⚡" },
+                    { value: "quarter", label: "3ヶ月以内", icon: "📅" },
+                    { value: "half", label: "半年以内", icon: "📆" },
+                    { value: "year", label: "1年以内", icon: "🗓️" }
+                ]
+            }
+        ];
+        
+        const subsidies = [
+            {
+                id: "it",
+                name: "IT導入補助金2025",
+                description: "ITツール導入による生産性向上を支援",
+                maxAmount: "450万円",
+                rate: "1/2～3/4"
+            },
+            {
+                id: "monozukuri",
+                name: "ものづくり補助金",
+                description: "革新的な製品・サービス開発、設備投資を支援",
+                maxAmount: "5,000万円",
+                rate: "1/2～2/3"
+            },
+            {
+                id: "jizokuka",
+                name: "小規模事業者持続化補助金",
+                description: "販路開拓・生産性向上を支援",
+                maxAmount: "200万円",
+                rate: "2/3～3/4"
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let answers = {};
+        
+        function renderQuestion() {
+            const question = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `質問 ${currentQuestion + 1} / ${questions.length}`;
+            document.getElementById('question-text').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.onclick = () => handleAnswer(option.value);
+                
+                button.innerHTML = `
+                    <span class="option-icon">${option.icon}</span>
+                    <span class="option-label">${option.label}</span>
+                    <span>→</span>
+                `;
+                
+                optionsContainer.appendChild(button);
+            });
+            
+            document.getElementById('back-button').style.display = currentQuestion > 0 ? 'inline-flex' : 'none';
+        }
+        
+        function handleAnswer(value) {
+            answers[currentQuestion + 1] = value;
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+        
+        function calculateScores() {
+            const scores = { it: 0, monozukuri: 0, jizokuka: 0 };
+            
+            // スコアリングロジック
+            if (answers[4] === "digital" || answers[4] === "security") scores.it += 40;
+            if (answers[4] === "product" || answers[4] === "facility") scores.monozukuri += 40;
+            if (answers[4] === "sales") scores.jizokuka += 40;
+            
+            if (answers[2] === "solo" || answers[2] === "micro") scores.jizokuka += 30;
+            if (answers[2] === "small" || answers[2] === "medium") scores.it += 20;
+            if (answers[2] === "medium" || answers[2] === "large") scores.monozukuri += 20;
+            
+            if (answers[5] === "under50" || answers[5] === "50to100") scores.jizokuka += 20;
+            if (answers[5] === "100to500") scores.it += 20;
+            if (answers[5] === "500to1000" || answers[5] === "over1000") scores.monozukuri += 20;
+            
+            if (answers[3] === "it") scores.it += 10;
+            if (answers[3] === "manufacturing") scores.monozukuri += 10;
+            if (answers[3] === "retail" || answers[3] === "service") scores.jizokuka += 10;
+            
+            return scores;
+        }
+        
+        function showResults() {
+            document.getElementById('question-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            
+            const scores = calculateScores();
+            const sortedSubsidies = subsidies
+                .map(s => ({ ...s, score: scores[s.id] }))
+                .sort((a, b) => b.score - a.score);
+            
+            const resultsContainer = document.getElementById('subsidy-results');
+            resultsContainer.innerHTML = '';
+            
+            sortedSubsidies.forEach((subsidy, index) => {
+                const card = document.createElement('div');
+                card.className = `subsidy-card ${index === 0 ? 'recommended' : ''}`;
+                
+                const scoreClass = subsidy.score >= 70 ? 'score-high' : 
+                                  subsidy.score >= 50 ? 'score-medium' : 'score-low';
+                const compatibility = subsidy.score >= 70 ? '高' : 
+                                     subsidy.score >= 50 ? '中' : '低';
+                
+                card.innerHTML = `
+                    <div class="subsidy-header">
+                        <div>
+                            <span class="subsidy-name">${subsidy.name}</span>
+                            ${index === 0 ? '<span class="recommended-badge">おすすめ</span>' : ''}
+                        </div>
+                        <div style="text-align: center">
+                            <div class="score-circle ${scoreClass}">${subsidy.score}%</div>
+                            <div style="margin-top: 8px; font-size: 14px">適合度: ${compatibility}</div>
+                        </div>
+                    </div>
+                    <p style="color: #6b7280; margin-bottom: 16px">${subsidy.description}</p>
+                    <div class="subsidy-info">
+                        <div class="info-item">
+                            補助上限:<span class="info-value">${subsidy.maxAmount}</span>
+                        </div>
+                        <div class="info-item">
+                            補助率:<span class="info-value">${subsidy.rate}</span>
+                        </div>
+                    </div>
+                    ${index === 0 ? '<button class="select-button">この補助金で申請準備を始める →</button>' : ''}
+                `;
+                
+                resultsContainer.appendChild(card);
+            });
+        }
+        
+        function restart() {
+            currentQuestion = 0;
+            answers = {};
+            document.getElementById('question-screen').style.display = 'block';
+            document.getElementById('result-screen').style.display = 'none';
+            renderQuestion();
+        }
+        
+        document.getElementById('back-button').onclick = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        };
+        
+        // 初期表示
+        renderQuestion();
+    </script>
+</body>
+</html>

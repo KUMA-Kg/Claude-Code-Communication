@@ -1,0 +1,461 @@
+{
+  "subsidy_type": "ものづくり補助金（第20次締切）",
+  "questionnaire_id": "monozukuri_detailed_application",
+  "version": "1.0.0",
+  "title": "ものづくり補助金 詳細申請情報",
+  "description": "事業計画書作成のための詳細情報収集",
+  "sections": [
+    {
+      "id": "company_basic_info",
+      "title": "企業基本情報",
+      "required": true,
+      "questions": [
+        {
+          "id": "company_name",
+          "type": "text",
+          "question": "法人名・屋号を正式名称で入力してください",
+          "required": true,
+          "validation": {
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        {
+          "id": "representative_name",
+          "type": "text",
+          "question": "代表者氏名を入力してください",
+          "required": true
+        },
+        {
+          "id": "company_address",
+          "type": "address",
+          "question": "本社所在地",
+          "required": true,
+          "fields": {
+            "postal_code": "郵便番号",
+            "prefecture": "都道府県",
+            "city": "市区町村",
+            "address_detail": "詳細住所"
+          }
+        },
+        {
+          "id": "established_date",
+          "type": "date",
+          "question": "設立年月日",
+          "required": true
+        },
+        {
+          "id": "capital_amount",
+          "type": "number",
+          "question": "資本金または出資金（万円）",
+          "required": true,
+          "unit": "万円"
+        },
+        {
+          "id": "annual_revenue",
+          "type": "number",
+          "question": "年間売上高（前年度実績、万円）",
+          "required": true,
+          "unit": "万円"
+        },
+        {
+          "id": "employee_count_detail",
+          "type": "object",
+          "question": "従業員数（詳細）",
+          "required": true,
+          "fields": {
+            "full_time": {
+              "type": "number",
+              "label": "正社員数",
+              "required": true
+            },
+            "part_time": {
+              "type": "number", 
+              "label": "パート・アルバイト数",
+              "required": false
+            },
+            "contract": {
+              "type": "number",
+              "label": "契約社員数",
+              "required": false
+            }
+          }
+        },
+        {
+          "id": "industry_classification",
+          "type": "select",
+          "question": "主要業種（日本標準産業分類）",
+          "required": true,
+          "options": [
+            { "value": "manufacturing", "label": "製造業" },
+            { "value": "information_communication", "label": "情報通信業" },
+            { "value": "wholesale_retail", "label": "卸売業・小売業" },
+            { "value": "construction", "label": "建設業" },
+            { "value": "professional_technical", "label": "専門・技術サービス業" },
+            { "value": "other", "label": "その他" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "innovation_project",
+      "title": "革新的な取組み詳細",
+      "required": true,
+      "questions": [
+        {
+          "id": "project_title",
+          "type": "text",
+          "question": "事業計画名（プロジェクト名）",
+          "required": true,
+          "hint": "革新的な取組みを表現する分かりやすい名称",
+          "maxLength": 100
+        },
+        {
+          "id": "project_category",
+          "type": "radio",
+          "question": "事業計画の分類",
+          "required": true,
+          "options": [
+            {
+              "value": "product_development",
+              "label": "新製品・新サービス開発",
+              "description": "これまでにない革新的な製品・サービスの開発"
+            },
+            {
+              "value": "process_improvement",
+              "label": "生産プロセス改善",
+              "description": "既存の生産方法を革新的に改善"
+            },
+            {
+              "value": "service_improvement",
+              "label": "サービス提供方法改善",
+              "description": "サービス提供プロセスの革新的改善"
+            }
+          ]
+        },
+        {
+          "id": "current_situation",
+          "type": "textarea",
+          "question": "現在の状況・課題",
+          "required": true,
+          "hint": "現在直面している課題や改善すべき点を具体的に記載",
+          "maxLength": 1500
+        },
+        {
+          "id": "innovation_content",
+          "type": "textarea",
+          "question": "革新性の内容",
+          "required": true,
+          "hint": "従来との違い、何が革新的なのかを明確に記載",
+          "maxLength": 1500
+        },
+        {
+          "id": "target_market",
+          "type": "textarea",
+          "question": "想定する市場・顧客",
+          "required": true,
+          "hint": "ターゲット市場の規模、顧客ニーズ等",
+          "maxLength": 1000
+        },
+        {
+          "id": "competitive_advantage",
+          "type": "textarea",
+          "question": "競合他社との差別化要因",
+          "required": true,
+          "hint": "自社の強みや優位性",
+          "maxLength": 1000
+        }
+      ]
+    },
+    {
+      "id": "equipment_investment",
+      "title": "設備投資計画",
+      "required": true,
+      "questions": [
+        {
+          "id": "equipment_list",
+          "type": "array",
+          "question": "導入予定設備・機械装置",
+          "required": true,
+          "item_schema": {
+            "equipment_name": {
+              "type": "text",
+              "label": "設備・機械名",
+              "required": true
+            },
+            "manufacturer": {
+              "type": "text",
+              "label": "メーカー名",
+              "required": true
+            },
+            "model_number": {
+              "type": "text",
+              "label": "型式・型番",
+              "required": false
+            },
+            "purpose": {
+              "type": "textarea",
+              "label": "導入目的・用途",
+              "required": true,
+              "maxLength": 500
+            },
+            "cost": {
+              "type": "number",
+              "label": "費用（税抜）",
+              "unit": "円",
+              "required": true
+            },
+            "installation_location": {
+              "type": "text",
+              "label": "設置場所",
+              "required": true
+            }
+          }
+        },
+        {
+          "id": "total_equipment_cost",
+          "type": "calculated",
+          "question": "設備投資総額",
+          "formula": "sum(equipment_list.cost)",
+          "unit": "円"
+        },
+        {
+          "id": "construction_period",
+          "type": "object",
+          "question": "事業実施期間",
+          "required": true,
+          "fields": {
+            "start_date": {
+              "type": "date",
+              "label": "着手予定日",
+              "required": true
+            },
+            "completion_date": {
+              "type": "date",
+              "label": "完了予定日",
+              "required": true
+            },
+            "operation_start": {
+              "type": "date",
+              "label": "運用開始予定日",
+              "required": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "business_impact",
+      "title": "事業への効果・影響",
+      "required": true,
+      "questions": [
+        {
+          "id": "productivity_improvement",
+          "type": "object",
+          "question": "労働生産性向上の計画",
+          "required": true,
+          "fields": {
+            "current_productivity": {
+              "type": "number",
+              "label": "現在の付加価値額（万円/年）",
+              "unit": "万円/年",
+              "required": true
+            },
+            "target_productivity_3years": {
+              "type": "number",
+              "label": "3年後の付加価値額（万円/年）",
+              "unit": "万円/年",
+              "required": true
+            },
+            "target_productivity_5years": {
+              "type": "number",
+              "label": "5年後の付加価値額（万円/年）",
+              "unit": "万円/年",
+              "required": true
+            },
+            "cagr_3years": {
+              "type": "calculated",
+              "label": "3年間の年平均成長率（%）",
+              "formula": "((target_productivity_3years / current_productivity) ^ (1/3) - 1) * 100"
+            },
+            "cagr_5years": {
+              "type": "calculated",
+              "label": "5年間の年平均成長率（%）",
+              "formula": "((target_productivity_5years / current_productivity) ^ (1/5) - 1) * 100"
+            }
+          }
+        },
+        {
+          "id": "sales_plan",
+          "type": "object",
+          "question": "売上計画",
+          "required": true,
+          "fields": {
+            "current_sales": {
+              "type": "number",
+              "label": "現在の年間売上高（万円）",
+              "unit": "万円",
+              "required": true
+            },
+            "target_sales_3years": {
+              "type": "number",
+              "label": "3年後の年間売上高（万円）",
+              "unit": "万円",
+              "required": true
+            },
+            "target_sales_5years": {
+              "type": "number",
+              "label": "5年後の年間売上高（万円）",
+              "unit": "万円",
+              "required": true
+            },
+            "new_product_sales_ratio": {
+              "type": "number",
+              "label": "新製品・サービスの売上構成比（%）",
+              "unit": "%",
+              "required": false
+            }
+          }
+        },
+        {
+          "id": "employment_plan",
+          "type": "object",
+          "question": "雇用計画",
+          "required": false,
+          "fields": {
+            "current_employees": {
+              "type": "number",
+              "label": "現在の従業員数（人）",
+              "unit": "人"
+            },
+            "planned_increase": {
+              "type": "number",
+              "label": "計画期間中の増員予定（人）",
+              "unit": "人"
+            },
+            "wage_increase_plan": {
+              "type": "textarea",
+              "label": "賃上げ計画の詳細",
+              "maxLength": 500
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "financial_plan",
+      "title": "資金計画",
+      "required": true,
+      "questions": [
+        {
+          "id": "total_project_cost",
+          "type": "number",
+          "question": "事業総額（税抜）",
+          "required": true,
+          "unit": "円"
+        },
+        {
+          "id": "cost_breakdown",
+          "type": "array",
+          "question": "経費内訳",
+          "required": true,
+          "item_schema": {
+            "cost_category": {
+              "type": "select",
+              "label": "経費区分",
+              "options": [
+                { "value": "machinery", "label": "機械装置・システム構築費" },
+                { "value": "technical", "label": "技術導入費" },
+                { "value": "consulting", "label": "専門家経費" },
+                { "value": "transportation", "label": "運搬費" },
+                { "value": "cloud", "label": "クラウドサービス利用費" },
+                { "value": "raw_materials", "label": "原材料費" },
+                { "value": "outsourcing", "label": "外注費" },
+                { "value": "travel", "label": "旅費" },
+                { "value": "development", "label": "開発費" },
+                { "value": "other", "label": "その他" }
+              ]
+            },
+            "amount": {
+              "type": "number",
+              "label": "金額（税抜）",
+              "unit": "円"
+            },
+            "description": {
+              "type": "text",
+              "label": "内容説明"
+            }
+          }
+        },
+        {
+          "id": "funding_source",
+          "type": "object",
+          "question": "資金調達方法",
+          "required": true,
+          "fields": {
+            "own_funds": {
+              "type": "number",
+              "label": "自己資金（円）",
+              "unit": "円",
+              "required": true
+            },
+            "loan_amount": {
+              "type": "number",
+              "label": "借入予定額（円）",
+              "unit": "円",
+              "required": false
+            },
+            "loan_source": {
+              "type": "text",
+              "label": "借入先",
+              "required": false
+            },
+            "subsidy_amount": {
+              "type": "calculated",
+              "label": "補助金申請額（円）",
+              "formula": "total_project_cost - own_funds - loan_amount",
+              "unit": "円"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "validation_rules": {
+    "cross_validation": [
+      {
+        "rule": "employee_count_validation",
+        "condition": "company_basic_info.employee_count_detail.full_time <= 300",
+        "error_message": "ものづくり補助金の対象となる中小企業の従業員数を超えています"
+      },
+      {
+        "rule": "productivity_growth_validation",
+        "condition": "business_impact.productivity_improvement.cagr_3years >= 3",
+        "error_message": "付加価値額の年平均成長率は3%以上である必要があります"
+      },
+      {
+        "rule": "schedule_validation",
+        "condition": "equipment_investment.construction_period.completion_date > equipment_investment.construction_period.start_date",
+        "error_message": "完了予定日は着手予定日より後である必要があります"
+      }
+    ]
+  },
+  "document_mapping": {
+    "business_plan": {
+      "template": "事業計画書（{project_category}）",
+      "fields": {
+        "事業者名": "company_basic_info.company_name",
+        "代表者名": "company_basic_info.representative_name",
+        "事業計画名": "innovation_project.project_title",
+        "現在の状況": "innovation_project.current_situation",
+        "革新性": "innovation_project.innovation_content",
+        "市場分析": "innovation_project.target_market",
+        "競合優位性": "innovation_project.competitive_advantage",
+        "導入設備": "equipment_investment.equipment_list",
+        "生産性向上計画": "business_impact.productivity_improvement",
+        "売上計画": "business_impact.sales_plan",
+        "資金計画": "financial_plan"
+      }
+    }
+  }
+}

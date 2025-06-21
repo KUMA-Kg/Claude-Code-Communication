@@ -1,0 +1,258 @@
+{
+  "subsidy_type": "ものづくり補助金（第20次締切）",
+  "questionnaire_id": "monozukuri_frame_selection",
+  "version": "1.0.0",
+  "title": "ものづくり補助金 申請枠判定",
+  "description": "事業内容と目的から最適な申請枠を判定します",
+  "questions": [
+    {
+      "id": "q1_main_purpose",
+      "type": "single_select",
+      "required": true,
+      "question": "補助金を活用する主な目的は何ですか？",
+      "options": [
+        {
+          "value": "general_innovation",
+          "label": "革新的な製品・サービス開発",
+          "icon": "🚀",
+          "description": "新製品開発、生産プロセス改善、サービス提供方法の革新",
+          "next_questions": [],
+          "suggested_frame": "tsujyo",
+          "frame_name": "通常枠"
+        },
+        {
+          "value": "recovery_wage",
+          "label": "業況回復と賃上げ・雇用拡大",
+          "icon": "📈",
+          "description": "厳しい業況からの回復と従業員の処遇改善",
+          "next_questions": ["q2_wage_increase_rate"],
+          "suggested_frame": "kaifuku",
+          "frame_name": "回復型賃上げ・雇用拡大枠"
+        },
+        {
+          "value": "digital",
+          "label": "DX（デジタルトランスフォーメーション）",
+          "icon": "💻",
+          "description": "デジタル技術を活用した革新的な製品・サービス開発",
+          "next_questions": ["q2_digital_type"],
+          "suggested_frame": "digital",
+          "frame_name": "デジタル枠"
+        },
+        {
+          "value": "green",
+          "label": "温室効果ガス削減・環境対応",
+          "icon": "🌱",
+          "description": "カーボンニュートラル、環境配慮型の事業展開",
+          "next_questions": ["q2_green_type"],
+          "suggested_frame": "green",
+          "frame_name": "グリーン枠"
+        },
+        {
+          "value": "global",
+          "label": "海外市場開拓・輸出拡大",
+          "icon": "🌏",
+          "description": "海外展開、輸出拡大、インバウンド対応",
+          "next_questions": ["q2_global_target"],
+          "suggested_frame": "global",
+          "frame_name": "グローバル市場開拓枠"
+        }
+      ]
+    },
+    {
+      "id": "q2_wage_increase_rate",
+      "type": "single_select",
+      "required": true,
+      "condition": "q1_main_purpose === 'recovery_wage'",
+      "question": "計画している賃上げ率はどの程度ですか？",
+      "options": [
+        {
+          "value": "over_6_percent",
+          "label": "年率平均6%以上"
+        },
+        {
+          "value": "3_to_6_percent",
+          "label": "年率平均3%以上6%未満"
+        },
+        {
+          "value": "under_3_percent",
+          "label": "年率平均3%未満"
+        }
+      ]
+    },
+    {
+      "id": "q2_digital_type",
+      "type": "multi_select",
+      "required": false,
+      "condition": "q1_main_purpose === 'digital'",
+      "question": "どのようなデジタル技術を活用しますか？（複数選択可）",
+      "options": [
+        {
+          "value": "ai_ml",
+          "label": "AI・機械学習"
+        },
+        {
+          "value": "iot",
+          "label": "IoT（モノのインターネット）"
+        },
+        {
+          "value": "robotics",
+          "label": "ロボット技術"
+        },
+        {
+          "value": "cloud",
+          "label": "クラウドサービス"
+        },
+        {
+          "value": "blockchain",
+          "label": "ブロックチェーン"
+        },
+        {
+          "value": "other_digital",
+          "label": "その他先端デジタル技術"
+        }
+      ]
+    },
+    {
+      "id": "q2_green_type",
+      "type": "single_select",
+      "required": true,
+      "condition": "q1_main_purpose === 'green'",
+      "question": "環境対応の主な内容は？",
+      "options": [
+        {
+          "value": "energy_saving",
+          "label": "省エネルギー設備の導入"
+        },
+        {
+          "value": "renewable_energy",
+          "label": "再生可能エネルギーの活用"
+        },
+        {
+          "value": "circular_economy",
+          "label": "循環型ビジネスモデル構築"
+        },
+        {
+          "value": "eco_product",
+          "label": "環境配慮型製品の開発"
+        }
+      ]
+    },
+    {
+      "id": "q2_global_target",
+      "type": "multi_select",
+      "required": false,
+      "condition": "q1_main_purpose === 'global'",
+      "question": "海外展開の対象地域は？（複数選択可）",
+      "options": [
+        {
+          "value": "asia",
+          "label": "アジア"
+        },
+        {
+          "value": "north_america",
+          "label": "北米"
+        },
+        {
+          "value": "europe",
+          "label": "欧州"
+        },
+        {
+          "value": "other_regions",
+          "label": "その他地域"
+        }
+      ]
+    }
+  ],
+  "frame_determination_rules": {
+    "tsujyo": {
+      "frame_code": "tsujyo",
+      "frame_name": "通常枠",
+      "description": "革新的な製品・サービス開発又は生産プロセス・サービス提供方法の改善",
+      "subsidy_rate": "1/2（小規模事業者等は2/3）",
+      "subsidy_limit": "従業員数に応じて750万円～1,250万円",
+      "required_documents": [
+        "公募要領_20次締切_20250516.pdf",
+        "参考様式_事業計画書記載項目_20次締切_20250617.docx"
+      ],
+      "optional_documents": [
+        "CAGR算出ツール_20250314.xlsx"
+      ]
+    },
+    "kaifuku": {
+      "frame_code": "kaifuku",
+      "frame_name": "回復型賃上げ・雇用拡大枠",
+      "description": "業況が厳しい事業者が賃上げ・雇用拡大に取り組む",
+      "subsidy_rate": "2/3",
+      "subsidy_limit": "従業員数に応じて750万円～1,250万円",
+      "required_documents": [
+        "公募要領_20次締切_20250516.pdf",
+        "参考様式_事業計画書記載項目_20次締切_20250617.docx",
+        "様式４_大幅な賃上げに係る計画書_20250317.docx"
+      ],
+      "optional_documents": [
+        "CAGR算出ツール_20250314.xlsx"
+      ]
+    },
+    "digital": {
+      "frame_code": "digital",
+      "frame_name": "デジタル枠",
+      "description": "DXに資する革新的な製品・サービス開発",
+      "subsidy_rate": "2/3",
+      "subsidy_limit": "従業員数に応じて750万円～1,250万円",
+      "required_documents": [
+        "公募要領_20次締切_20250516.pdf",
+        "参考様式_事業計画書記載項目_20次締切_20250617.docx"
+      ],
+      "optional_documents": [
+        "CAGR算出ツール_20250314.xlsx",
+        "中小企業庁関連事業データ利活用ポリシー20250214.pdf"
+      ]
+    },
+    "green": {
+      "frame_code": "green",
+      "frame_name": "グリーン枠",
+      "description": "温室効果ガスの排出削減に資する革新的な製品・サービス開発",
+      "subsidy_rate": "2/3",
+      "subsidy_limit": "従業員数に応じて750万円～1,250万円",
+      "required_documents": [
+        "公募要領_20次締切_20250516.pdf",
+        "参考様式_事業計画書記載項目_20次締切_20250617.docx"
+      ],
+      "optional_documents": [
+        "CAGR算出ツール_20250314.xlsx"
+      ]
+    },
+    "global": {
+      "frame_code": "global",
+      "frame_name": "グローバル市場開拓枠",
+      "description": "海外事業の拡大等を目的とした設備投資",
+      "subsidy_rate": "1/2（小規模事業者等は2/3）",
+      "subsidy_limit": "3,000万円",
+      "required_documents": [
+        "公募要領_20次締切_20250516.pdf",
+        "参考様式_事業計画書記載項目_20次締切_20250617.docx"
+      ],
+      "optional_documents": [
+        "CAGR算出ツール_20250314.xlsx"
+      ]
+    }
+  },
+  "common_required_documents": [
+    "公募要領_20次締切_20250516.pdf",
+    "参考様式_事業計画書記載項目_20次締切_20250617.docx"
+  ],
+  "conditional_documents": {
+    "funding_required": [
+      "様式５_資金調達に係る確認書_20250617.docx"
+    ],
+    "travel_expense": [
+      "bessi1ryohikitei_0807.pdf"
+    ],
+    "test_marketing": [
+      "besshi5_testmarketing_20230111.pdf"
+    ],
+    "restructuring_company": [
+      "＜別紙４＞再生事業者の定義について_20250609.zip"
+    ]
+  }
+}

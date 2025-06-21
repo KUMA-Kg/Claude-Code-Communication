@@ -1,153 +1,115 @@
-import axios, { AxiosResponse } from 'axios';
-import { 
-  ApiResponse, 
-  AuthResponse, 
-  LoginRequest, 
-  SubsidySearchParams, 
-  SubsidySearchResponse,
-  Subsidy,
-  Favorite,
-  Template,
-  DocumentGenerationRequest,
-  Document
-} from '../types/api';
+// API utilities
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.it-subsidy-assistant.com/v1';
-
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Request interceptor for auth token
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status?: number,
+    public code?: string
+  ) {
+    super(message);
+    this.name = 'ApiError';
   }
-  return config;
-});
+}
 
-// Response interceptor for token refresh
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response?.status === 401) {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) {
-        try {
-          const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {}, {
-            headers: { Authorization: `Bearer ${refreshToken}` }
-          });
-          const { token } = response.data.data;
-          localStorage.setItem('token', token);
-          error.config.headers.Authorization = `Bearer ${token}`;
-          return api.request(error.config);
-        } catch (refreshError) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('refreshToken');
-          window.location.href = '/login';
-        }
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
-// Auth API
-export const authApi = {
-  login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-    const response: AxiosResponse<ApiResponse<AuthResponse>> = await api.post('/auth/login', credentials);
-    if (!response.data.success || !response.data.data) {
-      throw new Error(response.data.error?.message || 'Login failed');
-    }
-    return response.data.data;
-  },
-
-  refresh: async (): Promise<{ token: string; expiresIn: number }> => {
-    const response: AxiosResponse<ApiResponse<{ token: string; expiresIn: number }>> = await api.post('/auth/refresh');
-    if (!response.data.success || !response.data.data) {
-      throw new Error(response.data.error?.message || 'Token refresh failed');
-    }
-    return response.data.data;
-  },
-};
-
-// Subsidy API
-export const subsidyApi = {
-  search: async (params: SubsidySearchParams): Promise<SubsidySearchResponse> => {
-    const response: AxiosResponse<ApiResponse<SubsidySearchResponse>> = await api.get('/subsidies/search', { params });
-    if (!response.data.success || !response.data.data) {
-      throw new Error(response.data.error?.message || 'Search failed');
-    }
-    return response.data.data;
-  },
-
-  getById: async (id: string): Promise<Subsidy> => {
-    const response: AxiosResponse<ApiResponse<Subsidy>> = await api.get(`/subsidies/${id}`);
-    if (!response.data.success || !response.data.data) {
-      throw new Error(response.data.error?.message || 'Failed to fetch subsidy');
-    }
-    return response.data.data;
-  },
-
-  addToFavorites: async (id: string): Promise<void> => {
-    const response: AxiosResponse<ApiResponse<void>> = await api.post(`/subsidies/${id}/favorite`);
-    if (!response.data.success) {
-      throw new Error(response.data.error?.message || 'Failed to add to favorites');
-    }
-  },
-
-  removeFromFavorites: async (id: string): Promise<void> => {
-    const response: AxiosResponse<ApiResponse<void>> = await api.delete(`/subsidies/${id}/favorite`);
-    if (!response.data.success) {
-      throw new Error(response.data.error?.message || 'Failed to remove from favorites');
-    }
-  },
-
-  getFavorites: async (): Promise<Favorite[]> => {
-    const response: AxiosResponse<ApiResponse<{ favorites: Favorite[] }>> = await api.get('/subsidies/favorites');
-    if (!response.data.success || !response.data.data) {
-      throw new Error(response.data.error?.message || 'Failed to fetch favorites');
-    }
-    return response.data.data.favorites;
-  },
-};
-
-// Document API
-export const documentApi = {
-  getTemplates: async (): Promise<Template[]> => {
-    const response: AxiosResponse<ApiResponse<{ templates: Template[] }>> = await api.get('/documents/templates');
-    if (!response.data.success || !response.data.data) {
-      throw new Error(response.data.error?.message || 'Failed to fetch templates');
-    }
-    return response.data.data.templates;
-  },
-
-  generate: async (request: DocumentGenerationRequest): Promise<Document> => {
-    const response: AxiosResponse<ApiResponse<Document>> = await api.post('/documents/generate', request);
-    if (!response.data.success || !response.data.data) {
-      throw new Error(response.data.error?.message || 'Failed to generate document');
-    }
-    return response.data.data;
-  },
-
-  getById: async (id: string): Promise<Document> => {
-    const response: AxiosResponse<ApiResponse<Document>> = await api.get(`/documents/${id}`);
-    if (!response.data.success || !response.data.data) {
-      throw new Error(response.data.error?.message || 'Failed to fetch document');
-    }
-    return response.data.data;
-  },
-
-  download: async (id: string): Promise<Blob> => {
-    const response = await api.get(`/documents/${id}/download`, {
-      responseType: 'blob',
+export async function fetchApi(endpoint: string, options?: RequestInit) {
+  const url = `${API_BASE_URL}${endpoint}`;
+  
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
     });
-    return response.data;
+
+    if (!response.ok) {
+      throw new ApiError(
+        `API request failed: ${response.statusText}`,
+        response.status
+      );
+    }
+
+    return response.json();
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError('Network error', 0, 'NETWORK_ERROR');
+  }
+}
+
+// Auth APIs
+export const authApi = {
+  login: async (email: string, password: string) => {
+    return { success: true, user: { email } };
+  },
+  
+  signup: async (email: string, password: string) => {
+    return { success: true, user: { email } };
+  },
+  
+  logout: async () => {
+    return { success: true };
+  },
+  
+  checkAuth: async () => {
+    const email = localStorage.getItem('userEmail');
+    if (email) {
+      return { authenticated: true, user: { email } };
+    }
+    return { authenticated: false };
   },
 };
 
-export default api;
+// Subsidy APIs
+export const subsidyApi = {
+  search: async (query: any) => {
+    // Mock implementation
+    return {
+      subsidies: [
+        {
+          id: 'it-donyu-2024',
+          name: 'IT導入補助金2024',
+          description: 'ITツール導入による業務効率化・DX推進を支援',
+          maxAmount: '450万円',
+          subsidyRate: '最大3/4',
+          category: 'IT',
+          subsidyAmount: { min: 0, max: 4500000 },
+          applicationPeriod: { start: '2024-01-01', end: '2024-12-31' },
+          eligibleCompanies: ['中小企業'],
+          requirements: ['IT導入計画'],
+        },
+      ],
+      pagination: {
+        page: 1,
+        limit: 20,
+        total: 1,
+        totalPages: 1,
+      },
+    };
+  },
+  
+  getFavorites: async () => {
+    // Mock implementation - get from localStorage
+    const favorites = localStorage.getItem('favorites');
+    return favorites ? JSON.parse(favorites) : [];
+  },
+  
+  addToFavorites: async (subsidyId: string) => {
+    const favorites = localStorage.getItem('favorites');
+    const currentFavorites = favorites ? JSON.parse(favorites) : [];
+    currentFavorites.push({ id: subsidyId, addedAt: new Date().toISOString() });
+    localStorage.setItem('favorites', JSON.stringify(currentFavorites));
+    return { success: true };
+  },
+  
+  removeFromFavorites: async (subsidyId: string) => {
+    const favorites = localStorage.getItem('favorites');
+    const currentFavorites = favorites ? JSON.parse(favorites) : [];
+    const filtered = currentFavorites.filter((f: any) => f.id !== subsidyId);
+    localStorage.setItem('favorites', JSON.stringify(filtered));
+    return { success: true };
+  },
+};

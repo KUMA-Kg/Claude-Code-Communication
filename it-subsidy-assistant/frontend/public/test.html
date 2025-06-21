@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>接続テスト</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .ok { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>IT補助金アシストツール - 接続テスト</h1>
+    
+    <div id="frontend-status" class="status">フロントエンド: チェック中...</div>
+    <div id="backend-status" class="status">バックエンド: チェック中...</div>
+    
+    <h2>手動テスト</h2>
+    <button onclick="testBackend()">バックエンドをテスト</button>
+    <div id="result"></div>
+    
+    <script>
+        // フロントエンドの状態
+        document.getElementById('frontend-status').className = 'status ok';
+        document.getElementById('frontend-status').innerText = 'フロントエンド: ✅ 正常に動作中';
+        
+        // バックエンドのテスト
+        async function testBackend() {
+            try {
+                const response = await fetch('http://localhost:3001/health');
+                const data = await response.json();
+                document.getElementById('backend-status').className = 'status ok';
+                document.getElementById('backend-status').innerText = 'バックエンド: ✅ ' + data.message;
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('backend-status').className = 'status error';
+                document.getElementById('backend-status').innerText = 'バックエンド: ❌ ' + error.message;
+                document.getElementById('result').innerText = 'エラー: ' + error.message;
+            }
+        }
+        
+        // 自動テスト
+        testBackend();
+    </script>
+</body>
+</html>

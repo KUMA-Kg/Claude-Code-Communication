@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, HeartFilled, ExternalLink, Calendar, DollarSign } from 'lucide-react';
+import { Heart, ExternalLink, Calendar, DollarSign } from 'lucide-react';
 import { Subsidy } from '../../types/api';
 import { Button } from '../ui/Button';
 
@@ -33,29 +33,35 @@ export const SubsidyCard: React.FC<SubsidyCardProps> = ({
   };
 
   const getMatchScoreColor = (score?: number) => {
-    if (!score) return 'bg-gray-500';
-    if (score >= 0.8) return 'bg-green-500';
-    if (score >= 0.6) return 'bg-yellow-500';
-    return 'bg-red-500';
+    if (!score) return 'var(--color-gray-500)';
+    if (score >= 0.8) return 'var(--color-success)';
+    if (score >= 0.6) return 'var(--color-warning)';
+    return 'var(--color-error)';
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+    <div className="subsidy-card">
+      <div className="subsidy-card-header">
+        <div>
+          <h3 className="subsidy-card-title">
             {subsidy.name}
           </h3>
-          <span className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full">
+          <span className="badge badge-primary">
             {subsidy.category}
           </span>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)' }}>
           {subsidy.matchScore && (
-            <div className="flex items-center">
-              <div className={`w-3 h-3 rounded-full ${getMatchScoreColor(subsidy.matchScore)} mr-1`}></div>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: getMatchScoreColor(subsidy.matchScore),
+                marginRight: 'var(--spacing-xs)'
+              }}></div>
+              <span className="caption">
                 {Math.round(subsidy.matchScore * 100)}%
               </span>
             </div>
@@ -64,53 +70,52 @@ export const SubsidyCard: React.FC<SubsidyCardProps> = ({
           {onFavoriteToggle && (
             <button
               onClick={() => onFavoriteToggle(subsidy.id)}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="btn-ghost btn-sm"
+              style={{ padding: 'var(--spacing-sm)', borderRadius: 'var(--radius-full)' }}
               aria-label={isFavorite ? 'お気に入りから削除' : 'お気に入りに追加'}
             >
-              {isFavorite ? (
-                <HeartFilled className="w-5 h-5 text-red-500" />
-              ) : (
-                <Heart className="w-5 h-5 text-gray-400" />
-              )}
+              <Heart className={`w-5 h-5 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} />
             </button>
           )}
         </div>
       </div>
 
       {subsidy.description && (
-        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+        <p className="subsidy-card-description">
           {subsidy.description}
         </p>
       )}
 
-      <div className="space-y-3 mb-4">
-        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-          <DollarSign className="w-4 h-4 mr-2" />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)', marginBottom: 'var(--spacing-md)' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }} className="body-small">
+          <DollarSign style={{ width: '16px', height: '16px', marginRight: 'var(--spacing-sm)' }} />
           <span>
-            補助金額: {formatAmount(subsidy.subsidyAmount.min)} ～ {formatAmount(subsidy.subsidyAmount.max)}
+            補助金額: <strong className="subsidy-card-amount" style={{ fontSize: 'inherit' }}>
+              {formatAmount(subsidy.subsidyAmount.min)} ～ {formatAmount(subsidy.subsidyAmount.max)}
+            </strong>
           </span>
         </div>
 
-        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-          <span className="w-4 h-4 mr-2 text-center">%</span>
-          <span>補助率: {Math.round(subsidy.subsidyRate * 100)}%</span>
+        <div style={{ display: 'flex', alignItems: 'center' }} className="body-small">
+          <span style={{ width: '16px', textAlign: 'center', marginRight: 'var(--spacing-sm)' }}>%</span>
+          <span>補助率: <strong>{Math.round(subsidy.subsidyRate * 100)}%</strong></span>
         </div>
 
-        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-          <Calendar className="w-4 h-4 mr-2" />
+        <div style={{ display: 'flex', alignItems: 'center' }} className="body-small">
+          <Calendar style={{ width: '16px', height: '16px', marginRight: 'var(--spacing-sm)' }} />
           <span>
             申請期限: {formatDate(subsidy.applicationPeriod.end)}
           </span>
         </div>
       </div>
 
-      <div className="mb-4">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">対象企業:</p>
-        <div className="flex flex-wrap gap-1">
+      <div style={{ marginBottom: 'var(--spacing-md)' }}>
+        <p className="caption" style={{ marginBottom: 'var(--spacing-xs)' }}>対象企業:</p>
+        <div className="subsidy-card-tags">
           {subsidy.eligibleCompanies.map((company, index) => (
             <span
               key={index}
-              className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs px-2 py-1 rounded"
+              className="badge badge-secondary"
             >
               {company}
             </span>
@@ -118,8 +123,8 @@ export const SubsidyCard: React.FC<SubsidyCardProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
-        <div className="text-sm text-gray-500 dark:text-gray-400">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="caption">
           {subsidy.organizer && (
             <span>主催: {subsidy.organizer}</span>
           )}
@@ -130,10 +135,9 @@ export const SubsidyCard: React.FC<SubsidyCardProps> = ({
             onClick={() => onViewDetails(subsidy.id)}
             variant="primary"
             size="sm"
-            className="flex items-center"
           >
             詳細を見る
-            <ExternalLink className="w-4 h-4 ml-1" />
+            <ExternalLink style={{ width: '16px', height: '16px', marginLeft: 'var(--spacing-xs)', display: 'inline' }} />
           </Button>
         )}
       </div>

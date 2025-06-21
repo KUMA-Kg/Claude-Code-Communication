@@ -1,8 +1,7 @@
 import React from 'react';
-import { clsx } from 'clsx';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+  variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   children: React.ReactNode;
@@ -13,61 +12,99 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'md',
   isLoading = false,
   disabled,
-  className,
   children,
+  style,
   ...props
 }) => {
-  const baseClasses = 'btn transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2';
-  
-  const variantClasses = {
-    primary: 'btn-primary',
-    secondary: 'btn-secondary',
-    success: 'btn-success',
-    warning: 'btn-warning',
-    danger: 'btn-danger',
+  const baseStyle: React.CSSProperties = {
+    border: 'none',
+    borderRadius: '6px',
+    cursor: disabled || isLoading ? 'not-allowed' : 'pointer',
+    fontWeight: '500',
+    transition: 'all 0.2s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    ...style
   };
 
-  const sizeClasses = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg',
-  };
+  const variantStyle: React.CSSProperties = (() => {
+    switch (variant) {
+      case 'primary':
+        return {
+          backgroundColor: disabled ? '#9ca3af' : '#2563eb',
+          color: 'white',
+          border: '1px solid transparent'
+        };
+      case 'secondary':
+        return {
+          backgroundColor: disabled ? '#f3f4f6' : '#f3f4f6',
+          color: disabled ? '#9ca3af' : '#374151',
+          border: '1px solid #e5e7eb'
+        };
+      case 'ghost':
+        return {
+          backgroundColor: 'transparent',
+          color: disabled ? '#9ca3af' : '#374151',
+          border: '1px solid transparent'
+        };
+      default:
+        return {};
+    }
+  })();
+
+  const sizeStyle: React.CSSProperties = (() => {
+    switch (size) {
+      case 'sm':
+        return {
+          padding: '6px 12px',
+          fontSize: '14px'
+        };
+      case 'lg':
+        return {
+          padding: '12px 24px',
+          fontSize: '16px'
+        };
+      case 'md':
+      default:
+        return {
+          padding: '8px 16px',
+          fontSize: '14px'
+        };
+    }
+  })();
 
   return (
     <button
-      className={clsx(
-        baseClasses,
-        variantClasses[variant],
-        sizeClasses[size],
-        (disabled || isLoading) && 'opacity-50 cursor-not-allowed',
-        className
-      )}
+      style={{
+        ...baseStyle,
+        ...variantStyle,
+        ...sizeStyle
+      }}
       disabled={disabled || isLoading}
       {...props}
     >
       {isLoading && (
-        <svg
-          className="animate-spin -ml-1 mr-2 h-4 w-4"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
+        <div style={{
+          width: '16px',
+          height: '16px',
+          border: '2px solid currentColor',
+          borderTopColor: 'transparent',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }} />
       )}
       {children}
+      
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `
+      }} />
     </button>
   );
 };

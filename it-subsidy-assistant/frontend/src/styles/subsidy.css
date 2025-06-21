@@ -1,0 +1,318 @@
+/* ===== Subsidy List Styles ===== */
+
+.subsidy-list-container {
+  min-height: 100vh;
+  background: var(--color-gray-50);
+  padding: var(--spacing-2xl) var(--spacing-md);
+}
+
+.subsidy-list-header {
+  max-width: 1000px;
+  margin: 0 auto var(--spacing-2xl);
+  text-align: center;
+}
+
+.subsidy-list-title {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  margin-bottom: var(--spacing-md);
+}
+
+.subsidy-list-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-600);
+}
+
+/* Subsidy Cards Container */
+.subsidy-cards {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* Individual Subsidy Card */
+.subsidy-match-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--color-gray-200);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.subsidy-match-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-300);
+}
+
+.subsidy-match-card.selected {
+  box-shadow: var(--shadow-md);
+}
+
+.subsidy-card-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.subsidy-card-title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.subsidy-card-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.subsidy-card-match-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  color: var(--color-white);
+  min-width: 80px;
+}
+
+.match-score-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  opacity: 0.9;
+}
+
+.match-score-value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.subsidy-card-description {
+  color: var(--color-gray-700);
+  margin-bottom: var(--spacing-lg);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Subsidy Details Grid */
+.subsidy-card-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background: var(--color-gray-50);
+  border-radius: var(--radius-md);
+}
+
+.subsidy-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.detail-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  font-weight: var(--font-weight-medium);
+}
+
+.detail-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+}
+
+/* Features Section */
+.subsidy-card-features {
+  margin-bottom: var(--spacing-lg);
+}
+
+.features-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  margin-bottom: var(--spacing-sm);
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-700);
+}
+
+.feature-item svg {
+  flex-shrink: 0;
+}
+
+/* Card Actions */
+.subsidy-card-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-gray-200);
+}
+
+/* Comparison Actions */
+.comparison-actions {
+  max-width: 1000px;
+  margin: var(--spacing-2xl) auto 0;
+  text-align: center;
+}
+
+/* Loading State */
+.subsidy-list-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: var(--spacing-lg);
+}
+
+.subsidy-list-loading p {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-600);
+}
+
+/* Subsidy Comparison Modal */
+.subsidy-comparison-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  z-index: var(--z-modal);
+}
+
+.subsidy-comparison-modal {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  max-width: 1200px;
+  max-height: 90vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.comparison-header {
+  padding: var(--spacing-xl);
+  border-bottom: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comparison-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+.comparison-close {
+  background: transparent;
+  border: none;
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  color: var(--color-gray-500);
+  transition: all var(--transition-base);
+  border-radius: var(--radius-md);
+}
+
+.comparison-close:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
+}
+
+.comparison-content {
+  padding: var(--spacing-xl);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.comparison-table th {
+  background: var(--color-gray-50);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.comparison-table tr:hover {
+  background: var(--color-gray-50);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .subsidy-list-container {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  .subsidy-list-title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .subsidy-card-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .subsidy-card-details {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .subsidy-card-actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .subsidy-card-actions button {
+    width: 100%;
+  }
+
+  .comparison-modal {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}

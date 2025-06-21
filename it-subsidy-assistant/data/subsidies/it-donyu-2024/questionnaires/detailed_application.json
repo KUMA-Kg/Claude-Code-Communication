@@ -1,0 +1,359 @@
+{
+  "subsidy_type": "IT導入補助金2025",
+  "questionnaire_id": "it_donyu_detailed_application",
+  "version": "1.0.0",
+  "title": "IT導入補助金 詳細申請情報",
+  "description": "実施内容説明書・価格説明書作成のための詳細情報収集",
+  "sections": [
+    {
+      "id": "company_basic_info",
+      "title": "企業基本情報",
+      "required": true,
+      "questions": [
+        {
+          "id": "company_name",
+          "type": "text",
+          "question": "法人名・屋号を正式名称で入力してください",
+          "required": true,
+          "validation": {
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        {
+          "id": "representative_name",
+          "type": "text",
+          "question": "代表者氏名を入力してください",
+          "required": true
+        },
+        {
+          "id": "company_address",
+          "type": "address",
+          "question": "本社所在地",
+          "required": true,
+          "fields": {
+            "postal_code": "郵便番号",
+            "prefecture": "都道府県",
+            "city": "市区町村",
+            "address_detail": "詳細住所"
+          }
+        },
+        {
+          "id": "established_date",
+          "type": "date",
+          "question": "設立年月日",
+          "required": true
+        },
+        {
+          "id": "capital_amount",
+          "type": "number",
+          "question": "資本金または出資金（万円）",
+          "required": true,
+          "unit": "万円"
+        },
+        {
+          "id": "annual_revenue",
+          "type": "number",
+          "question": "年間売上高（前年度実績、万円）",
+          "required": true,
+          "unit": "万円"
+        },
+        {
+          "id": "employee_count_detail",
+          "type": "object",
+          "question": "従業員数（詳細）",
+          "required": true,
+          "fields": {
+            "full_time": {
+              "type": "number",
+              "label": "正社員数",
+              "required": true
+            },
+            "part_time": {
+              "type": "number", 
+              "label": "パート・アルバイト数",
+              "required": false
+            },
+            "contract": {
+              "type": "number",
+              "label": "契約社員数",
+              "required": false
+            }
+          }
+        },
+        {
+          "id": "industry_classification",
+          "type": "select",
+          "question": "主要業種（日本標準産業分類）",
+          "required": true,
+          "options": [
+            { "value": "manufacturing", "label": "製造業" },
+            { "value": "information_communication", "label": "情報通信業" },
+            { "value": "wholesale_retail", "label": "卸売業・小売業" },
+            { "value": "accommodation_food", "label": "宿泊業・飲食サービス業" },
+            { "value": "professional_technical", "label": "専門・技術サービス業" },
+            { "value": "other", "label": "その他" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "it_tool_details",
+      "title": "ITツール詳細情報",
+      "required": true,
+      "questions": [
+        {
+          "id": "selected_it_tool",
+          "type": "text",
+          "question": "導入予定のITツール名",
+          "required": true,
+          "hint": "IT導入支援事業者と相談の上決定したツール名"
+        },
+        {
+          "id": "it_tool_category",
+          "type": "radio",
+          "question": "ITツールのカテゴリー",
+          "required": true,
+          "options": [
+            {
+              "value": "category_5",
+              "label": "カテゴリー5：情報収集・分析・活用システム",
+              "description": "顧客管理、在庫管理、売上分析等"
+            },
+            {
+              "value": "category_6",
+              "label": "カテゴリー6：営業支援システム",
+              "description": "営業管理、顧客対応、見積作成等"
+            },
+            {
+              "value": "category_7",
+              "label": "カテゴリー7：バックオフィス系システム",
+              "description": "会計、人事、総務等の基幹業務"
+            }
+          ]
+        },
+        {
+          "id": "current_business_issues",
+          "type": "textarea",
+          "question": "現在の業務における課題・問題点",
+          "required": true,
+          "hint": "ITツール導入前の業務上の課題を具体的に記載",
+          "maxLength": 1000
+        },
+        {
+          "id": "implementation_purpose",
+          "type": "textarea",
+          "question": "ITツール導入の目的",
+          "required": true,
+          "hint": "課題解決のためにITツールをどのように活用するか",
+          "maxLength": 1000
+        },
+        {
+          "id": "expected_users",
+          "type": "number",
+          "question": "利用予定ユーザー数",
+          "required": true,
+          "unit": "人"
+        },
+        {
+          "id": "implementation_schedule",
+          "type": "object",
+          "question": "導入スケジュール",
+          "required": true,
+          "fields": {
+            "contract_date": {
+              "type": "date",
+              "label": "契約予定日",
+              "required": true
+            },
+            "installation_date": {
+              "type": "date", 
+              "label": "導入完了予定日",
+              "required": true
+            },
+            "training_period": {
+              "type": "text",
+              "label": "研修・習得期間",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "expected_effects",
+      "title": "導入効果・効果測定",
+      "required": true,
+      "questions": [
+        {
+          "id": "productivity_improvement",
+          "type": "object",
+          "question": "労働生産性向上の目標",
+          "required": true,
+          "fields": {
+            "current_productivity": {
+              "type": "number",
+              "label": "現在の作業時間（時間/日）",
+              "required": true
+            },
+            "target_productivity": {
+              "type": "number",
+              "label": "目標作業時間（時間/日）",
+              "required": true
+            },
+            "improvement_rate": {
+              "type": "calculated",
+              "label": "改善率（%）",
+              "formula": "((current_productivity - target_productivity) / current_productivity) * 100"
+            }
+          }
+        },
+        {
+          "id": "revenue_improvement",
+          "type": "object",
+          "question": "売上向上の目標",
+          "required": false,
+          "fields": {
+            "current_revenue": {
+              "type": "number",
+              "label": "現在の月間売上（万円）",
+              "unit": "万円"
+            },
+            "target_revenue": {
+              "type": "number",
+              "label": "目標月間売上（万円）",
+              "unit": "万円"
+            },
+            "improvement_basis": {
+              "type": "textarea",
+              "label": "売上向上の根拠・理由",
+              "maxLength": 500
+            }
+          }
+        },
+        {
+          "id": "cost_reduction",
+          "type": "object",
+          "question": "コスト削減の目標",
+          "required": false,
+          "fields": {
+            "current_cost": {
+              "type": "number",
+              "label": "現在の月間コスト（万円）",
+              "unit": "万円"
+            },
+            "target_cost": {
+              "type": "number",
+              "label": "目標月間コスト（万円）",
+              "unit": "万円"
+            },
+            "reduction_details": {
+              "type": "textarea",
+              "label": "削減予定のコスト詳細",
+              "maxLength": 500
+            }
+          }
+        },
+        {
+          "id": "measurement_method",
+          "type": "textarea",
+          "question": "効果測定の方法と実施時期",
+          "required": true,
+          "hint": "導入効果をどのように測定し、いつ実施するか",
+          "maxLength": 800
+        }
+      ]
+    },
+    {
+      "id": "pricing_details",
+      "title": "価格・費用詳細",
+      "required": true,
+      "questions": [
+        {
+          "id": "total_project_cost",
+          "type": "number",
+          "question": "プロジェクト総費用（税抜）",
+          "required": true,
+          "unit": "円"
+        },
+        {
+          "id": "cost_breakdown",
+          "type": "array",
+          "question": "費用内訳",
+          "required": true,
+          "item_schema": {
+            "cost_category": {
+              "type": "select",
+              "label": "費用区分",
+              "options": [
+                { "value": "software_license", "label": "ソフトウェア使用料" },
+                { "value": "installation_setup", "label": "導入・設定費" },
+                { "value": "customization", "label": "カスタマイズ費" },
+                { "value": "training", "label": "研修費" },
+                { "value": "support", "label": "保守・サポート費" }
+              ]
+            },
+            "amount": {
+              "type": "number",
+              "label": "金額（税抜）",
+              "unit": "円"
+            },
+            "description": {
+              "type": "text",
+              "label": "内容説明"
+            }
+          }
+        },
+        {
+          "id": "subsidy_amount",
+          "type": "calculated",
+          "question": "補助金申請額",
+          "formula": "total_project_cost * subsidy_rate",
+          "unit": "円"
+        },
+        {
+          "id": "own_funds",
+          "type": "calculated",
+          "question": "自己負担額",
+          "formula": "total_project_cost - subsidy_amount",
+          "unit": "円"
+        }
+      ]
+    }
+  ],
+  "validation_rules": {
+    "cross_validation": [
+      {
+        "rule": "employee_count_validation",
+        "condition": "company_basic_info.employee_count_detail.full_time + company_basic_info.employee_count_detail.part_time <= 300",
+        "error_message": "IT導入補助金の対象となる中小企業の従業員数を超えています"
+      },
+      {
+        "rule": "productivity_improvement_validation",
+        "condition": "expected_effects.productivity_improvement.target_productivity < expected_effects.productivity_improvement.current_productivity",
+        "error_message": "目標作業時間は現在の作業時間より少なくする必要があります"
+      }
+    ]
+  },
+  "document_mapping": {
+    "implementation_description": {
+      "template": "実施内容説明書（カテゴリー{it_tool_category}）",
+      "fields": {
+        "申請者名": "company_basic_info.company_name",
+        "代表者名": "company_basic_info.representative_name",
+        "ITツール名": "it_tool_details.selected_it_tool",
+        "導入目的": "it_tool_details.implementation_purpose",
+        "現在の課題": "it_tool_details.current_business_issues",
+        "期待効果": "expected_effects.productivity_improvement"
+      }
+    },
+    "price_description": {
+      "template": "価格説明書（カテゴリー{it_tool_category}）",
+      "fields": {
+        "総費用": "pricing_details.total_project_cost",
+        "費用内訳": "pricing_details.cost_breakdown",
+        "補助金申請額": "pricing_details.subsidy_amount"
+      }
+    }
+  }
+}
