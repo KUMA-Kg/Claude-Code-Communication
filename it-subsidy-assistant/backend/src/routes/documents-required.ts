@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { param, body, validationResult } from 'express-validator';
 import { RequiredDocumentModel } from '@/models/RequiredDocument';
 import { EligibilityRuleModel } from '@/models/EligibilityRule';
 import { logger } from '@/utils/logger';
 import { asyncHandler, validationErrorHandler } from '@/middleware/errorHandler';
-import { authenticate } from '@/middleware/auth';
+import { authenticate, AuthenticatedRequest } from '@/middleware/auth';
 
 const router = Router();
 
@@ -12,7 +12,7 @@ const router = Router();
 router.get(
   '/subsidies/:subsidyId/frames/:frameCode/documents',
   authenticate,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { subsidyId, frameCode } = req.params;
 
     const documents = await RequiredDocumentModel.getRequiredDocuments(subsidyId, frameCode);
@@ -29,7 +29,7 @@ router.get(
 router.get(
   '/subsidies/:subsidyId/frames/:frameCode/documents/by-category',
   authenticate,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { subsidyId, frameCode } = req.params;
 
     const documentsByCategory = await RequiredDocumentModel.getDocumentsByCategory(
@@ -66,7 +66,7 @@ router.post(
     body('hasSecurityInvestment').isBoolean().withMessage('セキュリティ投資の有無を指定してください'),
     body('isInvoiceRequired').isBoolean().withMessage('インボイス対応の必要性を指定してください')
   ],
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw validationErrorHandler(errors.array());
@@ -119,7 +119,7 @@ router.post(
 router.get(
   '/documents/:documentCode',
   authenticate,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { documentCode } = req.params;
 
     const document = await RequiredDocumentModel.getDocumentByCode(documentCode);
@@ -145,7 +145,7 @@ router.get(
 router.get(
   '/applications/:applicationId/document-checklist',
   authenticate,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { applicationId } = req.params;
     
     // TODO: 申請情報から補助金IDと申請枠を取得する処理を実装
@@ -188,7 +188,7 @@ router.post(
     body('documents').isArray().withMessage('書類リストは配列形式で送信してください'),
     body('conditions').isObject().withMessage('条件データはオブジェクト形式で送信してください')
   ],
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw validationErrorHandler(errors.array());

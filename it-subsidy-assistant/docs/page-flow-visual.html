@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシスタント - ページフロー図</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .page-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .page-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        .page-card h3 {
+            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        .page-card .url {
+            color: #667eea;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .page-card .description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .page-card .features {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .page-card .features li {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+        .flow-diagram {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        .mermaid {
+            text-align: center;
+        }
+        .flow-type {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 IT補助金アシスタント - ページフロー図</h1>
+
+        <div class="section">
+            <h2>📊 メイン申請フロー</h2>
+            <div class="flow-diagram">
+                <div class="mermaid">
+                    graph LR
+                        A[🏠 トップページ<br/>6つの診断質問] --> B[📊 診断結果<br/>補助金マッチング]
+                        B --> C[📋 必要書類判定<br/>詳細質問]
+                        C --> D[📑 必要書類一覧<br/>チェックリスト]
+                        D --> E[✍️ 入力フォーム<br/>申請情報入力]
+                        E --> F[✅ 完了画面<br/>書類ダウンロード]
+                        F --> G[📥 Excel出力]
+                        F --> H[📄 PDF出力]
+                        
+                        style A fill:#667eea,stroke:#5a67d8,color:#fff
+                        style B fill:#667eea,stroke:#5a67d8,color:#fff
+                        style C fill:#667eea,stroke:#5a67d8,color:#fff
+                        style D fill:#667eea,stroke:#5a67d8,color:#fff
+                        style E fill:#667eea,stroke:#5a67d8,color:#fff
+                        style F fill:#48bb78,stroke:#38a169,color:#fff
+                        style G fill:#38b2ac,stroke:#319795,color:#fff
+                        style H fill:#38b2ac,stroke:#319795,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📑 ページ一覧</h2>
+            
+            <h3 style="color: #667eea; margin-top: 30px;">メインフローページ</h3>
+            <div class="page-grid">
+                <div class="page-card">
+                    <h3>🏠 トップページ</h3>
+                    <div class="url">/</div>
+                    <div class="description">補助金診断の開始画面。6つの基礎質問で最適な補助金を診断します。</div>
+                    <div class="features">
+                        <ul>
+                            <li>事業の現在状況</li>
+                            <li>経営課題の把握</li>
+                            <li>会社規模・業種</li>
+                            <li>投資予算・開始時期</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <h3>📊 診断結果</h3>
+                    <div class="url">/subsidy-results</div>
+                    <div class="description">診断結果を表示し、マッチ度の高い補助金を提案します。</div>
+                    <div class="features">
+                        <ul>
+                            <li>IT導入補助金</li>
+                            <li>ものづくり補助金</li>
+                            <li>小規模事業者持続化補助金</li>
+                            <li>マッチ度スコア表示</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <h3>📋 必要書類判定</h3>
+                    <div class="url">/document-requirements/:subsidyType</div>
+                    <div class="description">選択した補助金の詳細質問で必要書類を判定します。</div>
+                    <div class="features">
+                        <ul>
+                            <li>補助金別の詳細質問</li>
+                            <li>申請要件の確認</li>
+                            <li>必要書類の自動判定</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <h3>📑 必要書類一覧</h3>
+                    <div class="url">/required-documents/:subsidyType</div>
+                    <div class="description">必要書類のリストと準備状況を確認できます。</div>
+                    <div class="features">
+                        <ul>
+                            <li>必要書類リスト</li>
+                            <li>書類の説明</li>
+                            <li>準備チェックリスト</li>
+                            <li>ダウンロードリンク</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <h3>✍️ 申請書類入力</h3>
+                    <div class="url">/input-form/:subsidyType</div>
+                    <div class="description">申請に必要な情報を入力するフォームです。</div>
+                    <div class="features">
+                        <ul>
+                            <li>基本情報入力</li>
+                            <li>補助金別追加情報</li>
+                            <li>バリデーション機能</li>
+                            <li>一時保存機能</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <h3>✅ 完了画面</h3>
+                    <div class="url">/completion/:subsidyType</div>
+                    <div class="description">入力内容の確認と申請書類のダウンロードができます。</div>
+                    <div class="features">
+                        <ul>
+                            <li>入力内容プレビュー</li>
+                            <li>Excel形式ダウンロード</li>
+                            <li>PDF形式ダウンロード</li>
+                            <li>次のステップ案内</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: #ed8936; margin-top: 30px;">ガイドページ</h3>
+            <div class="page-grid">
+                <div class="page-card">
+                    <h3>📖 申請ガイド</h3>
+                    <div class="url">/guide</div>
+                    <div class="description">補助金申請の総合ガイドページです。</div>
+                    <div class="features">
+                        <ul>
+                            <li>申請の流れ説明</li>
+                            <li>各補助金の概要</li>
+                            <li>よくある質問</li>
+                            <li>申請のコツ</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <h3>🏭 ものづくり補助金ガイド</h3>
+                    <div class="url">/guide/monozukuri-documents</div>
+                    <div class="description">ものづくり補助金の詳細な申請ガイドです。</div>
+                    <div class="features">
+                        <ul>
+                            <li>必要書類の詳細</li>
+                            <li>記入例</li>
+                            <li>審査ポイント</li>
+                            <li>スケジュール</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <h3>🛍️ 持続化補助金ガイド</h3>
+                    <div class="url">/guide/jizokuka-documents</div>
+                    <div class="description">小規模事業者持続化補助金の詳細ガイドです。</div>
+                    <div class="features">
+                        <ul>
+                            <li>必要書類の詳細</li>
+                            <li>記入例</li>
+                            <li>審査ポイント</li>
+                            <li>スケジュール</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <h3>💻 IT導入補助金ガイド</h3>
+                    <div class="url">/guide/it-donyu-documents</div>
+                    <div class="description">IT導入補助金の詳細な申請ガイドです。</div>
+                    <div class="features">
+                        <ul>
+                            <li>必要書類の詳細</li>
+                            <li>記入例</li>
+                            <li>審査ポイント</li>
+                            <li>スケジュール</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: #48bb78; margin-top: 30px;">認証・管理ページ</h3>
+            <div class="page-grid">
+                <div class="page-card">
+                    <h3>🔐 ログイン</h3>
+                    <div class="url">/login</div>
+                    <div class="description">ユーザー認証画面です。</div>
+                    <div class="features">
+                        <ul>
+                            <li>メールアドレス認証</li>
+                            <li>パスワード認証</li>
+                            <li>申請データの保存</li>
+                            <li>履歴管理機能</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 ユーザージャーニー</h2>
+            <div class="flow-diagram">
+                <div class="mermaid">
+                    graph TD
+                        Start([開始]) --> Q1{診断を開始}
+                        Q1 --> |はい| Questions[6つの質問に回答]
+                        Q1 --> |ガイドを見る| Guide[申請ガイド]
+                        
+                        Questions --> Results[診断結果表示]
+                        Results --> Select{補助金を選択}
+                        
+                        Select --> |IT導入補助金| IT[IT導入補助金フロー]
+                        Select --> |ものづくり補助金| Mono[ものづくり補助金フロー]
+                        Select --> |持続化補助金| Jizoku[持続化補助金フロー]
+                        
+                        IT --> DocCheck[必要書類判定]
+                        Mono --> DocCheck
+                        Jizoku --> DocCheck
+                        
+                        DocCheck --> DocList[必要書類確認]
+                        DocList --> Input[情報入力]
+                        Input --> Confirm[確認画面]
+                        Confirm --> Download{ダウンロード}
+                        
+                        Download --> Excel[Excel出力]
+                        Download --> PDF[PDF出力]
+                        
+                        Guide --> GuideIT[IT導入ガイド]
+                        Guide --> GuideMono[ものづくりガイド]
+                        Guide --> GuideJizoku[持続化ガイド]
+                        
+                        style Start fill:#f9f9f9,stroke:#333,color:#333
+                        style Questions fill:#667eea,stroke:#5a67d8,color:#fff
+                        style Results fill:#667eea,stroke:#5a67d8,color:#fff
+                        style DocCheck fill:#667eea,stroke:#5a67d8,color:#fff
+                        style DocList fill:#667eea,stroke:#5a67d8,color:#fff
+                        style Input fill:#667eea,stroke:#5a67d8,color:#fff
+                        style Confirm fill:#48bb78,stroke:#38a169,color:#fff
+                        style Excel fill:#38b2ac,stroke:#319795,color:#fff
+                        style PDF fill:#38b2ac,stroke:#319795,color:#fff
+                        style Guide fill:#ed8936,stroke:#dd6b20,color:#fff
+                        style GuideIT fill:#ed8936,stroke:#dd6b20,color:#fff
+                        style GuideMono fill:#ed8936,stroke:#dd6b20,color:#fff
+                        style GuideJizoku fill:#ed8936,stroke:#dd6b20,color:#fff
+                </div>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #667eea;"></div>
+                    <span>メインフロー</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #48bb78;"></div>
+                    <span>完了・成功</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #38b2ac;"></div>
+                    <span>出力・アクション</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ed8936;"></div>
+                    <span>ガイド・ヘルプ</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 主要な画面遷移パターン</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <div class="flow-type">パターン1: 通常の申請フロー</div>
+                    <div style="font-family: monospace; line-height: 2;">
+                        / → /subsidy-results<br>
+                        → /document-requirements/[補助金]<br>
+                        → /required-documents/[補助金]<br>
+                        → /input-form/[補助金]<br>
+                        → /completion/[補助金]
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <div class="flow-type">パターン2: ガイド参照フロー</div>
+                    <div style="font-family: monospace; line-height: 2;">
+                        任意のページ → /guide<br>
+                        → /guide/[補助金]-documents<br>
+                        → 元のページに戻る
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <div class="flow-type">パターン3: やり直しフロー</div>
+                    <div style="font-family: monospace; line-height: 2;">
+                        /subsidy-results → /<br>
+                        /document-requirements → /subsidy-results<br>
+                        /input-form → /required-documents
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>

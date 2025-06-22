@@ -74,6 +74,18 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
     ],
     'monozukuri': [
       {
+        id: 'application_type',
+        question: '申請予定の枠を選択してください',
+        type: 'select',
+        options: [
+          { value: 'normal', label: '通常枠' },
+          { value: 'digital', label: 'デジタル枠' },
+          { value: 'green', label: 'グリーン枠' },
+          { value: 'joint', label: '共同申請枠' }
+        ],
+        required: true
+      },
+      {
         id: 'business_duration',
         question: '創業からの年数を教えてください',
         type: 'radio',
@@ -120,6 +132,18 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
           { value: 'no', label: 'なし' }
         ],
         required: true
+      },
+      {
+        id: 'funding_method',
+        question: '事業資金の調達方法は？',
+        type: 'select',
+        options: [
+          { value: 'self_funded', label: '自己資金のみ' },
+          { value: 'bank_loan', label: '金融機関からの借入予定' },
+          { value: 'combined', label: '自己資金＋借入' },
+          { value: 'other', label: 'その他' }
+        ],
+        required: true
       }
     ],
     'jizokuka': [
@@ -130,6 +154,30 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
         options: [
           { value: 'corporation', label: '法人' },
           { value: 'individual', label: '個人事業主' }
+        ],
+        required: true
+      },
+      {
+        id: 'employee_count',
+        question: '従業員数を選択してください（小規模事業者の定義確認）',
+        type: 'radio',
+        options: [
+          { value: '0', label: '0人（事業主のみ）' },
+          { value: '1_5', label: '1〜5人' },
+          { value: '6_20', label: '6〜20人' },
+          { value: 'over_20', label: '21人以上' }
+        ],
+        required: true
+      },
+      {
+        id: 'business_duration',
+        question: '創業からの年数を教えてください',
+        type: 'radio',
+        options: [
+          { value: 'under_1year', label: '1年未満（創業枠対象）' },
+          { value: '1_3years', label: '1年以上3年未満' },
+          { value: '3_10years', label: '3年以上10年未満' },
+          { value: 'over_10years', label: '10年以上' }
         ],
         required: true
       },
@@ -145,27 +193,53 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
         required: true
       },
       {
+        id: 'application_frame',
+        question: '申請予定の枠を選択してください',
+        type: 'select',
+        options: [
+          { value: 'general', label: '一般型' },
+          { value: 'startup', label: '創業枠' },
+          { value: 'succession', label: '事業承継枠' },
+          { value: 'disaster', label: '災害枠' }
+        ],
+        required: true
+      },
+      {
         id: 'business_plan_status',
-        question: '経営計画書の作成状況は？',
+        question: '事業支援計画書（様式6）の作成状況は？',
         type: 'radio',
         options: [
-          { value: 'completed', label: '作成済み' },
-          { value: 'in_progress', label: '作成中' },
-          { value: 'with_support', label: '支援を受けながら作成中' },
+          { value: 'completed', label: '商工会・商工会議所で作成済み' },
+          { value: 'in_progress', label: '商工会・商工会議所で作成中' },
+          { value: 'scheduled', label: '商工会・商工会議所に相談予約済み' },
           { value: 'not_started', label: '未着手' }
         ],
         required: true
       },
       {
         id: 'sales_channel_type',
-        question: '販路開拓の主な方法は？',
+        question: '販路開拓の主な取組内容は？',
         type: 'select',
         options: [
           { value: 'website', label: 'ウェブサイト制作・改修' },
-          { value: 'advertising', label: '広告・宣伝' },
-          { value: 'exhibition', label: '展示会・商談会' },
-          { value: 'new_product', label: '新商品開発' },
+          { value: 'advertising', label: '広告・宣伝（チラシ・看板等）' },
+          { value: 'exhibition', label: '展示会・商談会出展' },
+          { value: 'new_product', label: '新商品・新サービス開発' },
+          { value: 'equipment', label: '機械装置等の導入' },
+          { value: 'renovation', label: '店舗改装・レイアウト変更' },
           { value: 'multiple', label: '複数の方法を組み合わせ' }
+        ],
+        required: true
+      },
+      {
+        id: 'expense_amount',
+        question: '総事業費（補助対象経費）の予定額は？',
+        type: 'select',
+        options: [
+          { value: 'under_50', label: '50万円未満' },
+          { value: '50_100', label: '50万円以上100万円未満' },
+          { value: '100_150', label: '100万円以上150万円未満' },
+          { value: 'over_150', label: '150万円以上' }
         ],
         required: true
       }
@@ -180,21 +254,62 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
   const determineRequiredDocuments = (subsidyType: string, answers: RequirementAnswer) => {
     const baseDocuments = {
       'it-donyu': [
-        { id: 'application_form', name: '交付申請書', required: true },
-        { id: 'business_plan', name: '事業計画書', required: true },
-        { id: 'expense_breakdown', name: '経費内訳書', required: true },
-        { id: 'quotation', name: '見積書', required: true }
+        // A. 申請基本書類
+        { id: 'A1', name: '交付申請書', required: true, category: 'application' },
+        { id: 'A2', name: '事業計画書', required: true, category: 'project' },
+        { id: 'A3', name: '宣誓書', required: true, category: 'other' },
+        { id: 'A4', name: '法人/個人確認書類', required: true, category: 'company' },
+        // B. 財務関係書類
+        { id: 'B1', name: '直近2期分の決算書', required: true, category: 'financial' },
+        { id: 'B2', name: '納税証明書', required: true, category: 'financial' },
+        // C. ITツール関連
+        { id: 'C1', name: 'IT導入支援事業者との共同事業体契約書', required: true, category: 'project' },
+        { id: 'C2', name: 'ITツール見積書', required: true, category: 'quotation' },
+        { id: 'C3', name: 'ITツール機能要件適合証明書', required: true, category: 'project' },
+        { id: 'C4', name: '導入計画書', required: true, category: 'project' }
       ],
       'monozukuri': [
-        { id: 'application_form', name: '交付申請書', required: true },
-        { id: 'business_plan', name: '事業計画書', required: true },
-        { id: 'wage_increase_plan', name: '賃上げ計画書', required: true },
-        { id: 'financial_statements', name: '決算書', required: true }
+        // A. 事業計画関連
+        { id: 'A1', name: '事業計画書（システム入力＋別紙Word）', required: true, category: 'project' },
+        // B. 誓約・加点様式
+        { id: 'B1', name: '補助対象経費誓約書【様式1】', required: true, category: 'other' },
+        { id: 'B2', name: '賃金引上げ計画の誓約書【様式2】', required: true, category: 'other' },
+        // C. 現況確認資料
+        { id: 'C1', name: '履歴事項全部証明書（法人）', required: true, category: 'company' },
+        { id: 'C2', name: '直近期の決算書一式', required: true, category: 'financial' },
+        { id: 'C3', name: '従業員数確認資料', required: true, category: 'company' },
+        { id: 'C4', name: '労働者名簿', required: true, category: 'company' },
+        // D. 見積・仕様関係
+        { id: 'D1', name: '見積書（原則2社以上）', required: true, category: 'quotation' },
+        { id: 'D2', name: 'カタログ・仕様書', required: true, category: 'quotation' },
+        // E. 税・反社・資金調達
+        { id: 'E1', name: '納税証明書（法人税／消費税）', required: true, category: 'financial' },
+        { id: 'E2', name: '暴力団排除等に関する誓約書', required: true, category: 'other' }
       ],
       'jizokuka': [
-        { id: 'application_form', name: '様式1 申請書', required: true },
-        { id: 'management_plan', name: '様式2 経営計画書', required: true },
-        { id: 'project_plan', name: '様式3 補助事業計画書', required: true }
+        // A. 申請様式（必須）
+        { id: 'A1', name: '様式1 小規模事業者持続化補助金事業に係る申請書', required: true, category: 'application' },
+        { id: 'A2', name: '様式2 経営計画書', required: true, category: 'application' },
+        { id: 'A3', name: '様式3 補助事業計画書', required: true, category: 'application' },
+        { id: 'A4', name: '様式4 補助金交付申請書', required: true, category: 'application' },
+        // B. 現況確認資料
+        { id: 'B1', name: '直近の確定申告書（写し）', required: true, category: 'financial' },
+        { id: 'B2', name: '履歴事項全部証明書（法人のみ）', required: false, category: 'corporate' },
+        { id: 'B3', name: '開業届（個人事業主で創業1年未満）', required: false, category: 'corporate' },
+        // C. 見積・価格関係（条件付き）
+        { id: 'C1', name: '見積書（税抜50万円以上の経費）', required: false, category: 'quotation' },
+        { id: 'C2', name: 'カタログ・仕様書', required: false, category: 'quotation' },
+        { id: 'C3', name: '図面・レイアウト図', required: false, category: 'quotation' },
+        // D. 商工会議所・商工会関係
+        { id: 'D1', name: '事業支援計画書（様式6）', required: true, category: 'support' },
+        { id: 'D2', name: '商工会議所・商工会の会員証明', required: false, category: 'support' },
+        // E. 加点要素書類（任意）
+        { id: 'E1', name: '事業継続力強化計画認定書', required: false, category: 'other' },
+        { id: 'E4', name: '賃金引上げ表明書（様式7）', required: false, category: 'other' },
+        // F. 申請枠別の追加書類
+        { id: 'F1', name: '創業計画書（創業枠申請者）', required: false, category: 'other' },
+        { id: 'F2', name: '事業承継診断書（事業承継枠）', required: false, category: 'other' },
+        { id: 'F3', name: '災害証明書（災害枠）', required: false, category: 'other' }
       ]
     };
 
@@ -202,30 +317,105 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
 
     // 回答に基づく追加書類の判定
     if (subsidyType === 'it-donyu') {
-      if (answers.business_duration === 'under_1year') {
-        documents.push({ id: 'startup_docs', name: '創業関連書類', required: true });
+      // 創業2年未満の場合
+      if (answers.business_duration === 'under_1year' || answers.business_duration === '1_2years') {
+        documents.push({ id: 'F1', name: '創業2年未満の場合の追加書類', required: true, category: 'other' });
       }
-      if (answers.it_vendor_selected === 'no') {
-        documents.push({ id: 'vendor_selection', name: 'IT導入支援事業者選定理由書', required: true });
+      
+      // 労働保険加入企業
+      if (answers.business_duration === 'over_3years') {
+        documents.push({ id: 'B3', name: '労働保険料納付証明書', required: false, category: 'financial' });
       }
+      
+      // 加点要素（任意）
+      documents.push({ id: 'D1', name: '事業継続力強化計画認定書', required: false, category: 'other' });
+      documents.push({ id: 'D3', name: '賃上げ計画表明書', required: false, category: 'other' });
     }
 
     if (subsidyType === 'monozukuri') {
-      if (answers.support_organization === 'unknown') {
-        documents.push({ id: 'support_org_info', name: '認定経営革新等支援機関情報', required: true });
+      // 申請枠に応じた追加書類
+      if (answers.application_type === 'digital') {
+        documents.push({ id: 'F3', name: 'DX推進自己診断結果', required: true, category: 'other' });
       }
-      if (answers.wage_increase_plan === 'no') {
-        documents.push({ id: 'wage_explanation', name: '賃上げ計画説明書', required: true });
+      if (answers.application_type === 'green') {
+        documents.push({ id: 'B4', name: '炭素生産性向上計画書', required: true, category: 'other' });
       }
+      if (answers.application_type === 'joint') {
+        documents.push({ id: 'G1', name: '共同事業契約書＋共同事業者全員分の登記・決算書', required: true, category: 'other' });
+      }
+      
+      // 資金調達方法に応じた追加書類
+      if (answers.funding_method === 'bank_loan' || answers.funding_method === 'combined') {
+        documents.push({ id: 'E3', name: '資金調達確認書【様式5】', required: true, category: 'financial' });
+      }
+      
+      // 支援機関の状況に応じた追加書類
+      if (answers.support_organization === 'contracted') {
+        documents.push({ id: 'F1', name: '認定経営革新等支援機関確認書', required: false, category: 'support' });
+      }
+      
+      // 大幅賃上げの場合
+      if (answers.wage_increase_plan === 'yes_documented') {
+        documents.push({ id: 'B3', name: '大幅賃上げ計画書【様式4】', required: false, category: 'other' });
+      }
+      
+      // 必要に応じて追加される可能性のある書類
+      documents.push({ id: 'A2', name: '会社全体の事業計画書（任意様式）', required: false, category: 'project' });
+      documents.push({ id: 'D3', name: '図面・レイアウト図', required: false, category: 'quotation' });
     }
 
     if (subsidyType === 'jizokuka') {
-      if (answers.chamber_membership === 'non_member') {
-        documents.push({ id: 'chamber_application', name: '商工会議所入会申込書', required: true });
+      // 従業員数確認
+      if (answers.employee_count === 'over_20') {
+        documents.push({ id: 'employee_verification', name: '小規模事業者要件確認書', required: true, category: 'company' });
       }
-      if (answers.business_plan_status === 'not_started') {
-        documents.push({ id: 'plan_support', name: '経営計画書作成支援依頼書', required: true });
+      
+      // 法人の場合の履歴事項全部証明書は既にbaseDocumentsに含まれているが、法人の場合のみrequired:trueに変更
+      const corpDocIndex = documents.findIndex(doc => doc.id === 'B2');
+      if (corpDocIndex !== -1 && answers.business_type === 'corporation') {
+        documents[corpDocIndex].required = true;
       }
+      
+      // 創業1年未満の場合
+      if (answers.business_duration === 'under_1year' && answers.business_type === 'individual') {
+        documents.push({ id: 'B3', name: '開業届（個人事業主で創業1年未満）', required: true, category: 'corporate' });
+        if (answers.application_frame === 'startup') {
+          documents.push({ id: 'F1', name: '創業計画書（創業枠申請者）', required: true, category: 'other' });
+        }
+      }
+      
+      // 申請枠別の追加書類
+      if (answers.application_frame === 'succession') {
+        documents.push({ id: 'F2', name: '事業承継診断書（事業承継枠）', required: true, category: 'other' });
+      }
+      if (answers.application_frame === 'disaster') {
+        documents.push({ id: 'F3', name: '災害証明書（災害枠）', required: true, category: 'other' });
+      }
+      
+      // 会員状況
+      if (answers.chamber_membership === 'member') {
+        documents.push({ id: 'D2', name: '商工会議所・商工会の会員証明', required: false, category: 'support' });
+      }
+      
+      // 事業支援計画書の状況（これは注意事項として表示するものなので削除）
+      
+      // 経費額に応じた見積書（既にbaseDocumentsに含まれているので、条件に応じてrequiredを変更）
+      const quotationDocIndex = documents.findIndex(doc => doc.id === 'C1');
+      if (quotationDocIndex !== -1 && (answers.expense_amount === '50_100' || answers.expense_amount === '100_150' || answers.expense_amount === 'over_150')) {
+        documents[quotationDocIndex].required = true;
+      }
+      
+      // 取組内容に応じた追加書類（既にbaseDocumentsに含まれているので、条件に応じてrequiredを変更）
+      const catalogDocIndex = documents.findIndex(doc => doc.id === 'C2');
+      if (catalogDocIndex !== -1 && answers.sales_channel_type === 'equipment') {
+        documents[catalogDocIndex].required = true;
+      }
+      const layoutDocIndex = documents.findIndex(doc => doc.id === 'C3');
+      if (layoutDocIndex !== -1 && answers.sales_channel_type === 'renovation') {
+        documents[layoutDocIndex].required = true;
+      }
+      
+      // 加点要素は既にbaseDocumentsに含まれているので追加しない
     }
 
     return documents;
@@ -256,7 +446,7 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
-      navigate('/subsidy-list');
+      navigate('/subsidy-results');
     }
   };
 

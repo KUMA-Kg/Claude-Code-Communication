@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import ExcelJS from 'exceljs';
 import { z } from 'zod';
 import { supabase } from '@/config/supabase';
 import { asyncHandler } from '@/middleware/asyncHandler';
 import { validateRequest } from '@/middleware/validateRequest';
-import { authenticate } from '@/middleware/auth';
+import { authenticate, AuthenticatedRequest } from '@/middleware/auth';
 import { logger } from '@/utils/logger';
 import { generateExcelDocument } from '@/services/excelGenerator';
 import { parseExcelData } from '@/services/excelParser';
@@ -30,7 +30,7 @@ router.post(
   '/excel',
   authenticate,
   validateRequest(ExportExcelRequestSchema),
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { session_id, document_type, include_instructions } = req.body;
     const user_id = req.user!.id;
 
@@ -120,7 +120,7 @@ router.post(
   '/import',
   authenticate,
   validateRequest(ImportExcelRequestSchema),
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { session_id, file_data, document_type } = req.body;
     const user_id = req.user!.id;
 
@@ -141,8 +141,8 @@ router.post(
           .upsert({
             session_id,
             user_id,
-            form_type,
-            form_data,
+            form_type: formType,
+            form_data: formData,
             is_draft: false,
           })
           .select();
@@ -175,7 +175,7 @@ router.post(
 router.get(
   '/documents/:sessionId',
   authenticate,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { sessionId } = req.params;
     const user_id = req.user!.id;
 
@@ -205,7 +205,7 @@ router.get(
 router.get(
   '/download/:documentId',
   authenticate,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { documentId } = req.params;
     const user_id = req.user!.id;
 

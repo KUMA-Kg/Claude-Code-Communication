@@ -19,8 +19,8 @@ const RequiredDocumentsList: React.FC<RequiredDocumentsListProps> = ({ subsidyTy
     name: doc.name,
     description: doc.description || '',
     required: doc.required,
-    category: 'application', // デフォルトカテゴリ
-    format: 'excel',
+    category: doc.category || 'application', // カテゴリが指定されていればそれを使用
+    format: doc.format || 'excel',
     examples: []
   })) || requiredDocuments[subsidyType] || [];
   
@@ -57,6 +57,59 @@ const RequiredDocumentsList: React.FC<RequiredDocumentsListProps> = ({ subsidyTy
       <p style={{ color: '#6b7280', marginBottom: '32px' }}>
         申請に必要な書類をご確認ください。すべての必須書類を準備してから次へお進みください。
       </p>
+      
+      {/* 詳細ガイドへのリンク */}
+      <div style={{ 
+        backgroundColor: '#e0e7ff', 
+        padding: '16px 20px', 
+        borderRadius: '8px', 
+        marginBottom: '24px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <div>
+          <h4 style={{ fontSize: '16px', margin: '0 0 4px 0', color: '#1e40af' }}>
+            📚 さらに詳しい書類情報をご覧になりたい方へ
+          </h4>
+          <p style={{ fontSize: '14px', margin: 0, color: '#3730a3' }}>
+            必須・任意・該当者のみの書類について、より詳細な説明をご用意しています
+          </p>
+        </div>
+        <button
+          onClick={() => {
+            const guideUrls = {
+              'it-donyu': '/guide/it-donyu-documents',
+              'monozukuri': '/guide/monozukuri-documents',
+              'jizokuka': '/guide/jizokuka-documents'
+            };
+            navigate(guideUrls[subsidyType as keyof typeof guideUrls] || '/guide');
+          }}
+          style={{
+            padding: '10px 20px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '600',
+            whiteSpace: 'nowrap',
+            boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)',
+            transition: 'all 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(102, 126, 234, 0.3)';
+          }}
+        >
+          詳細ガイドを見る →
+        </button>
+      </div>
       
       {/* 進捗状況 */}
       <div style={{ backgroundColor: 'white', padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginBottom: '32px' }}>
@@ -174,7 +227,7 @@ const RequiredDocumentsList: React.FC<RequiredDocumentsListProps> = ({ subsidyTy
       {/* アクションボタン */}
       <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
         <button
-          onClick={() => navigate('/subsidy-list')}
+          onClick={() => navigate(`/document-requirements/${subsidyType}`)}
           style={{
             padding: '12px 32px',
             backgroundColor: '#f3f4f6',

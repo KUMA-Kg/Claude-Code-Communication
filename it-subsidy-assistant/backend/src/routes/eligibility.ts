@@ -1,9 +1,9 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { body, param, validationResult } from 'express-validator';
 import { EligibilityRuleModel } from '@/models/EligibilityRule';
 import { logger } from '@/utils/logger';
 import { asyncHandler, validationErrorHandler } from '@/middleware/errorHandler';
-import { authenticate } from '@/middleware/auth';
+import { authenticate, AuthenticatedRequest } from '@/middleware/auth';
 
 const router = Router();
 
@@ -37,7 +37,7 @@ router.post(
   '/subsidies/:subsidyId/check-eligibility',
   authenticate,
   checkEligibilityValidation,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw validationErrorHandler(errors.array());
@@ -75,7 +75,7 @@ router.post(
   '/subsidies/:subsidyId/check-eligibility-simple',
   authenticate,
   simpleCheckValidation,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw validationErrorHandler(errors.array());
@@ -115,7 +115,7 @@ router.post(
 router.get(
   '/subsidies/:subsidyId/frames',
   authenticate,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { subsidyId } = req.params;
 
     const frames = await EligibilityRuleModel.getAllFrames(subsidyId);
@@ -132,7 +132,7 @@ router.get(
 router.get(
   '/subsidies/:subsidyId/frames/:frameCode',
   authenticate,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { subsidyId, frameCode } = req.params;
 
     const frame = await EligibilityRuleModel.getFrameDetails(subsidyId, frameCode);
@@ -158,7 +158,7 @@ router.get(
 router.get(
   '/subsidies/:subsidyId/eligibility-questions',
   authenticate,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { subsidyId } = req.params;
 
     // シンプルな3つの質問を返す

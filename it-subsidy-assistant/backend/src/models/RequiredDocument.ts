@@ -233,22 +233,22 @@ export class RequiredDocumentModel {
     // 範囲条件
     if (condition.gte) {
       const [field, value] = Object.entries(condition.gte)[0];
-      return context[field] >= value;
+      return context[field] >= (value as number);
     }
 
     if (condition.gt) {
       const [field, value] = Object.entries(condition.gt)[0];
-      return context[field] > value;
+      return context[field] > (value as number);
     }
 
     if (condition.lte) {
       const [field, value] = Object.entries(condition.lte)[0];
-      return context[field] <= value;
+      return context[field] <= (value as number);
     }
 
     if (condition.lt) {
       const [field, value] = Object.entries(condition.lt)[0];
-      return context[field] < value;
+      return context[field] < (value as number);
     }
 
     return true;

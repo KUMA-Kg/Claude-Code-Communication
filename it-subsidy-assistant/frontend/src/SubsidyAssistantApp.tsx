@@ -2,10 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { ModernSubsidyFlow } from './components/ModernSubsidyFlow';
 import { SubsidyResults } from './components/SubsidyResults';
-import { CompletionPage } from './components/CompletionPage';
+import CompletionPage from './components/CompletionPage';
 import DocumentRequirementQuestions from './components/DocumentRequirementQuestions';
 import RequiredDocumentsList from './components/RequiredDocumentsList';
+import RequiredDocumentsListEnhanced from './components/RequiredDocumentsListEnhanced';
+import ComprehensiveDocumentForm from './components/ComprehensiveDocumentForm';
+import SmartDocumentForm from './components/SmartDocumentForm';
 import { ApplicationGuidePage } from './pages/ApplicationGuidePage';
+import { SimpleSubsidyDetailPage } from './pages/SimpleSubsidyDetailPage';
+import TestCompletionPage from './pages/TestCompletionPage';
+import MonozukuriDocumentGuidePage from './pages/MonozukuriDocumentGuidePage';
+import JizokukaDocumentGuidePage from './pages/JizokukaDocumentGuidePage';
+import ItDonyuDocumentGuidePage from './pages/ItDonyuDocumentGuidePage';
 import './styles/modern-ui.css';
 
 // ===== データ型定義 =====
@@ -70,6 +78,9 @@ function SubsidyAssistantApp() {
           {/* 補助金マッチング結果 */}
           <Route path="/subsidy-results" element={<SubsidyResults />} />
           
+          {/* 補助金詳細ページ */}
+          <Route path="/subsidy/:id" element={<SimpleSubsidyDetailPage />} />
+          
           {/* 補助金別の必要書類判定質問 */}
           <Route path="/document-requirements/:subsidyType" element={<DocumentRequirementsFlow />} />
           
@@ -85,6 +96,14 @@ function SubsidyAssistantApp() {
           
           {/* 申請ガイド */}
           <Route path="/guide" element={<ApplicationGuidePage />} />
+          
+          {/* 補助金別書類ガイド */}
+          <Route path="/guide/monozukuri-documents" element={<MonozukuriDocumentGuidePage />} />
+          <Route path="/guide/jizokuka-documents" element={<JizokukaDocumentGuidePage />} />
+          <Route path="/guide/it-donyu-documents" element={<ItDonyuDocumentGuidePage />} />
+          
+          {/* テストページ */}
+          <Route path="/test-completion" element={<TestCompletionPage />} />
           
           {/* ログイン */}
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
@@ -349,33 +368,18 @@ const RequiredDocumentsFlow: React.FC = () => {
   }
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
-      <RequiredDocumentsList
-        subsidyType={selectedSubsidy}
-        subsidyName={subsidyNames[selectedSubsidy as keyof typeof subsidyNames]}
-        requiredDocuments={requiredDocuments}
-      />
-      
-      <div style={{ textAlign: 'center', marginTop: '32px' }}>
-        <button
-          onClick={handleProceed}
-          className="btn-gradient"
-          style={{
-            padding: '16px 40px',
-            fontSize: '18px',
-            fontWeight: '600'
-          }}
-        >
-          書類作成に進む →
-        </button>
-      </div>
-    </div>
+    <RequiredDocumentsListEnhanced
+      subsidyType={selectedSubsidy}
+      subsidyName={subsidyNames[selectedSubsidy as keyof typeof subsidyNames]}
+      requiredDocuments={requiredDocuments}
+    />
   );
 };
 
 const DocumentInputForm: React.FC = () => {
   const navigate = useNavigate();
   const { subsidyType } = useParams<{ subsidyType?: string }>();
+  const [useComprehensiveForm, setUseComprehensiveForm] = useState(true); // デフォルトで詳細フォームを使用
   const [formData, setFormData] = useState<CompanyData>({});
   
   // URLパラメータがある場合はそれを使用、なければsessionStorageから取得
@@ -384,9 +388,9 @@ const DocumentInputForm: React.FC = () => {
   const documentAnswers = JSON.parse(sessionStorage.getItem('documentRequirements') || '{}');
   
   const subsidyNames = {
-    'it-donyu': 'IT導入補助金2025',
-    'monozukuri': 'ものづくり補助金',
-    'jizokuka': '小規模事業者持続化補助金'
+    'it-donyu': 'IT導入裍助金2025',
+    'monozukuri': 'ものづくり裍助金',
+    'jizokuka': '小規模事業者持続化裍助金'
   };
 
   // 基本的な入力フィールド
@@ -448,6 +452,12 @@ const DocumentInputForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     sessionStorage.setItem('companyData', JSON.stringify(formData));
+    navigate(`/completion/${selectedSubsidy}`);
+  };
+
+  const handleComprehensiveComplete = (completedFormData: any) => {
+    sessionStorage.setItem('completedFormData', JSON.stringify(completedFormData));
+    sessionStorage.setItem('companyData', JSON.stringify(completedFormData)); // 互換性のため
     navigate(`/completion/${selectedSubsidy}`);
   };
 
@@ -540,6 +550,20 @@ const DocumentInputForm: React.FC = () => {
     );
   }
 
+  // 詳細フォームを使用する場合
+  if (useComprehensiveForm) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+        <SmartDocumentForm
+          subsidyType={selectedSubsidy}
+          onComplete={handleComprehensiveComplete}
+          onBack={() => navigate(`/required-documents/${selectedSubsidy}`)}
+        />
+      </div>
+    );
+  }
+
+  // 簡易フォームを使用する場合（既存のコード）
   return (
     <div style={{ 
       minHeight: '100vh',

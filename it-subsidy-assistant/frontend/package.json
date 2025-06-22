@@ -16,6 +16,7 @@
     "clsx": "^2.1.1",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
+    "framer-motion": "^12.18.1",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.516.0",

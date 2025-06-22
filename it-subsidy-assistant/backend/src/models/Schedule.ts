@@ -5,12 +5,12 @@ export class ScheduleModel {
   /**
    * スケジュールの作成
    */
-  static async create(userId: string, data: ScheduleInput): Promise<Schedule> {
+  static async create(userId: string, scheduleData: ScheduleInput): Promise<Schedule> {
     // 申請が存在し、ユーザーがアクセス権を持っているか確認
     const { data: application, error: appError } = await supabase
       .from('applications')
       .select('id, company_id')
-      .eq('id', data.application_id)
+      .eq('id', scheduleData.application_id)
       .single();
 
     if (appError || !application) {
@@ -29,17 +29,17 @@ export class ScheduleModel {
       throw new Error('Access denied to this application');
     }
 
-    const { data, error } = await supabase
+    const { data: schedule, error } = await supabase
       .from('schedules')
       .insert([{
-        ...data,
+        ...scheduleData,
         created_by: userId
       }])
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return schedule;
   }
 
   /**
@@ -147,7 +147,7 @@ export class ScheduleModel {
   static async update(
     userId: string,
     scheduleId: string,
-    data: Partial<ScheduleInput>
+    updateData: Partial<ScheduleInput>
   ): Promise<Schedule> {
     // 更新権限の確認
     const existing = await this.findById(userId, scheduleId);
@@ -157,7 +157,7 @@ export class ScheduleModel {
 
     const { data: updated, error } = await supabase
       .from('schedules')
-      .update(data)
+      .update(updateData)
       .eq('id', scheduleId)
       .select()
       .single();

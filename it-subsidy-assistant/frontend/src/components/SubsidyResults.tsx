@@ -294,20 +294,49 @@ export const SubsidyResults: React.FC = () => {
                 </div>
 
                 {/* 選択ボタン */}
-                <button
-                  className="btn-gradient"
-                  style={{
-                    width: '100%',
-                    marginTop: '24px',
-                    fontSize: '18px'
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSelectSubsidy(subsidyId);
-                  }}
-                >
-                  この補助金で申請を進める →
-                </button>
+                <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+                  <button
+                    style={{
+                      flex: 1,
+                      padding: '14px 24px',
+                      background: 'white',
+                      color: 'var(--primary-color)',
+                      border: '2px solid var(--primary-color)',
+                      borderRadius: 'var(--border-radius)',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all var(--transition-normal)'
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/subsidy/${subsidyId}`);
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--primary-color)';
+                      e.currentTarget.style.color = 'white';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'white';
+                      e.currentTarget.style.color = 'var(--primary-color)';
+                    }}
+                  >
+                    詳細を見る
+                  </button>
+                  <button
+                    className="btn-gradient"
+                    style={{
+                      flex: 2,
+                      fontSize: '18px'
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectSubsidy(subsidyId);
+                    }}
+                  >
+                    この補助金で申請を進める →
+                  </button>
+                </div>
               </div>
             );
           })}

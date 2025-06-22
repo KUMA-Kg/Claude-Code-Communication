@@ -1,15 +1,15 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { param, body, validationResult } from 'express-validator';
 import { RealtimeService } from '@/services/RealtimeService';
 import { CompanyModel } from '@/models/Company';
 import { logger } from '@/utils/logger';
 import { asyncHandler, validationErrorHandler } from '@/middleware/errorHandler';
-import { authenticate } from '@/middleware/auth';
+import { authenticate, AuthenticatedRequest } from '@/middleware/auth';
 
 const router = Router();
 
 // WebSocket接続情報を取得
-router.get('/connection-info', authenticate, (req: Request, res: Response) => {
+router.get('/connection-info', authenticate, (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.userId;
   
   // Supabaseのリアルタイム接続に必要な情報を返す

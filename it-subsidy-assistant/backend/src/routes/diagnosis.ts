@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { supabase } from '@/config/supabase';
 import { asyncHandler } from '@/middleware/asyncHandler';
 import { validateRequest } from '@/middleware/validateRequest';
-import { authenticateOptional } from '@/middleware/auth';
+import { authenticateOptional, AuthenticatedRequest } from '@/middleware/auth';
 import { 
   StartDiagnosisRequestSchema,
   AnswerDiagnosisRequestSchema,
@@ -22,7 +22,7 @@ router.post(
   '/start',
   authenticateOptional,
   validateRequest(StartDiagnosisRequestSchema),
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { user_id, initial_data } = req.body;
     const sessionToken = generateSessionToken();
     
@@ -71,7 +71,7 @@ router.post(
 router.post(
   '/answer',
   validateRequest(AnswerDiagnosisRequestSchema),
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { session_id, question_key, answer, current_step, progress } = req.body;
 
     // セッションの存在確認
@@ -145,7 +145,7 @@ router.post(
 // 診断セッション取得
 router.get(
   '/session/:sessionId',
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { sessionId } = req.params;
 
     const { data: session, error } = await supabase
@@ -175,7 +175,7 @@ router.get(
 // 診断完了と補助金マッチング
 router.post(
   '/complete/:sessionId',
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { sessionId } = req.params;
 
     // セッションと回答を取得
@@ -236,7 +236,7 @@ router.post(
 // 6つの基礎質問APIエンドポイント
 router.get(
   '/basic-questions',
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const basicQuestions = [
       {
         id: 'company_name',
@@ -314,7 +314,7 @@ router.post(
   validateRequest(z.object({
     answers: z.record(z.any())
   })),
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { answers } = req.body;
 
     // 回答に基づく補助金推薦ロジック
@@ -334,7 +334,7 @@ router.post(
 // 補助金マッチング再実行
 router.post(
   '/match/:sessionId',
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { sessionId } = req.params;
 
     // セッションと回答を取得

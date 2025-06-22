@@ -3,6 +3,8 @@ import AkinatorQuestionnaire from './AkinatorQuestionnaire';
 import SubsidyMatchResult from './SubsidyMatchResult';
 import DocumentRequirementQuestionnaire from './DocumentRequirementQuestionnaire';
 import DetailedQuestionnaireForm from './DetailedQuestionnaireForm';
+import ComprehensiveDocumentForm from './ComprehensiveDocumentForm';
+import DocumentPreviewExport from './DocumentPreviewExport';
 import { styles } from '../styles';
 
 interface AkinatorAnswer {
@@ -37,6 +39,7 @@ type FlowStep =
 
 const SubsidyFlowManager: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<FlowStep>('akinator_questions');
+  const [useComprehensiveForm, setUseComprehensiveForm] = useState(true); // Toggle for form type
   const [flowData, setFlowData] = useState({
     akinatorAnswers: [] as AkinatorAnswer[],
     subsidyMatches: [] as SubsidyMatch[],
@@ -132,7 +135,22 @@ const SubsidyFlowManager: React.FC = () => {
         );
 
       case 'detailed_form':
-        return (
+        return useComprehensiveForm ? (
+          <ComprehensiveDocumentForm
+            subsidyType={getSubsidyName(flowData.selectedSubsidyType)}
+            selectedFrame="通常枠" // TODO: 実際の選択枠を反映
+            initialData={flowData.detailedAnswers}
+            onComplete={handleDetailedFormComplete}
+            onSaveProgress={(data) => {
+              setFlowData(prev => ({
+                ...prev,
+                detailedAnswers: { ...prev.detailedAnswers, ...data }
+              }));
+              console.log('Progress saved:', data);
+            }}
+            onBack={handleBackToDocumentRequirements}
+          />
+        ) : (
           <DetailedQuestionnaireForm
             subsidyType={getSubsidyName(flowData.selectedSubsidyType)}
             selectedFrame="通常枠" // TODO: 実際の選択枠を反映
@@ -142,7 +160,17 @@ const SubsidyFlowManager: React.FC = () => {
         );
 
       case 'document_output':
-        return (
+        return useComprehensiveForm ? (
+          <DocumentPreviewExport
+            subsidyType={getSubsidyName(flowData.selectedSubsidyType)}
+            formData={flowData.detailedAnswers}
+            onBack={() => setCurrentStep('detailed_form')}
+            onExport={(format) => {
+              console.log(`Exporting in ${format} format`);
+              setCurrentStep('file_export');
+            }}
+          />
+        ) : (
           <DocumentOutputPage
             subsidyType={flowData.selectedSubsidyType}
             requiredDocuments={flowData.requiredDocuments}

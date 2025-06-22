@@ -1,0 +1,1043 @@
+{
+  "document_field_specifications": {
+    "it_donyu_2025": {
+      "subsidy_name": "IT導入補助金2025",
+      "documents": {
+        "sensei_sho": {
+          "document_name": "宣誓書",
+          "description": "補助金申請にあたっての各種誓約事項を確認し、宣誓する書類",
+          "fields": [
+            {
+              "field_name": "申請日",
+              "field_id": "application_date",
+              "type": "date",
+              "required": true,
+              "description": "宣誓書の記入日"
+            },
+            {
+              "field_name": "事業者名",
+              "field_id": "company_name",
+              "type": "text",
+              "max_length": 100,
+              "required": true,
+              "description": "申請事業者の正式名称"
+            },
+            {
+              "field_name": "代表者名",
+              "field_id": "representative_name",
+              "type": "text",
+              "max_length": 50,
+              "required": true,
+              "description": "代表者の氏名（フルネーム）"
+            },
+            {
+              "field_name": "法人番号",
+              "field_id": "corporate_number",
+              "type": "text",
+              "pattern": "^[0-9]{13}$",
+              "required": true,
+              "description": "13桁の法人番号（個人事業主は不要）"
+            },
+            {
+              "field_name": "反社会的勢力でないことの確認",
+              "field_id": "antisocial_confirmation",
+              "type": "checkbox",
+              "required": true,
+              "description": "反社会的勢力と関係がないことを確認"
+            },
+            {
+              "field_name": "重複申請していないことの確認",
+              "field_id": "no_duplicate_application",
+              "type": "checkbox",
+              "required": true,
+              "description": "他の補助金との重複申請がないことを確認"
+            },
+            {
+              "field_name": "虚偽申請でないことの確認",
+              "field_id": "no_false_application",
+              "type": "checkbox",
+              "required": true,
+              "description": "申請内容に虚偽がないことを確認"
+            },
+            {
+              "field_name": "補助金返還の理解",
+              "field_id": "return_understanding",
+              "type": "checkbox",
+              "required": true,
+              "description": "不正受給時の返還義務について理解"
+            },
+            {
+              "field_name": "情報公開への同意",
+              "field_id": "information_disclosure_consent",
+              "type": "checkbox",
+              "required": true,
+              "description": "採択時の事業者名等の公開に同意"
+            },
+            {
+              "field_name": "代表者印",
+              "field_id": "representative_seal",
+              "type": "file",
+              "file_types": ["pdf", "jpg", "png"],
+              "max_size_mb": 5,
+              "required": true,
+              "description": "代表者印の押印画像またはPDF"
+            }
+          ]
+        },
+        "invoice_taiou_keikaku": {
+          "document_name": "インボイス対応計画書",
+          "description": "インボイス制度への対応計画を記載する書類（インボイス枠申請時必須）",
+          "fields": [
+            {
+              "field_name": "適格請求書発行事業者番号",
+              "field_id": "invoice_issuer_number",
+              "type": "text",
+              "pattern": "^T[0-9]{12}$",
+              "required": false,
+              "description": "既に登録済みの場合は記入（T+12桁）"
+            },
+            {
+              "field_name": "適格請求書発行事業者登録予定日",
+              "field_id": "invoice_registration_date",
+              "type": "date",
+              "required": true,
+              "description": "登録を予定している日付"
+            },
+            {
+              "field_name": "現在の請求書発行方法",
+              "field_id": "current_invoice_method",
+              "type": "select",
+              "options": ["手書き", "表計算ソフト", "既存システム", "その他"],
+              "required": true,
+              "description": "現在どのように請求書を発行しているか"
+            },
+            {
+              "field_name": "月間請求書発行件数",
+              "field_id": "monthly_invoice_count",
+              "type": "number",
+              "min": 0,
+              "max": 99999,
+              "required": true,
+              "description": "月平均の請求書発行件数"
+            },
+            {
+              "field_name": "インボイス対応の課題",
+              "field_id": "invoice_challenges",
+              "type": "textarea",
+              "max_length": 500,
+              "required": true,
+              "description": "インボイス制度対応における課題（最大500文字）"
+            },
+            {
+              "field_name": "導入予定のITツール名",
+              "field_id": "planned_it_tool",
+              "type": "text",
+              "max_length": 100,
+              "required": true,
+              "description": "インボイス対応のために導入するITツール"
+            },
+            {
+              "field_name": "期待される効果",
+              "field_id": "expected_effects",
+              "type": "textarea",
+              "max_length": 1000,
+              "required": true,
+              "description": "ITツール導入による効果（最大1000文字）"
+            },
+            {
+              "field_name": "システム連携の必要性",
+              "field_id": "system_integration_needed",
+              "type": "radio",
+              "options": ["必要", "不要"],
+              "required": true,
+              "description": "既存システムとの連携が必要か"
+            },
+            {
+              "field_name": "連携が必要なシステム",
+              "field_id": "systems_to_integrate",
+              "type": "text",
+              "max_length": 200,
+              "required": false,
+              "conditional": {
+                "field": "system_integration_needed",
+                "value": "必要"
+              },
+              "description": "連携が必要な既存システム名"
+            }
+          ]
+        },
+        "fukususha_renkei_keikaku": {
+          "document_name": "複数社連携計画書",
+          "description": "複数の事業者が連携してIT導入を行う際の計画書（複数社連携枠申請時必須）",
+          "fields": [
+            {
+              "field_name": "代表事業者名",
+              "field_id": "representative_company",
+              "type": "text",
+              "max_length": 100,
+              "required": true,
+              "description": "連携の代表となる事業者名"
+            },
+            {
+              "field_name": "連携事業者数",
+              "field_id": "partner_count",
+              "type": "number",
+              "min": 2,
+              "max": 10,
+              "required": true,
+              "description": "代表事業者を含む連携事業者の総数"
+            },
+            {
+              "field_name": "連携事業者情報",
+              "field_id": "partner_info",
+              "type": "array",
+              "min_items": 1,
+              "max_items": 9,
+              "item_fields": [
+                {
+                  "field_name": "事業者名",
+                  "field_id": "partner_name",
+                  "type": "text",
+                  "max_length": 100,
+                  "required": true
+                },
+                {
+                  "field_name": "法人番号",
+                  "field_id": "partner_corporate_number",
+                  "type": "text",
+                  "pattern": "^[0-9]{13}$",
+                  "required": false
+                },
+                {
+                  "field_name": "業種",
+                  "field_id": "partner_industry",
+                  "type": "text",
+                  "max_length": 50,
+                  "required": true
+                },
+                {
+                  "field_name": "従業員数",
+                  "field_id": "partner_employees",
+                  "type": "number",
+                  "min": 0,
+                  "max": 9999,
+                  "required": true
+                }
+              ],
+              "description": "連携する各事業者の情報"
+            },
+            {
+              "field_name": "連携の目的",
+              "field_id": "collaboration_purpose",
+              "type": "textarea",
+              "max_length": 1000,
+              "required": true,
+              "description": "複数社で連携する目的と期待される効果"
+            },
+            {
+              "field_name": "共同利用するITツール",
+              "field_id": "shared_it_tools",
+              "type": "textarea",
+              "max_length": 500,
+              "required": true,
+              "description": "共同で導入・利用するITツールの詳細"
+            },
+            {
+              "field_name": "データ共有の範囲",
+              "field_id": "data_sharing_scope",
+              "type": "textarea",
+              "max_length": 500,
+              "required": true,
+              "description": "連携事業者間で共有するデータの範囲"
+            },
+            {
+              "field_name": "セキュリティ対策",
+              "field_id": "security_measures",
+              "type": "textarea",
+              "max_length": 500,
+              "required": true,
+              "description": "データ共有におけるセキュリティ対策"
+            },
+            {
+              "field_name": "費用分担方法",
+              "field_id": "cost_sharing_method",
+              "type": "select",
+              "options": ["均等割", "利用量割", "売上高比例", "その他"],
+              "required": true,
+              "description": "ITツール導入費用の分担方法"
+            },
+            {
+              "field_name": "その他の費用分担詳細",
+              "field_id": "cost_sharing_details",
+              "type": "text",
+              "max_length": 200,
+              "required": false,
+              "conditional": {
+                "field": "cost_sharing_method",
+                "value": "その他"
+              },
+              "description": "その他の場合の詳細"
+            }
+          ]
+        }
+      }
+    },
+    "monozukuri": {
+      "subsidy_name": "ものづくり補助金",
+      "documents": {
+        "hojo_taisho_keihi_seiyaku": {
+          "document_name": "補助対象経費誓約書【様式1】",
+          "description": "補助対象経費の適正使用を誓約する書類",
+          "fields": [
+            {
+              "field_name": "申請日",
+              "field_id": "application_date",
+              "type": "date",
+              "required": true,
+              "description": "誓約書の記入日"
+            },
+            {
+              "field_name": "事業者名",
+              "field_id": "company_name",
+              "type": "text",
+              "max_length": 100,
+              "required": true,
+              "description": "申請事業者の正式名称"
+            },
+            {
+              "field_name": "代表者役職",
+              "field_id": "representative_title",
+              "type": "text",
+              "max_length": 50,
+              "required": true,
+              "description": "代表者の役職名"
+            },
+            {
+              "field_name": "代表者氏名",
+              "field_id": "representative_name",
+              "type": "text",
+              "max_length": 50,
+              "required": true,
+              "description": "代表者の氏名"
+            },
+            {
+              "field_name": "補助事業名",
+              "field_id": "project_name",
+              "type": "text",
+              "max_length": 200,
+              "required": true,
+              "description": "実施する補助事業の名称"
+            },
+            {
+              "field_name": "経費の目的外使用をしないことの誓約",
+              "field_id": "proper_use_pledge",
+              "type": "checkbox",
+              "required": true,
+              "description": "補助対象経費を目的外に使用しないことを誓約"
+            },
+            {
+              "field_name": "経理処理の適正化の誓約",
+              "field_id": "proper_accounting_pledge",
+              "type": "checkbox",
+              "required": true,
+              "description": "適切な経理処理を行うことを誓約"
+            },
+            {
+              "field_name": "証拠書類の保管誓約",
+              "field_id": "document_retention_pledge",
+              "type": "checkbox",
+              "required": true,
+              "description": "証拠書類を5年間保管することを誓約"
+            },
+            {
+              "field_name": "検査への協力誓約",
+              "field_id": "inspection_cooperation_pledge",
+              "type": "checkbox",
+              "required": true,
+              "description": "会計検査等に協力することを誓約"
+            },
+            {
+              "field_name": "不正時の返還誓約",
+              "field_id": "return_if_fraud_pledge",
+              "type": "checkbox",
+              "required": true,
+              "description": "不正使用時の補助金返還を誓約"
+            }
+          ]
+        },
+        "chingin_hikiage_seiyaku": {
+          "document_name": "賃金引上げ計画の誓約書【様式2】",
+          "description": "賃金引上げを実施することを誓約する書類",
+          "fields": [
+            {
+              "field_name": "現在の平均賃金",
+              "field_id": "current_average_wage",
+              "type": "number",
+              "min": 0,
+              "max": 9999999,
+              "required": true,
+              "description": "現在の従業員平均賃金（円）"
+            },
+            {
+              "field_name": "計画期間",
+              "field_id": "plan_period",
+              "type": "select",
+              "options": ["1年", "2年", "3年"],
+              "required": true,
+              "description": "賃金引上げ計画の期間"
+            },
+            {
+              "field_name": "賃上げ率",
+              "field_id": "wage_increase_rate",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "decimal_places": 1,
+              "required": true,
+              "description": "計画する賃上げ率（%）"
+            },
+            {
+              "field_name": "対象従業員数",
+              "field_id": "target_employee_count",
+              "type": "number",
+              "min": 1,
+              "max": 99999,
+              "required": true,
+              "description": "賃上げ対象となる従業員数"
+            },
+            {
+              "field_name": "賃上げ実施予定日",
+              "field_id": "wage_increase_date",
+              "type": "date",
+              "required": true,
+              "description": "賃上げを実施する予定日"
+            },
+            {
+              "field_name": "賃上げ後の平均賃金",
+              "field_id": "after_average_wage",
+              "type": "number",
+              "min": 0,
+              "max": 9999999,
+              "required": true,
+              "description": "賃上げ後の従業員平均賃金（円）"
+            },
+            {
+              "field_name": "賃上げの財源",
+              "field_id": "wage_increase_source",
+              "type": "textarea",
+              "max_length": 500,
+              "required": true,
+              "description": "賃上げの財源確保方法"
+            },
+            {
+              "field_name": "生産性向上の取組",
+              "field_id": "productivity_improvement",
+              "type": "textarea",
+              "max_length": 1000,
+              "required": true,
+              "description": "賃上げを実現するための生産性向上策"
+            },
+            {
+              "field_name": "実施確約",
+              "field_id": "implementation_pledge",
+              "type": "checkbox",
+              "required": true,
+              "description": "計画通り賃上げを実施することを誓約"
+            }
+          ]
+        },
+        "roudousha_meibo": {
+          "document_name": "労働者名簿",
+          "description": "賃上げ対象となる労働者の名簿",
+          "fields": [
+            {
+              "field_name": "作成日",
+              "field_id": "creation_date",
+              "type": "date",
+              "required": true,
+              "description": "名簿の作成日"
+            },
+            {
+              "field_name": "労働者情報",
+              "field_id": "worker_info",
+              "type": "array",
+              "min_items": 1,
+              "max_items": 1000,
+              "item_fields": [
+                {
+                  "field_name": "従業員番号",
+                  "field_id": "employee_number",
+                  "type": "text",
+                  "max_length": 20,
+                  "required": true
+                },
+                {
+                  "field_name": "氏名",
+                  "field_id": "employee_name",
+                  "type": "text",
+                  "max_length": 50,
+                  "required": true
+                },
+                {
+                  "field_name": "雇用形態",
+                  "field_id": "employment_type",
+                  "type": "select",
+                  "options": ["正社員", "契約社員", "パート・アルバイト", "その他"],
+                  "required": true
+                },
+                {
+                  "field_name": "入社年月日",
+                  "field_id": "hire_date",
+                  "type": "date",
+                  "required": true
+                },
+                {
+                  "field_name": "現在の月額賃金",
+                  "field_id": "current_monthly_wage",
+                  "type": "number",
+                  "min": 0,
+                  "max": 9999999,
+                  "required": true
+                },
+                {
+                  "field_name": "賃上げ後の月額賃金",
+                  "field_id": "after_monthly_wage",
+                  "type": "number",
+                  "min": 0,
+                  "max": 9999999,
+                  "required": true
+                },
+                {
+                  "field_name": "賃上げ額",
+                  "field_id": "wage_increase_amount",
+                  "type": "number",
+                  "min": 0,
+                  "max": 999999,
+                  "required": true
+                },
+                {
+                  "field_name": "賃上げ率",
+                  "field_id": "individual_increase_rate",
+                  "type": "number",
+                  "min": 0,
+                  "max": 100,
+                  "decimal_places": 1,
+                  "required": true
+                }
+              ],
+              "description": "各労働者の詳細情報"
+            },
+            {
+              "field_name": "合計人数",
+              "field_id": "total_count",
+              "type": "number",
+              "min": 1,
+              "max": 99999,
+              "required": true,
+              "description": "名簿に記載した労働者の合計人数"
+            },
+            {
+              "field_name": "平均賃上げ率",
+              "field_id": "average_increase_rate",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "decimal_places": 2,
+              "required": true,
+              "description": "全労働者の平均賃上げ率（%）"
+            }
+          ]
+        },
+        "oohaba_chinageKeikaku": {
+          "document_name": "大幅賃上げ計画書【様式4】",
+          "description": "回復型賃上げ・雇用拡大枠申請時の大幅な賃上げ計画",
+          "fields": [
+            {
+              "field_name": "基準年度",
+              "field_id": "base_year",
+              "type": "select",
+              "options": ["2023年度", "2024年度", "2025年度"],
+              "required": true,
+              "description": "賃上げ計算の基準となる年度"
+            },
+            {
+              "field_name": "基準年度の給与総額",
+              "field_id": "base_total_salary",
+              "type": "number",
+              "min": 0,
+              "max": 9999999999,
+              "required": true,
+              "description": "基準年度の年間給与総額（円）"
+            },
+            {
+              "field_name": "基準年度の従業員数",
+              "field_id": "base_employee_count",
+              "type": "number",
+              "min": 1,
+              "max": 99999,
+              "required": true,
+              "description": "基準年度の平均従業員数"
+            },
+            {
+              "field_name": "目標年度",
+              "field_id": "target_year",
+              "type": "select",
+              "options": ["2024年度", "2025年度", "2026年度", "2027年度"],
+              "required": true,
+              "description": "賃上げ目標を達成する年度"
+            },
+            {
+              "field_name": "目標給与総額",
+              "field_id": "target_total_salary",
+              "type": "number",
+              "min": 0,
+              "max": 9999999999,
+              "required": true,
+              "description": "目標年度の年間給与総額（円）"
+            },
+            {
+              "field_name": "目標従業員数",
+              "field_id": "target_employee_count",
+              "type": "number",
+              "min": 1,
+              "max": 99999,
+              "required": true,
+              "description": "目標年度の従業員数"
+            },
+            {
+              "field_name": "給与総額増加率",
+              "field_id": "salary_increase_rate",
+              "type": "number",
+              "min": 0,
+              "max": 999,
+              "decimal_places": 1,
+              "required": true,
+              "description": "給与総額の増加率（%）"
+            },
+            {
+              "field_name": "一人あたり賃金増加率",
+              "field_id": "per_capita_increase_rate",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "decimal_places": 1,
+              "required": true,
+              "description": "一人あたりの賃金増加率（%）"
+            },
+            {
+              "field_name": "業況回復の根拠",
+              "field_id": "recovery_rationale",
+              "type": "textarea",
+              "max_length": 1500,
+              "required": true,
+              "description": "業況が回復し賃上げが可能となる根拠"
+            },
+            {
+              "field_name": "新規雇用計画",
+              "field_id": "new_employment_plan",
+              "type": "textarea",
+              "max_length": 1000,
+              "required": true,
+              "description": "新規雇用の計画詳細"
+            },
+            {
+              "field_name": "付加価値向上策",
+              "field_id": "value_improvement_measures",
+              "type": "textarea",
+              "max_length": 1500,
+              "required": true,
+              "description": "付加価値を向上させるための具体的施策"
+            }
+          ]
+        }
+      }
+    },
+    "jizokuka": {
+      "subsidy_name": "小規模事業者持続化補助金",
+      "documents": {
+        "yoshiki_1_shinseisho": {
+          "document_name": "様式1 申請書",
+          "description": "小規模事業者持続化補助金の基本申請書",
+          "fields": [
+            {
+              "field_name": "申請日",
+              "field_id": "application_date",
+              "type": "date",
+              "required": true,
+              "description": "申請書の提出日"
+            },
+            {
+              "field_name": "商工会議所・商工会名",
+              "field_id": "chamber_name",
+              "type": "text",
+              "max_length": 100,
+              "required": true,
+              "description": "所属する商工会議所または商工会の名称"
+            },
+            {
+              "field_name": "事業者名",
+              "field_id": "company_name",
+              "type": "text",
+              "max_length": 100,
+              "required": true,
+              "description": "申請事業者の正式名称"
+            },
+            {
+              "field_name": "代表者役職",
+              "field_id": "representative_title",
+              "type": "text",
+              "max_length": 50,
+              "required": true,
+              "description": "代表者の役職"
+            },
+            {
+              "field_name": "代表者氏名",
+              "field_id": "representative_name",
+              "type": "text",
+              "max_length": 50,
+              "required": true,
+              "description": "代表者の氏名"
+            },
+            {
+              "field_name": "郵便番号",
+              "field_id": "postal_code",
+              "type": "text",
+              "pattern": "^[0-9]{3}-[0-9]{4}$",
+              "required": true,
+              "description": "事業所の郵便番号（XXX-XXXX形式）"
+            },
+            {
+              "field_name": "住所",
+              "field_id": "address",
+              "type": "text",
+              "max_length": 200,
+              "required": true,
+              "description": "事業所の住所"
+            },
+            {
+              "field_name": "電話番号",
+              "field_id": "phone_number",
+              "type": "tel",
+              "pattern": "^[0-9]{2,4}-[0-9]{2,4}-[0-9]{3,4}$",
+              "required": true,
+              "description": "連絡先電話番号"
+            },
+            {
+              "field_name": "メールアドレス",
+              "field_id": "email",
+              "type": "email",
+              "max_length": 100,
+              "required": true,
+              "description": "連絡先メールアドレス"
+            },
+            {
+              "field_name": "業種",
+              "field_id": "industry",
+              "type": "select",
+              "options": ["製造業", "卸売業", "小売業", "サービス業", "その他"],
+              "required": true,
+              "description": "主たる事業の業種"
+            },
+            {
+              "field_name": "常時使用する従業員数",
+              "field_id": "regular_employees",
+              "type": "number",
+              "min": 0,
+              "max": 20,
+              "required": true,
+              "description": "パート・アルバイトを含む常時使用する従業員数"
+            },
+            {
+              "field_name": "資本金",
+              "field_id": "capital",
+              "type": "number",
+              "min": 0,
+              "max": 999999999,
+              "required": false,
+              "description": "資本金（法人の場合のみ、円）"
+            },
+            {
+              "field_name": "創業年月",
+              "field_id": "founding_date",
+              "type": "month",
+              "required": true,
+              "description": "創業または設立年月"
+            },
+            {
+              "field_name": "申請枠",
+              "field_id": "application_frame",
+              "type": "select",
+              "options": ["通常枠", "賃金引上げ枠", "卒業枠", "後継者支援枠", "創業枠"],
+              "required": true,
+              "description": "申請する枠の種類"
+            }
+          ]
+        },
+        "yoshiki_4_hojokin_kofu": {
+          "document_name": "様式4 補助金交付申請書",
+          "description": "補助金の交付を正式に申請する書類",
+          "fields": [
+            {
+              "field_name": "補助事業の名称",
+              "field_id": "project_title",
+              "type": "text",
+              "max_length": 100,
+              "required": true,
+              "description": "実施する補助事業のタイトル（30文字程度推奨）"
+            },
+            {
+              "field_name": "補助事業の概要",
+              "field_id": "project_summary",
+              "type": "textarea",
+              "max_length": 200,
+              "required": true,
+              "description": "補助事業の概要（100文字程度）"
+            },
+            {
+              "field_name": "補助事業期間開始日",
+              "field_id": "project_start_date",
+              "type": "date",
+              "required": true,
+              "description": "補助事業の開始予定日"
+            },
+            {
+              "field_name": "補助事業期間終了日",
+              "field_id": "project_end_date",
+              "type": "date",
+              "required": true,
+              "description": "補助事業の完了予定日"
+            },
+            {
+              "field_name": "補助対象経費合計",
+              "field_id": "total_eligible_expenses",
+              "type": "number",
+              "min": 0,
+              "max": 99999999,
+              "required": true,
+              "description": "補助対象となる経費の合計額（円）"
+            },
+            {
+              "field_name": "補助金申請額",
+              "field_id": "subsidy_amount",
+              "type": "number",
+              "min": 0,
+              "max": 2000000,
+              "required": true,
+              "description": "申請する補助金額（円）"
+            },
+            {
+              "field_name": "補助率",
+              "field_id": "subsidy_rate",
+              "type": "select",
+              "options": ["2/3", "3/4"],
+              "required": true,
+              "description": "適用される補助率"
+            },
+            {
+              "field_name": "経費内訳",
+              "field_id": "expense_breakdown",
+              "type": "array",
+              "min_items": 1,
+              "max_items": 20,
+              "item_fields": [
+                {
+                  "field_name": "経費区分",
+                  "field_id": "expense_category",
+                  "type": "select",
+                  "options": ["機械装置等費", "広報費", "ウェブサイト関連費", "展示会等出展費", "旅費", "開発費", "資料購入費", "雑役務費", "借料", "設備処分費", "委託・外注費"],
+                  "required": true
+                },
+                {
+                  "field_name": "経費内容",
+                  "field_id": "expense_description",
+                  "type": "text",
+                  "max_length": 100,
+                  "required": true
+                },
+                {
+                  "field_name": "単価",
+                  "field_id": "unit_price",
+                  "type": "number",
+                  "min": 0,
+                  "max": 9999999,
+                  "required": true
+                },
+                {
+                  "field_name": "数量",
+                  "field_id": "quantity",
+                  "type": "number",
+                  "min": 1,
+                  "max": 9999,
+                  "required": true
+                },
+                {
+                  "field_name": "金額",
+                  "field_id": "amount",
+                  "type": "number",
+                  "min": 0,
+                  "max": 9999999,
+                  "required": true
+                }
+              ],
+              "description": "補助対象経費の詳細内訳"
+            },
+            {
+              "field_name": "資金調達内訳",
+              "field_id": "funding_breakdown",
+              "type": "object",
+              "fields": [
+                {
+                  "field_name": "自己資金",
+                  "field_id": "self_funding",
+                  "type": "number",
+                  "min": 0,
+                  "max": 99999999,
+                  "required": true
+                },
+                {
+                  "field_name": "借入金",
+                  "field_id": "loan",
+                  "type": "number",
+                  "min": 0,
+                  "max": 99999999,
+                  "required": true
+                },
+                {
+                  "field_name": "補助金",
+                  "field_id": "subsidy",
+                  "type": "number",
+                  "min": 0,
+                  "max": 99999999,
+                  "required": true
+                }
+              ],
+              "description": "事業資金の調達内訳"
+            }
+          ]
+        },
+        "tsukibetsu_uriage_suii": {
+          "document_name": "月別売上高推移データ",
+          "description": "直近の月別売上高の推移を示すデータ",
+          "fields": [
+            {
+              "field_name": "データ期間",
+              "field_id": "data_period",
+              "type": "select",
+              "options": ["直近12ヶ月", "直近24ヶ月", "直近36ヶ月"],
+              "required": true,
+              "description": "売上データの対象期間"
+            },
+            {
+              "field_name": "月別売上データ",
+              "field_id": "monthly_sales_data",
+              "type": "array",
+              "min_items": 12,
+              "max_items": 36,
+              "item_fields": [
+                {
+                  "field_name": "年月",
+                  "field_id": "year_month",
+                  "type": "month",
+                  "required": true
+                },
+                {
+                  "field_name": "売上高",
+                  "field_id": "sales_amount",
+                  "type": "number",
+                  "min": 0,
+                  "max": 999999999,
+                  "required": true
+                },
+                {
+                  "field_name": "前年同月比",
+                  "field_id": "year_on_year_rate",
+                  "type": "number",
+                  "min": -100,
+                  "max": 999,
+                  "decimal_places": 1,
+                  "required": false
+                }
+              ],
+              "description": "各月の売上高データ"
+            },
+            {
+              "field_name": "売上高合計",
+              "field_id": "total_sales",
+              "type": "number",
+              "min": 0,
+              "max": 9999999999,
+              "required": true,
+              "description": "データ期間の売上高合計（円）"
+            },
+            {
+              "field_name": "月平均売上高",
+              "field_id": "average_monthly_sales",
+              "type": "number",
+              "min": 0,
+              "max": 999999999,
+              "required": true,
+              "description": "月平均の売上高（円）"
+            },
+            {
+              "field_name": "売上高推移の分析",
+              "field_id": "sales_trend_analysis",
+              "type": "textarea",
+              "max_length": 500,
+              "required": true,
+              "description": "売上高推移の傾向と要因分析"
+            },
+            {
+              "field_name": "季節変動の有無",
+              "field_id": "seasonal_variation",
+              "type": "radio",
+              "options": ["あり", "なし"],
+              "required": true,
+              "description": "売上の季節変動があるか"
+            },
+            {
+              "field_name": "季節変動の詳細",
+              "field_id": "seasonal_details",
+              "type": "textarea",
+              "max_length": 300,
+              "required": false,
+              "conditional": {
+                "field": "seasonal_variation",
+                "value": "あり"
+              },
+              "description": "季節変動の具体的な内容"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "validation_rules": {
+    "common": {
+      "date_validation": "日付は本日以前の日付を入力してください",
+      "future_date_validation": "将来の日付を選択してください",
+      "email_validation": "有効なメールアドレスを入力してください",
+      "phone_validation": "電話番号は半角数字とハイフンで入力してください",
+      "amount_validation": "金額は半角数字で入力してください",
+      "percentage_validation": "パーセンテージは0から100の間で入力してください"
+    },
+    "conditional_validation": {
+      "description": "条件付き必須項目は、指定された条件を満たす場合のみ必須となります"
+    }
+  },
+  "input_helpers": {
+    "auto_calculation": {
+      "wage_increase_amount": "現在の賃金と賃上げ後の賃金から自動計算",
+      "subsidy_amount": "補助対象経費と補助率から自動計算",
+      "total_amount": "単価と数量から自動計算"
+    },
+    "format_helpers": {
+      "corporate_number": "法人番号は13桁の数字です（ハイフンなし）",
+      "invoice_number": "適格請求書発行事業者番号は'T'で始まる13桁です",
+      "postal_code": "郵便番号は'XXX-XXXX'の形式で入力してください"
+    },
+    "selection_helpers": {
+      "industry_classification": "日本標準産業分類に基づいて選択してください",
+      "expense_categories": "公募要領で定められた経費区分から選択してください"
+    }
+  }
+}

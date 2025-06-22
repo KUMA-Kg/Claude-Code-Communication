@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完了ページ直接アクセステスト</title>
+</head>
+<body>
+    <h1>完了ページテストリンク</h1>
+    <p>以下のリンクをクリックして、完了ページにアクセスしてください：</p>
+    
+    <ul>
+        <li><a href="http://localhost:5174/completion/it-donyu">IT導入補助金 完了ページ</a></li>
+        <li><a href="http://localhost:5174/completion/monozukuri">ものづくり補助金 完了ページ</a></li>
+        <li><a href="http://localhost:5174/completion/jizokuka">小規模事業者持続化補助金 完了ページ</a></li>
+    </ul>
+    
+    <script>
+        // テストデータをセッションストレージに設定
+        const testData = {
+            companyName: 'テスト株式会社',
+            companyNameKana: 'テストカブシキガイシャ',
+            corporateNumber: '1234567890123',
+            representativeName: '山田太郎',
+            contactEmail: 'test@example.com',
+            contactPhone: '03-1234-5678',
+            capital: '10000000',
+            businessDescription: 'IT関連サービス業',
+            employeeCount: '50',
+            annualRevenue: '50000',
+            itToolName: 'クラウド会計システム',
+            itToolPurpose: '経理業務の効率化',
+            expectedEffect: '作業時間の50%削減',
+            implementationPeriod: '2025-04-01',
+            totalBudget: '3000000',
+            requestedAmount: '2000000'
+        };
+        
+        sessionStorage.setItem('companyData', JSON.stringify(testData));
+        sessionStorage.setItem('requiredDocuments', JSON.stringify([
+            { id: 'doc1', name: '申請書', required: true },
+            { id: 'doc2', name: '事業計画書', required: true },
+            { id: 'doc3', name: '見積書', required: true }
+        ]));
+        
+        // 各補助金タイプを設定
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = e.target.href;
+                if (href.includes('/completion/')) {
+                    const subsidyType = href.split('/completion/')[1];
+                    sessionStorage.setItem('selectedSubsidy', subsidyType);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

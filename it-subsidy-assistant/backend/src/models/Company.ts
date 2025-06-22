@@ -53,6 +53,7 @@ export interface CompanyCreateInput {
 
 export interface CompanyUpdateInput extends Partial<CompanyCreateInput> {
   is_active?: boolean;
+  is_sme?: boolean;
 }
 
 export class CompanyModel {

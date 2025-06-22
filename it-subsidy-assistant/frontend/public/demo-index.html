@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシスタント - 書類ガイド強化版デモ</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            font-size: 20px;
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .feature-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #111;
+        }
+        .feature-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .demo-section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        .demo-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            color: #111;
+        }
+        .document-example {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .document-example:hover {
+            border-color: #667eea;
+            background: #f3f4f6;
+        }
+        .document-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .document-icon {
+            font-size: 36px;
+            flex-shrink: 0;
+        }
+        .document-content {
+            flex: 1;
+        }
+        .document-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #111;
+            margin-bottom: 8px;
+        }
+        .document-description {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+        .document-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .info-icon {
+            color: #667eea;
+            font-weight: bold;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .info-value {
+            color: #666;
+        }
+        .note {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #92400e;
+        }
+        .cta-section {
+            text-align: center;
+            margin-top: 60px;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 20px 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 100px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .before, .after {
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .before {
+            background: #fee2e2;
+            border: 2px solid #fca5a5;
+        }
+        .after {
+            background: #dcfce7;
+            border: 2px solid #86efac;
+        }
+        .comparison-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .before .comparison-title {
+            color: #dc2626;
+        }
+        .after .comparison-title {
+            color: #16a34a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 IT補助金アシスタント</h1>
+        <p class="subtitle">書類準備がより簡単に！詳細な取得場所ガイド付き</p>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📍</div>
+                <div class="feature-title">取得場所を明確に表示</div>
+                <div class="feature-description">
+                    「運転免許証は警察署で」「マイナンバーカードは市区町村役場で」など、
+                    どこで書類を取得すればよいか一目でわかります
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⏱️</div>
+                <div class="feature-title">処理時間の目安</div>
+                <div class="feature-description">
+                    各書類の取得にかかる時間を表示。
+                    「即日」「2〜3週間」など、計画的な準備が可能です
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">手数料情報</div>
+                <div class="feature-description">
+                    発行手数料も事前に確認可能。
+                    オンライン申請なら安くなる場合も表示します
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2 class="demo-title">📋 改善された書類ガイドの例</h2>
+            
+            <div class="document-example">
+                <div class="document-header">
+                    <div class="document-icon">🆔</div>
+                    <div class="document-content">
+                        <div class="document-name">身分証明書（運転免許証等）</div>
+                        <div class="document-description">
+                            代表者の本人確認書類。運転免許証、マイナンバーカード、パスポートなど
+                        </div>
+                        <div class="document-info">
+                            <div class="info-item">
+                                <span class="info-icon">📍</span>
+                                <span class="info-label">取得場所:</span>
+                                <span class="info-value">運転免許証は警察署、マイナンバーカードは市区町村役場</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">⏱️</span>
+                                <span class="info-label">処理時間:</span>
+                                <span class="info-value">運転免許証：即日〜2週間、マイナンバーカード：1ヶ月程度</span>
+                            </div>
+                        </div>
+                        <div class="note">
+                            ⚠️ 有効期限内のものをご用意ください。顔写真付きの公的証明書が必要です
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="document-example">
+                <div class="document-header">
+                    <div class="document-icon">📋</div>
+                    <div class="document-content">
+                        <div class="document-name">履歴事項全部証明書（登記簿謄本）</div>
+                        <div class="document-description">
+                            法人の場合は必須。発行から3ヶ月以内のもの
+                        </div>
+                        <div class="document-info">
+                            <div class="info-item">
+                                <span class="info-icon">📍</span>
+                                <span class="info-label">取得場所:</span>
+                                <span class="info-value">法務局（オンライン申請可）</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">⏱️</span>
+                                <span class="info-label">処理時間:</span>
+                                <span class="info-value">オンライン：即日、窓口：1〜3日</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">💰</span>
+                                <span class="info-label">手数料:</span>
+                                <span class="info-value">オンライン：480円、窓口：600円</span>
+                            </div>
+                        </div>
+                        <div class="note">
+                            💡 オンライン申請の場合は「登記ねっと」を利用可能。手数料が安くなります
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="document-example">
+                <div class="document-header">
+                    <div class="document-icon">🔐</div>
+                    <div class="document-content">
+                        <div class="document-name">gBizIDプライム</div>
+                        <div class="document-description">
+                            電子申請に必要なアカウント。事前取得が必須
+                        </div>
+                        <div class="document-info">
+                            <div class="info-item">
+                                <span class="info-icon">📍</span>
+                                <span class="info-label">取得場所:</span>
+                                <span class="info-value">gBizIDウェブサイトでオンライン申請</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">⏱️</span>
+                                <span class="info-label">処理時間:</span>
+                                <span class="info-value">2〜3週間</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">💰</span>
+                                <span class="info-label">手数料:</span>
+                                <span class="info-value">無料（印鑑証明書は別途必要）</span>
+                            </div>
+                        </div>
+                        <div class="note">
+                            ⚠️ 取得に2〜3週間かかるため、早めの申請が必要です。印鑑証明書も必要
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2 class="demo-title">✨ 改善前後の比較</h2>
+            <div class="comparison">
+                <div class="before">
+                    <div class="comparison-title">❌ 改善前</div>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>「身分証明書」とだけ表示</li>
+                        <li>どこで取得すればいいか不明</li>
+                        <li>準備にかかる時間が分からない</li>
+                        <li>手数料情報なし</li>
+                    </ul>
+                </div>
+                <div class="after">
+                    <div class="comparison-title">✅ 改善後</div>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>「運転免許証は警察署で」と明記</li>
+                        <li>取得場所を具体的に案内</li>
+                        <li>「1ヶ月程度」など時間の目安を表示</li>
+                        <li>手数料も事前に確認可能</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <a href="http://localhost:5173/" class="cta-button">
+                🚀 改善版を体験する
+            </a>
+            <p style="margin-top: 20px; color: #666;">
+                補助金申請の書類準備をもっと簡単に
+            </p>
+        </div>
+    </div>
+</body>
+</html>

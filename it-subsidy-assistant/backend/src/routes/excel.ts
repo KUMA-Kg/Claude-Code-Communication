@@ -6,7 +6,7 @@ import { validateRequest } from '@/middleware/validateRequest';
 import { logger } from '@/utils/logger';
 import { body, param, query } from 'express-validator';
 import rateLimit from 'express-rate-limit';
-import { AuthenticatedRequest } from '@/types/auth';
+import { AuthenticatedRequest } from '@/middleware/auth';
 
 const router = express.Router();
 const excelProcessor = new ExcelProcessor();

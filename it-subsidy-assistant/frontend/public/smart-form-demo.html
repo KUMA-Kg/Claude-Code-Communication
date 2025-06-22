@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDocumentForm UI デモ - IT補助金アシスタント</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .comparison-section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .old-ui, .new-ui {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .ui-header {
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .old-ui .ui-header {
+            background: #ef4444;
+            color: white;
+        }
+
+        .new-ui .ui-header {
+            background: #10b981;
+            color: white;
+        }
+
+        .ui-content {
+            padding: 2rem;
+            background: #f9fafb;
+            min-height: 400px;
+        }
+
+        /* Old UI Styles */
+        .old-form {
+            background: white;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+        }
+
+        .old-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .old-form input, .old-form select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        /* New UI Styles */
+        .new-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            width: 33%;
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .question-number {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            max-width: 400px;
+            margin: 0 auto 2rem;
+        }
+
+        .smart-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .smart-input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .suggestions {
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        .suggestion-chip {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-chip:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .feature-section {
+            margin-top: 3rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .mobile-demo {
+            max-width: 375px;
+            margin: 2rem auto;
+            border: 8px solid #1f2937;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .mobile-screen {
+            background: white;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .animation-note {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #92400e;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .comparison-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SmartDocumentForm UI デモ</h1>
+        <p>新しいユーザー体験で、必要書類の確認をもっとスマートに</p>
+    </div>
+
+    <div class="container">
+        <!-- UI比較セクション -->
+        <div class="comparison-section">
+            <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1rem;">旧UIと新UIの比較</h2>
+            <p style="text-align: center; color: #6b7280; margin-bottom: 2rem;">
+                従来の一括入力フォームから、段階的な質問形式への進化
+            </p>
+
+            <div class="comparison-grid">
+                <!-- 旧UI -->
+                <div class="old-ui">
+                    <div class="ui-header">
+                        <span>❌ 旧UI - 従来の一括入力フォーム</span>
+                    </div>
+                    <div class="ui-content">
+                        <div class="old-form">
+                            <label>会社名 *</label>
+                            <input type="text" placeholder="入力してください">
+                            
+                            <label>業種 *</label>
+                            <select>
+                                <option>選択してください</option>
+                            </select>
+                            
+                            <label>従業員数 *</label>
+                            <input type="number" placeholder="人数を入力">
+                            
+                            <label>年間売上高 *</label>
+                            <input type="text" placeholder="金額を入力">
+                            
+                            <label>設立年月日 *</label>
+                            <input type="date">
+                            
+                            <label>資本金 *</label>
+                            <input type="text" placeholder="金額を入力">
+                            
+                            <p style="color: #ef4444; margin-top: 1rem;">
+                                ⚠️ すべての項目を一度に入力する必要があります
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 新UI -->
+                <div class="new-ui">
+                    <div class="ui-header">
+                        <span>✅ 新UI - SmartDocumentForm</span>
+                    </div>
+                    <div class="ui-content">
+                        <div class="new-form">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            
+                            <div class="question-container">
+                                <div class="question-number">質問 2 / 6</div>
+                                <h3 class="question-text">御社の業種を教えてください</h3>
+                                
+                                <div class="input-group">
+                                    <input type="text" class="smart-input" placeholder="例: 製造業、IT、サービス業など">
+                                    
+                                    <div class="suggestions">
+                                        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">
+                                            💡 よく選ばれる業種：
+                                        </p>
+                                        <span class="suggestion-chip">製造業</span>
+                                        <span class="suggestion-chip">情報通信業</span>
+                                        <span class="suggestion-chip">卸売・小売業</span>
+                                        <span class="suggestion-chip">サービス業</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-buttons">
+                                    <button class="btn btn-secondary">← 戻る</button>
+                                    <button class="btn btn-primary">次へ →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 機能紹介セクション -->
+        <div class="comparison-section">
+            <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2rem;">新UIの主な特徴</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">視覚的な進捗表示</h3>
+                    <p class="feature-description">
+                        プログレスバーで現在の進捗が一目でわかります。
+                        あとどれくらいで完了するか明確に表示されるため、
+                        ユーザーの離脱を防ぎます。
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3 class="feature-title">スマートな入力支援</h3>
+                    <p class="feature-description">
+                        各質問に対して、よく選ばれる選択肢や具体例を表示。
+                        クリックするだけで入力できるため、
+                        入力の手間を大幅に削減します。
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">集中できる1質問形式</h3>
+                    <p class="feature-description">
+                        一度に1つの質問だけに集中できるため、
+                        入力ミスが減り、より正確な情報を
+                        収集することができます。
+                    </p>
+                </div>
+            </div>
+
+            <div class="animation-note">
+                <strong>🎨 アニメーション効果：</strong>
+                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                    <li>質問切り替え時のフェードイン・アウト効果</li>
+                    <li>プログレスバーのスムーズな伸縮アニメーション</li>
+                    <li>サジェスチョンチップのホバー時の浮き上がり効果</li>
+                    <li>ボタンクリック時のリップルエフェクト</li>
+                    <li>入力フィールドフォーカス時のボーダー色変化</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- モバイル対応デモ -->
+        <div class="comparison-section">
+            <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1rem;">モバイル対応</h2>
+            <p style="text-align: center; color: #6b7280; margin-bottom: 2rem;">
+                スマートフォンでも快適に利用できるレスポンシブデザイン
+            </p>
+
+            <div class="mobile-demo">
+                <div class="mobile-screen">
+                    <div style="background: #2563eb; color: white; padding: 1rem; text-align: center;">
+                        <h3>IT補助金アシスタント</h3>
+                    </div>
+                    
+                    <div style="padding: 1.5rem;">
+                        <div class="progress-bar" style="margin-bottom: 1.5rem;">
+                            <div class="progress-fill" style="width: 50%;"></div>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <div class="question-number">質問 3 / 6</div>
+                            <h3 style="font-size: 1.25rem; margin: 1rem 0;">
+                                従業員数を教えてください
+                            </h3>
+                            
+                            <input type="number" class="smart-input" placeholder="例: 50" style="margin-bottom: 1rem;">
+                            
+                            <div style="text-align: left; margin-bottom: 1.5rem;">
+                                <p style="font-size: 0.875rem; color: #6b7280;">
+                                    💡 ヒント: パート・アルバイトを含む
+                                </p>
+                            </div>
+                            
+                            <div style="display: grid; gap: 0.75rem;">
+                                <button class="btn btn-primary" style="width: 100%;">次へ →</button>
+                                <button class="btn btn-secondary" style="width: 100%;">← 戻る</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 1rem; color: #6b7280;">
+                ※ 実際のモバイル画面では、タッチ操作に最適化されています
+            </p>
+        </div>
+
+        <!-- 効果測定 -->
+        <div class="comparison-section" style="background: #eff6ff;">
+            <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2rem;">期待される効果</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center;">
+                <div>
+                    <div style="font-size: 3rem; font-weight: bold; color: #2563eb;">85%</div>
+                    <p style="color: #6b7280;">フォーム完了率の向上</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; font-weight: bold; color: #10b981;">60%</div>
+                    <p style="color: #6b7280;">入力時間の短縮</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; font-weight: bold; color: #8b5cf6;">95%</div>
+                    <p style="color: #6b7280;">ユーザー満足度</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

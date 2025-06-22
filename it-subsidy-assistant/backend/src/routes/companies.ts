@@ -1,9 +1,9 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { body, param, validationResult } from 'express-validator';
 import { CompanyModel } from '@/models/Company';
 import { logger } from '@/utils/logger';
 import { asyncHandler, validationErrorHandler } from '@/middleware/errorHandler';
-import { authenticate } from '@/middleware/auth';
+import { authenticate, AuthenticatedRequest } from '@/middleware/auth';
 
 const router = Router();
 
@@ -64,7 +64,7 @@ const companyIdValidation = [
 ];
 
 // 企業一覧取得
-router.get('/', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.userId;
   
   const companies = await CompanyModel.findByUserId(userId);
@@ -77,7 +77,7 @@ router.get('/', authenticate, asyncHandler(async (req: Request, res: Response) =
 }));
 
 // 企業詳細取得
-router.get('/:id', authenticate, companyIdValidation, asyncHandler(async (req: Request, res: Response) => {
+router.get('/:id', authenticate, companyIdValidation, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw validationErrorHandler(errors.array());
@@ -105,7 +105,7 @@ router.get('/:id', authenticate, companyIdValidation, asyncHandler(async (req: R
 }));
 
 // 法人番号で企業検索
-router.get('/search/corporate-number/:number', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/search/corporate-number/:number', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { number } = req.params;
   const userId = req.user!.userId;
   
@@ -129,7 +129,7 @@ router.get('/search/corporate-number/:number', authenticate, asyncHandler(async 
 }));
 
 // 企業作成
-router.post('/', authenticate, createCompanyValidation, asyncHandler(async (req: Request, res: Response) => {
+router.post('/', authenticate, createCompanyValidation, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw validationErrorHandler(errors.array());
@@ -166,7 +166,7 @@ router.post('/', authenticate, createCompanyValidation, asyncHandler(async (req:
 }));
 
 // 企業更新
-router.put('/:id', authenticate, updateCompanyValidation, asyncHandler(async (req: Request, res: Response) => {
+router.put('/:id', authenticate, updateCompanyValidation, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw validationErrorHandler(errors.array());
@@ -216,7 +216,7 @@ router.put('/:id', authenticate, updateCompanyValidation, asyncHandler(async (re
 }));
 
 // 企業削除
-router.delete('/:id', authenticate, companyIdValidation, asyncHandler(async (req: Request, res: Response) => {
+router.delete('/:id', authenticate, companyIdValidation, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw validationErrorHandler(errors.array());

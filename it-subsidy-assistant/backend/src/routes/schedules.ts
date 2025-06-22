@@ -1,9 +1,8 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Response } from 'express';
 import { ScheduleModel } from '@/models/Schedule';
-import { authMiddleware } from '@/middleware/auth';
+import { authenticate, AuthenticatedRequest } from '@/middleware/auth';
 import { validateScheduleInput } from '@/validators/schedule';
-import { asyncHandler } from '@/utils/asyncHandler';
-import { ApiResponse } from '@/types/api';
+import { asyncHandler } from '@/middleware/asyncHandler';
 import { Schedule, ScheduleInput } from '@/types/schedule';
 
 const router = Router();
@@ -13,8 +12,8 @@ const router = Router();
  * @desc    スケジュールの作成
  * @access  Private
  */
-router.post('/', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.post('/', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const scheduleData: ScheduleInput = req.body;
 
   // バリデーション
@@ -27,7 +26,7 @@ router.post('/', authMiddleware, asyncHandler(async (req: Request, res: Response
         message: 'Invalid schedule data',
         details: validation.errors
       }
-    } as ApiResponse);
+    });
   }
 
   const schedule = await ScheduleModel.create(userId, scheduleData);
@@ -35,7 +34,7 @@ router.post('/', authMiddleware, asyncHandler(async (req: Request, res: Response
   res.status(201).json({
     success: true,
     data: schedule
-  } as ApiResponse<Schedule>);
+  });
 }));
 
 /**
@@ -43,8 +42,8 @@ router.post('/', authMiddleware, asyncHandler(async (req: Request, res: Response
  * @desc    スケジュール一覧の取得
  * @access  Private
  */
-router.get('/', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.get('/', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const filters = {
     applicationId: req.query.applicationId as string,
     scheduleType: req.query.scheduleType as string,
@@ -61,7 +60,7 @@ router.get('/', authMiddleware, asyncHandler(async (req: Request, res: Response)
     meta: {
       total: schedules.length
     }
-  } as ApiResponse<Schedule[]>);
+  });
 }));
 
 /**
@@ -69,8 +68,8 @@ router.get('/', authMiddleware, asyncHandler(async (req: Request, res: Response)
  * @desc    今後のスケジュール取得（ダッシュボード用）
  * @access  Private
  */
-router.get('/upcoming', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.get('/upcoming', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const limit = parseInt(req.query.limit as string) || 10;
 
   const schedules = await ScheduleModel.getUpcoming(userId, limit);
@@ -82,7 +81,7 @@ router.get('/upcoming', authMiddleware, asyncHandler(async (req: Request, res: R
       total: schedules.length,
       limit
     }
-  } as ApiResponse<Schedule[]>);
+  });
 }));
 
 /**
@@ -90,8 +89,8 @@ router.get('/upcoming', authMiddleware, asyncHandler(async (req: Request, res: R
  * @desc    スケジュール詳細の取得
  * @access  Private
  */
-router.get('/:id', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.get('/:id', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const scheduleId = req.params.id;
 
   const schedule = await ScheduleModel.findById(userId, scheduleId);
@@ -103,13 +102,13 @@ router.get('/:id', authMiddleware, asyncHandler(async (req: Request, res: Respon
         code: 'NOT_FOUND',
         message: 'Schedule not found'
       }
-    } as ApiResponse);
+    });
   }
 
   res.json({
     success: true,
     data: schedule
-  } as ApiResponse<Schedule>);
+  });
 }));
 
 /**
@@ -117,8 +116,8 @@ router.get('/:id', authMiddleware, asyncHandler(async (req: Request, res: Respon
  * @desc    スケジュールの更新
  * @access  Private
  */
-router.put('/:id', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.put('/:id', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const scheduleId = req.params.id;
   const updateData: Partial<ScheduleInput> = req.body;
 
@@ -130,7 +129,7 @@ router.put('/:id', authMiddleware, asyncHandler(async (req: Request, res: Respon
         code: 'VALIDATION_ERROR',
         message: 'Invalid schedule type'
       }
-    } as ApiResponse);
+    });
   }
 
   const schedule = await ScheduleModel.update(userId, scheduleId, updateData);
@@ -138,7 +137,7 @@ router.put('/:id', authMiddleware, asyncHandler(async (req: Request, res: Respon
   res.json({
     success: true,
     data: schedule
-  } as ApiResponse<Schedule>);
+  });
 }));
 
 /**
@@ -146,8 +145,8 @@ router.put('/:id', authMiddleware, asyncHandler(async (req: Request, res: Respon
  * @desc    スケジュールの削除
  * @access  Private
  */
-router.delete('/:id', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.delete('/:id', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const scheduleId = req.params.id;
 
   await ScheduleModel.delete(userId, scheduleId);
@@ -155,7 +154,7 @@ router.delete('/:id', authMiddleware, asyncHandler(async (req: Request, res: Res
   res.json({
     success: true,
     message: 'Schedule deleted successfully'
-  } as ApiResponse);
+  });
 }));
 
 /**
@@ -163,8 +162,8 @@ router.delete('/:id', authMiddleware, asyncHandler(async (req: Request, res: Res
  * @desc    スケジュールを完了にする
  * @access  Private
  */
-router.post('/:id/complete', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.post('/:id/complete', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const scheduleId = req.params.id;
 
   const schedule = await ScheduleModel.update(userId, scheduleId, {
@@ -174,7 +173,7 @@ router.post('/:id/complete', authMiddleware, asyncHandler(async (req: Request, r
   res.json({
     success: true,
     data: schedule
-  } as ApiResponse<Schedule>);
+  });
 }));
 
 /**
@@ -182,20 +181,31 @@ router.post('/:id/complete', authMiddleware, asyncHandler(async (req: Request, r
  * @desc    スケジュールをキャンセルする
  * @access  Private
  */
-router.post('/:id/cancel', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.post('/:id/cancel', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const scheduleId = req.params.id;
   const reason = req.body.reason;
 
+  const currentSchedule = await ScheduleModel.findById(userId, scheduleId);
+  if (!currentSchedule) {
+    return res.status(404).json({
+      success: false,
+      error: {
+        code: 'NOT_FOUND',
+        message: 'Schedule not found'
+      }
+    });
+  }
+
   const schedule = await ScheduleModel.update(userId, scheduleId, {
     status: 'cancelled',
-    description: reason ? `${schedule.description || ''}\n\nキャンセル理由: ${reason}` : undefined
+    description: reason ? `${currentSchedule.description || ''}\n\nキャンセル理由: ${reason}` : undefined
   });
 
   res.json({
     success: true,
     data: schedule
-  } as ApiResponse<Schedule>);
+  });
 }));
 
 /**
@@ -203,8 +213,8 @@ router.post('/:id/cancel', authMiddleware, asyncHandler(async (req: Request, res
  * @desc    スケジュールを延期する
  * @access  Private
  */
-router.post('/:id/postpone', authMiddleware, asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+router.post('/:id/postpone', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
   const scheduleId = req.params.id;
   const { newDate, reason } = req.body;
 
@@ -215,19 +225,30 @@ router.post('/:id/postpone', authMiddleware, asyncHandler(async (req: Request, r
         code: 'VALIDATION_ERROR',
         message: 'New date is required'
       }
-    } as ApiResponse);
+    });
+  }
+
+  const currentSchedule = await ScheduleModel.findById(userId, scheduleId);
+  if (!currentSchedule) {
+    return res.status(404).json({
+      success: false,
+      error: {
+        code: 'NOT_FOUND',
+        message: 'Schedule not found'
+      }
+    });
   }
 
   const schedule = await ScheduleModel.update(userId, scheduleId, {
     status: 'postponed',
     scheduled_date: newDate,
-    description: reason ? `${schedule.description || ''}\n\n延期理由: ${reason}` : undefined
+    description: reason ? `${currentSchedule.description || ''}\n\n延期理由: ${reason}` : undefined
   });
 
   res.json({
     success: true,
     data: schedule
-  } as ApiResponse<Schedule>);
+  });
 }));
 
 export { router as scheduleRoutes };

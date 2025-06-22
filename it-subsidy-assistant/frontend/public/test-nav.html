@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシスタント - ナビゲーションテスト</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f7fa;
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .nav-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .nav-section h2 {
+            color: #1a202c;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .nav-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .status {
+            padding: 10px;
+            background: #fef3c7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 IT補助金アシスタント - テストナビゲーション</h1>
+    
+    <div class="status">
+        ⚡ テストデータが自動的にセッションストレージに設定されます
+    </div>
+    
+    <div class="nav-section">
+        <h2>フロー全体のテスト</h2>
+        <div class="nav-links">
+            <a href="http://localhost:5174/" class="nav-link">1. トップページ（6つの質問）</a>
+            <a href="http://localhost:5174/subsidy-results" class="nav-link" onclick="setSubsidyResults()">2. 補助金マッチング結果</a>
+            <a href="http://localhost:5174/document-requirements/it-donyu" class="nav-link" onclick="setSubsidyType('it-donyu')">3. 必要書類判定質問（IT導入補助金）</a>
+            <a href="http://localhost:5174/required-documents/it-donyu" class="nav-link" onclick="setFullData('it-donyu')">4. 必要書類一覧（IT導入補助金）</a>
+            <a href="http://localhost:5174/input-form/it-donyu" class="nav-link" onclick="setFullData('it-donyu')">5. 入力フォーム（IT導入補助金）</a>
+        </div>
+    </div>
+    
+    <div class="nav-section">
+        <h2>完了ページの直接テスト</h2>
+        <div class="nav-links">
+            <a href="http://localhost:5174/completion/it-donyu" class="nav-link" onclick="setCompletionData('it-donyu')">IT導入補助金 完了ページ</a>
+            <a href="http://localhost:5174/completion/monozukuri" class="nav-link" onclick="setCompletionData('monozukuri')">ものづくり補助金 完了ページ</a>
+            <a href="http://localhost:5174/completion/jizokuka" class="nav-link" onclick="setCompletionData('jizokuka')">小規模事業者持続化補助金 完了ページ</a>
+        </div>
+    </div>
+    
+    <div class="nav-section">
+        <h2>その他のページ</h2>
+        <div class="nav-links">
+            <a href="http://localhost:5174/test-completion" class="nav-link">テスト用完了ページ（デバッグ用）</a>
+            <a href="http://localhost:5174/guide" class="nav-link">申請ガイド</a>
+            <a href="http://localhost:5174/guide/monozukuri-documents" class="nav-link">ものづくり補助金 必要書類完全ガイド</a>
+            <a href="http://localhost:5174/guide/jizokuka-documents" class="nav-link">小規模事業者持続化補助金 必要書類完全ガイド</a>
+            <a href="http://localhost:5174/guide/it-donyu-documents" class="nav-link">IT導入補助金2025 必要書類完全ガイド</a>
+        </div>
+    </div>
+    
+    <script>
+        // テストデータ
+        const testFormData = {
+            companyName: 'テスト株式会社',
+            companyNameKana: 'テストカブシキガイシャ',
+            corporateNumber: '1234567890123',
+            representativeName: '山田太郎',
+            contactEmail: 'test@example.com',
+            contactPhone: '03-1234-5678',
+            capital: '10000000',
+            businessDescription: 'IT関連サービス業',
+            employeeCount: '50',
+            annualRevenue: '50000',
+            itToolName: 'クラウド会計システム',
+            itToolPurpose: '経理業務の効率化',
+            expectedEffect: '作業時間の50%削減',
+            implementationPeriod: '2025-04-01',
+            totalBudget: '3000000',
+            requestedAmount: '2000000'
+        };
+        
+        const testRequiredDocuments = [
+            { id: 'doc1', name: '交付申請書', required: true },
+            { id: 'doc2', name: '事業計画書', required: true },
+            { id: 'doc3', name: '経費内訳書', required: true },
+            { id: 'doc4', name: '見積書', required: true }
+        ];
+        
+        const subsidyScores = {
+            'it-donyu': 95,
+            'monozukuri': 75,
+            'jizokuka': 60
+        };
+        
+        function setSubsidyType(type) {
+            sessionStorage.setItem('selectedSubsidy', type);
+        }
+        
+        function setSubsidyResults() {
+            sessionStorage.setItem('subsidyScores', JSON.stringify(subsidyScores));
+        }
+        
+        function setFullData(type) {
+            sessionStorage.setItem('selectedSubsidy', type);
+            sessionStorage.setItem('requiredDocuments', JSON.stringify(testRequiredDocuments));
+            sessionStorage.setItem('documentRequirements', JSON.stringify({
+                business_duration: 'over_3years',
+                it_tool_type: 'software',
+                it_vendor_selected: 'yes',
+                labor_productivity_plan: 'detailed'
+            }));
+        }
+        
+        function setCompletionData(type) {
+            sessionStorage.setItem('selectedSubsidy', type);
+            sessionStorage.setItem('companyData', JSON.stringify(testFormData));
+            sessionStorage.setItem('requiredDocuments', JSON.stringify(testRequiredDocuments));
+        }
+        
+        // ページロード時に基本データを設定
+        window.onload = function() {
+            // 最低限のデータを設定
+            sessionStorage.setItem('questionnaireData', JSON.stringify({
+                businessType: 'service',
+                employeeCount: '10-50',
+                annualRevenue: '1000-5000',
+                currentChallenges: 'efficiency',
+                digitalizationLevel: 'partial',
+                budgetRange: '100-500'
+            }));
+            
+            console.log('テストデータがセッションストレージに設定されました');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完了ページテスト</title>
+    <script>
+        // セッションストレージにテストデータを設定
+        sessionStorage.setItem('selectedSubsidy', 'it-donyu');
+        sessionStorage.setItem('companyData', JSON.stringify({
+            companyName: 'テスト株式会社',
+            companyNameKana: 'テストカブシキガイシャ',
+            corporateNumber: '1234567890123',
+            representativeName: '山田太郎',
+            contactEmail: 'test@example.com',
+            contactPhone: '03-1234-5678',
+            capital: '10000000',
+            businessDescription: 'IT関連サービス業',
+            employeeCount: '50',
+            annualRevenue: '50000',
+            itToolName: 'クラウド会計システム',
+            itToolPurpose: '経理業務の効率化',
+            expectedEffect: '作業時間の50%削減',
+            implementationPeriod: '2025-04-01',
+            totalBudget: '3000000',
+            requestedAmount: '2000000'
+        }));
+        sessionStorage.setItem('requiredDocuments', JSON.stringify([
+            { id: 'doc1', name: '申請書', required: true },
+            { id: 'doc2', name: '事業計画書', required: true },
+            { id: 'doc3', name: '見積書', required: true }
+        ]));
+        
+        // 完了ページにリダイレクト
+        window.location.href = '/completion/it-donyu';
+    </script>
+</head>
+<body>
+    <p>完了ページにリダイレクトしています...</p>
+</body>
+</html>

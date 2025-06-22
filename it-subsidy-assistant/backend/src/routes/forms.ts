@@ -1,9 +1,9 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { supabase } from '@/config/supabase';
 import { asyncHandler } from '@/middleware/asyncHandler';
 import { validateRequest } from '@/middleware/validateRequest';
-import { authenticate } from '@/middleware/auth';
+import { authenticate, AuthenticatedRequest } from '@/middleware/auth';
 import { 
   SaveFormDataRequestSchema,
   FormData,
@@ -20,7 +20,7 @@ router.post(
   '/save',
   authenticate,
   validateRequest(SaveFormDataRequestSchema),
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { session_id, form_type, form_data, is_draft } = req.body;
     const user_id = req.user!.id;
 
@@ -105,7 +105,7 @@ router.post(
 router.get(
   '/get/:sessionId/:formType',
   authenticate,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { sessionId, formType } = req.params;
     const user_id = req.user!.id;
 
@@ -135,7 +135,7 @@ router.get(
 router.get(
   '/session/:sessionId',
   authenticate,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { sessionId } = req.params;
     const user_id = req.user!.id;
 
@@ -172,7 +172,7 @@ router.get(
 router.delete(
   '/:formId',
   authenticate,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { formId } = req.params;
     const user_id = req.user!.id;
 
@@ -201,7 +201,7 @@ router.delete(
 router.post(
   '/merge/:sessionId',
   authenticate,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { sessionId } = req.params;
     const user_id = req.user!.id;
 

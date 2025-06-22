@@ -5,6 +5,8 @@ import RequiredDocumentsList from './components/RequiredDocumentsList';
 import DocumentRequirementQuestions from './components/DocumentRequirementQuestions';
 import { ApplicationGuidePage } from './pages/ApplicationGuidePage';
 import { subsidyDetailedQuestions } from './data/subsidy-questions-detailed';
+import AIDocumentAssistant from './components/AIDocumentAssistant';
+import SmartFormDemoPage from './pages/SmartFormDemoPage';
 import './styles/guide.css';
 
 // ===== データ型定義 =====
@@ -161,6 +163,8 @@ function App() {
               projectData={JSON.parse(sessionStorage.getItem('companyData') || '{}')}
             />
           } />
+          <Route path="/ai-assistant" element={<AIDocumentAssistant />} />
+          <Route path="/smart-form" element={<SmartFormDemoPage />} />
         </Routes>
       </div>
     </Router>
@@ -179,6 +183,26 @@ const Header: React.FC<{ isLoggedIn: boolean; userEmail: string; onLogout: () =>
         </Link>
         
         <nav style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Link to="/smart-form" style={{ 
+            textDecoration: 'none', 
+            color: '#10b981',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontWeight: '500'
+          }}>
+            ✨ スマートフォーム
+          </Link>
+          <Link to="/ai-assistant" style={{ 
+            textDecoration: 'none', 
+            color: '#8b5cf6',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontWeight: '500'
+          }}>
+            🤖 AIアシスタント
+          </Link>
           {isLoggedIn ? (
             <>
               <Link to="/guide" style={{ textDecoration: 'none', color: '#2563eb' }}>
@@ -326,22 +350,145 @@ const QuestionnaireWizard: React.FC = () => {
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px', textAlign: 'center' }}>
         <h2 style={{ fontSize: '32px', marginBottom: '16px' }}>IT補助金申請を簡単に</h2>
         <p style={{ fontSize: '18px', color: '#6b7280', marginBottom: '32px' }}>
-          5〜6問の質問に答えるだけで、最適な補助金をご提案します
+          申請書作成方法を選択してください
         </p>
-        <button
-          onClick={() => setHasStarted(true)}
-          style={{
-            backgroundColor: '#2563eb',
-            color: 'white',
-            padding: '16px 32px',
-            fontSize: '18px',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer'
+        
+        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '48px', flexWrap: 'wrap' }}>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '32px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            flex: 1,
+            maxWidth: '280px',
+            minWidth: '250px',
+            cursor: 'pointer',
+            transition: 'transform 0.2s',
+            border: '2px solid transparent'
           }}
-        >
-          診断を開始する
-        </button>
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.borderColor = '#10b981';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'transparent';
+          }}
+          onClick={() => navigate('/smart-form')}
+          >
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>✨</div>
+            <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>スマートフォーム</h3>
+            <p style={{ color: '#6b7280', fontSize: '14px', lineHeight: '1.6' }}>
+              簡単な質問に答えるだけで<br />
+              必要書類を自動作成
+            </p>
+            <button
+              style={{
+                marginTop: '20px',
+                backgroundColor: '#10b981',
+                color: 'white',
+                padding: '12px 24px',
+                fontSize: '16px',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                width: '100%'
+              }}
+            >
+              スマート入力開始
+            </button>
+          </div>
+
+          <div style={{
+            backgroundColor: 'white',
+            padding: '32px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            flex: 1,
+            maxWidth: '280px',
+            minWidth: '250px',
+            cursor: 'pointer',
+            transition: 'transform 0.2s',
+            border: '2px solid transparent'
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.borderColor = '#8b5cf6';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'transparent';
+          }}
+          onClick={() => navigate('/ai-assistant')}
+          >
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤖</div>
+            <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>AIアシスタント</h3>
+            <p style={{ color: '#6b7280', fontSize: '14px', lineHeight: '1.6' }}>
+              AIとの対話形式で<br />
+              申請書を作成
+            </p>
+            <button
+              style={{
+                marginTop: '20px',
+                backgroundColor: '#8b5cf6',
+                color: 'white',
+                padding: '12px 24px',
+                fontSize: '16px',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                width: '100%'
+              }}
+            >
+              AIで作成開始
+            </button>
+          </div>
+          
+          <div style={{
+            backgroundColor: 'white',
+            padding: '32px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            flex: 1,
+            maxWidth: '280px',
+            minWidth: '250px',
+            cursor: 'pointer',
+            transition: 'transform 0.2s',
+            border: '2px solid transparent'
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.borderColor = '#2563eb';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'transparent';
+          }}
+          onClick={() => setHasStarted(true)}
+          >
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📝</div>
+            <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>クイック診断</h3>
+            <p style={{ color: '#6b7280', fontSize: '14px', lineHeight: '1.6' }}>
+              質問に答えて<br />
+              最適な補助金を提案
+            </p>
+            <button
+              style={{
+                marginTop: '20px',
+                backgroundColor: '#2563eb',
+                color: 'white',
+                padding: '12px 24px',
+                fontSize: '16px',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                width: '100%'
+              }}
+            >
+              診断を開始
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
