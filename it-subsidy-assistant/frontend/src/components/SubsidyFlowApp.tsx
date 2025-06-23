@@ -3,7 +3,7 @@ import AkinatorQuestionnaire from './AkinatorQuestionnaire';
 import SubsidySelectionScreen from './SubsidySelectionScreen';
 import DocumentRequirementScreen from './DocumentRequirementScreen';
 import DocumentFormScreen from './DocumentFormScreen';
-import ConfirmationScreen from './ConfirmationScreen';
+import EnhancedConfirmationScreen from './EnhancedConfirmationScreen';
 
 interface AkinatorAnswer {
   questionId: string;
@@ -141,7 +141,7 @@ const SubsidyFlowApp: React.FC = () => {
       
       case 'confirmation':
         return selectedSubsidy ? (
-          <ConfirmationScreen 
+          <EnhancedConfirmationScreen 
             requiredDocuments={requiredDocuments}
             formData={formData}
             subsidyName={selectedSubsidy.subsidyName}

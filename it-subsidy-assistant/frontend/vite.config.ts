@@ -5,16 +5,13 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      input: {
-        main: './index.html',
-        demo: './demo-index.html'
-      }
+      input: './index.html'
     }
   },
   server: {
     host: 'localhost',
     port: 5173,
     strictPort: false,
-    open: '/demo-index.html'
+    open: '/'
   }
 })

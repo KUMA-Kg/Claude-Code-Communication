@@ -7,6 +7,8 @@ import { ApplicationGuidePage } from './pages/ApplicationGuidePage';
 import { subsidyDetailedQuestions } from './data/subsidy-questions-detailed';
 import AIDocumentAssistant from './components/AIDocumentAssistant';
 import SmartFormDemoPage from './pages/SmartFormDemoPage';
+import JizokukaCompletionPage from './components/JizokukaCompletionPage';
+import EnhancedInputForm from './components/EnhancedInputForm';
 import './styles/guide.css';
 
 // ===== データ型定義 =====
@@ -147,7 +149,17 @@ function App() {
               }
             />
           } />
-          <Route path="/input-form" element={<DynamicDocumentInputForm isLoggedIn={isLoggedIn} saveProject={saveProject} />} />
+          <Route path="/required-documents/:subsidyType" element={
+            <RequiredDocumentsList 
+              subsidyType={window.location.pathname.split('/').pop() || ''} 
+              subsidyName={
+                window.location.pathname.includes('it-donyu') ? 'IT導入補助金2025' : 
+                window.location.pathname.includes('monozukuri') ? 'ものづくり補助金' : 
+                '小規模事業者持続化補助金'
+              }
+            />
+          } />
+          <Route path="/input-form" element={<EnhancedInputForm isLoggedIn={isLoggedIn} saveProject={saveProject} />} />
           <Route path="/document-output" element={<DocumentOutput isLoggedIn={isLoggedIn} />} />
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
           <Route path="/mypage" element={<MyPage savedProjects={savedProjects} />} />
@@ -165,6 +177,7 @@ function App() {
           } />
           <Route path="/ai-assistant" element={<AIDocumentAssistant />} />
           <Route path="/smart-form" element={<SmartFormDemoPage />} />
+          <Route path="/completion/jizokuka" element={<JizokukaCompletionPage />} />
         </Routes>
       </div>
     </Router>
@@ -494,57 +507,189 @@ const QuestionnaireWizard: React.FC = () => {
   }
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '40px 20px' }}>
-      <div style={{ marginBottom: '32px' }}>
-        <div style={{ backgroundColor: '#e5e7eb', height: '8px', borderRadius: '4px' }}>
-          <div
-            style={{
-              backgroundColor: '#2563eb',
-              height: '100%',
-              borderRadius: '4px',
-              width: `${progress}%`,
-              transition: 'width 0.3s'
-            }}
-          />
+    <div style={{ 
+      minHeight: '100vh',
+      backgroundColor: '#f0f9ff',
+      padding: '40px 20px'
+    }}>
+      <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+        {/* ヘッダー */}
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div style={{ 
+            fontSize: '48px', 
+            marginBottom: '16px',
+            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
+          }}>
+            🎯
+          </div>
+          <h2 style={{ 
+            fontSize: '32px', 
+            color: '#1e40af',
+            marginBottom: '8px',
+            fontWeight: 'bold'
+          }}>
+            補助金診断
+          </h2>
+          <p style={{ 
+            fontSize: '18px', 
+            color: '#6b7280'
+          }}>
+            あなたに最適な補助金を見つけます
+          </p>
         </div>
-        <p style={{ textAlign: 'center', marginTop: '8px', color: '#6b7280' }}>
-          質問 {currentStep + 1} / {questions.length}
-        </p>
-      </div>
 
-      <div style={{ backgroundColor: 'white', padding: '32px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-        <h3 style={{ fontSize: '24px', marginBottom: '24px', textAlign: 'center' }}>
-          {currentQuestion.question}
-        </h3>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {currentQuestion.options.map((option) => (
-            <button
-              key={option.value}
-              onClick={() => handleAnswer(option.value)}
+        {/* プログレスバー */}
+        <div style={{ marginBottom: '32px' }}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '12px'
+          }}>
+            <span style={{ 
+              fontSize: '14px', 
+              color: '#6b7280',
+              fontWeight: '500' 
+            }}>
+              進捗状況
+            </span>
+            <span style={{ 
+              fontSize: '14px', 
+              color: '#3b82f6',
+              fontWeight: '600' 
+            }}>
+              {Math.round(progress)}%
+            </span>
+          </div>
+          <div style={{ 
+            backgroundColor: 'white', 
+            height: '12px', 
+            borderRadius: '100px',
+            boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.1)',
+            overflow: 'hidden'
+          }}>
+            <div
               style={{
-                padding: '16px',
-                backgroundColor: '#f9fafb',
-                border: '2px solid #e5e7eb',
+                backgroundColor: '#3b82f6',
+                height: '100%',
+                borderRadius: '100px',
+                width: `${progress}%`,
+                transition: 'width 0.5s ease-out',
+                boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)'
+              }}
+            />
+          </div>
+          <p style={{ 
+            textAlign: 'center', 
+            marginTop: '12px', 
+            color: '#6b7280',
+            fontSize: '16px' 
+          }}>
+            質問 {currentStep + 1} / {questions.length}
+          </p>
+        </div>
+
+        {/* 質問カード */}
+        <div style={{ 
+          backgroundColor: 'white', 
+          padding: '40px', 
+          borderRadius: '16px', 
+          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+          border: '1px solid #e2e8f0'
+        }}>
+          <h3 style={{ 
+            fontSize: '28px', 
+            marginBottom: '32px', 
+            textAlign: 'center',
+            color: '#1e40af',
+            fontWeight: '600'
+          }}>
+            {currentQuestion.question}
+          </h3>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {currentQuestion.options.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => handleAnswer(option.value)}
+                style={{
+                  padding: '20px 24px',
+                  backgroundColor: 'white',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '12px',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  fontSize: '18px',
+                  fontWeight: '500',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f0f9ff';
+                  e.currentTarget.style.borderColor = '#3b82f6';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = 'white';
+                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+                }}
+              >
+                <span style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  border: '2px solid #3b82f6',
+                  backgroundColor: 'transparent',
+                  flexShrink: 0
+                }} />
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ナビゲーション */}
+        {currentStep > 0 && (
+          <div style={{ 
+            marginTop: '24px',
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
+            <button
+              onClick={() => setCurrentStep(currentStep - 1)}
+              style={{
+                padding: '12px 24px',
+                backgroundColor: '#6b7280',
+                color: 'white',
+                border: 'none',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                textAlign: 'left',
                 fontSize: '16px',
+                fontWeight: '500',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
                 transition: 'all 0.2s'
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = '#eff6ff';
-                e.currentTarget.style.borderColor = '#2563eb';
+                e.currentTarget.style.backgroundColor = '#4b5563';
+                e.currentTarget.style.transform = 'translateY(-1px)';
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = '#f9fafb';
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.backgroundColor = '#6b7280';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              {option.label}
+              ← 前の質問に戻る
             </button>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -589,53 +734,157 @@ const SubsidyListPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
-      <h2 style={{ fontSize: '28px', marginBottom: '16px' }}>あなたにおすすめの補助金</h2>
-      <p style={{ color: '#6b7280', marginBottom: '32px' }}>
-        回答内容から、以下の補助金が活用できる可能性があります
-      </p>
+    <div style={{ 
+      minHeight: '100vh',
+      backgroundColor: '#f0f9ff',
+      padding: '40px 20px'
+    }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        {/* ヘッダー */}
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div style={{ 
+            fontSize: '48px', 
+            marginBottom: '16px',
+            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
+          }}>
+            🎊
+          </div>
+          <h2 style={{ 
+            fontSize: '36px', 
+            color: '#1e40af',
+            marginBottom: '16px',
+            fontWeight: 'bold'
+          }}>
+            診断結果：おすすめの補助金
+          </h2>
+          <p style={{ 
+            fontSize: '18px', 
+            color: '#6b7280',
+            maxWidth: '600px',
+            margin: '0 auto'
+          }}>
+            回答内容から、以下の補助金が活用できる可能性があります
+          </p>
+        </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {subsidies.map((subsidy) => (
-          <div
-            key={subsidy.id}
-            style={{
-              backgroundColor: 'white',
-              padding: '24px',
-              borderRadius: '12px',
-              border: '2px solid',
-              borderColor: selectedSubsidy === subsidy.id ? '#2563eb' : '#e5e7eb',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-            onClick={() => setSelectedSubsidy(subsidy.id)}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '12px' }}>
-              <h3 style={{ fontSize: '20px', margin: 0 }}>{subsidy.name}</h3>
-              <div style={{ textAlign: 'right' }}>
-                <span style={{
-                  backgroundColor: '#fee2e2',
-                  color: '#dc2626',
-                  padding: '4px 12px',
-                  borderRadius: '20px',
-                  fontSize: '14px',
-                  fontWeight: '500'
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {subsidies.map((subsidy) => (
+            <div
+              key={subsidy.id}
+              style={{
+                backgroundColor: 'white',
+                padding: '32px',
+                borderRadius: '16px',
+                border: '3px solid',
+                borderColor: selectedSubsidy === subsidy.id ? '#3b82f6' : 'transparent',
+                cursor: 'pointer',
+                transition: 'all 0.3s',
+                boxShadow: selectedSubsidy === subsidy.id 
+                  ? '0 20px 25px -5px rgba(0, 0, 0, 0.1)' 
+                  : '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+              }}
+              onClick={() => setSelectedSubsidy(subsidy.id)}
+              onMouseOver={(e) => {
+                if (selectedSubsidy !== subsidy.id) {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1)';
+                }
+              }}
+              onMouseOut={(e) => {
+                if (selectedSubsidy !== subsidy.id) {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                }
+              }}
+            >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '20px' }}>
+              <div>
+                <h3 style={{ 
+                  fontSize: '24px', 
+                  margin: '0 0 8px 0',
+                  color: '#1e40af',
+                  fontWeight: '600' 
                 }}>
-                  マッチ度 {subsidy.matchScore}%
-                </span>
+                  {subsidy.name}
+                </h3>
+                <p style={{ 
+                  color: '#6b7280', 
+                  fontSize: '16px',
+                  margin: 0 
+                }}>
+                  {subsidy.description}
+                </p>
+              </div>
+              <div style={{ 
+                textAlign: 'center',
+                minWidth: '120px' 
+              }}>
+                <div style={{
+                  backgroundColor: subsidy.matchScore >= 90 ? '#dcfce7' : 
+                                   subsidy.matchScore >= 80 ? '#fef3c7' : '#fee2e2',
+                  color: subsidy.matchScore >= 90 ? '#16a34a' : 
+                         subsidy.matchScore >= 80 ? '#d97706' : '#dc2626',
+                  padding: '8px 16px',
+                  borderRadius: '100px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  marginBottom: '4px'
+                }}>
+                  マッチ度
+                </div>
+                <div style={{
+                  fontSize: '32px',
+                  fontWeight: 'bold',
+                  color: subsidy.matchScore >= 90 ? '#16a34a' : 
+                         subsidy.matchScore >= 80 ? '#d97706' : '#dc2626'
+                }}>
+                  {subsidy.matchScore}%
+                </div>
               </div>
             </div>
             
-            <p style={{ color: '#6b7280', marginBottom: '16px' }}>{subsidy.description}</p>
-            
-            <div style={{ display: 'flex', gap: '32px', marginBottom: '16px' }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(2, 1fr)', 
+              gap: '20px', 
+              marginBottom: '24px',
+              padding: '20px',
+              backgroundColor: '#f8fafc',
+              borderRadius: '12px'
+            }}>
               <div>
-                <span style={{ color: '#6b7280', fontSize: '14px' }}>最大補助額</span>
-                <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '4px 0' }}>{subsidy.maxAmount}</p>
+                <span style={{ 
+                  color: '#6b7280', 
+                  fontSize: '14px',
+                  fontWeight: '500' 
+                }}>
+                  最大補助額
+                </span>
+                <p style={{ 
+                  fontSize: '24px', 
+                  fontWeight: 'bold', 
+                  margin: '4px 0',
+                  color: '#1e40af' 
+                }}>
+                  {subsidy.maxAmount}
+                </p>
               </div>
               <div>
-                <span style={{ color: '#6b7280', fontSize: '14px' }}>補助率</span>
-                <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '4px 0' }}>{subsidy.subsidyRate}</p>
+                <span style={{ 
+                  color: '#6b7280', 
+                  fontSize: '14px',
+                  fontWeight: '500' 
+                }}>
+                  補助率
+                </span>
+                <p style={{ 
+                  fontSize: '24px', 
+                  fontWeight: 'bold', 
+                  margin: '4px 0',
+                  color: '#1e40af' 
+                }}>
+                  {subsidy.subsidyRate}
+                </p>
               </div>
             </div>
 
@@ -646,17 +895,34 @@ const SubsidyListPage: React.FC = () => {
               }}
               style={{
                 width: '100%',
-                padding: '12px',
-                backgroundColor: selectedSubsidy === subsidy.id ? '#2563eb' : '#f3f4f6',
-                color: selectedSubsidy === subsidy.id ? 'white' : '#374151',
-                border: 'none',
-                borderRadius: '6px',
+                padding: '16px',
+                backgroundColor: selectedSubsidy === subsidy.id ? '#3b82f6' : 'white',
+                color: selectedSubsidy === subsidy.id ? 'white' : '#3b82f6',
+                border: `2px solid #3b82f6`,
+                borderRadius: '12px',
                 cursor: 'pointer',
-                fontSize: '16px',
-                fontWeight: '500'
+                fontSize: '18px',
+                fontWeight: '600',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+              onMouseOver={(e) => {
+                if (selectedSubsidy !== subsidy.id) {
+                  e.currentTarget.style.backgroundColor = '#3b82f6';
+                  e.currentTarget.style.color = 'white';
+                }
+              }}
+              onMouseOut={(e) => {
+                if (selectedSubsidy !== subsidy.id) {
+                  e.currentTarget.style.backgroundColor = 'white';
+                  e.currentTarget.style.color = '#3b82f6';
+                }
               }}
             >
-              この補助金で申請を進める
+              この補助金で申請を進める →
             </button>
           </div>
         ))}

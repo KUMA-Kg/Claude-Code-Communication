@@ -1,0 +1,51 @@
+{
+  "quality_gates": {
+    "build": {
+      "max_bundle_size_kb": 500,
+      "max_lint_errors": 0,
+      "max_lint_warnings": 5,
+      "typescript_strict": true,
+      "required_tests_coverage": 80
+    },
+    "ui_consistency": {
+      "design_system_compliance": true,
+      "accessibility_aa_compliance": true,
+      "responsive_breakpoints": ["360px", "768px", "1024px", "1440px"],
+      "theme_consistency": ["light", "dark"]
+    },
+    "performance": {
+      "max_first_contentful_paint_ms": 1500,
+      "max_largest_contentful_paint_ms": 2500,
+      "min_core_web_vitals_score": 75,
+      "max_unused_css_percentage": 20
+    },
+    "security": {
+      "no_hardcoded_secrets": true,
+      "content_security_policy": true,
+      "dependency_vulnerability_scan": true,
+      "xss_protection": true
+    }
+  },
+  "monitoring_rules": {
+    "real_time_ux": {
+      "track_user_flows": ["questionnaire", "selection", "documents", "forms", "confirmation"],
+      "measure_step_completion_rates": true,
+      "detect_ui_errors": true,
+      "monitor_form_abandonment": true,
+      "track_accessibility_usage": true
+    },
+    "performance_monitoring": {
+      "core_web_vitals": true,
+      "resource_loading_times": true,
+      "javascript_errors": true,
+      "memory_usage": true
+    }
+  },
+  "automated_fixes": {
+    "lint_auto_fix": true,
+    "import_sorting": true,
+    "unused_code_removal": true,
+    "accessibility_improvements": true,
+    "performance_optimizations": true
+  }
+}
