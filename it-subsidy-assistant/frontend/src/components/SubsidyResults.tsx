@@ -14,6 +14,7 @@ interface SubsidyInfo {
   publicNumber?: string;
   deadline?: string;
   status?: string;
+  usageExamples?: string[];
 }
 
 export const SubsidyResults: React.FC = () => {
@@ -37,7 +38,13 @@ export const SubsidyResults: React.FC = () => {
       targetBusiness: '中小企業・小規模事業者',
       isActive: true,
       publicNumber: '第3次',
-      deadline: '2025年7月18日'
+      deadline: '2025年7月18日',
+      usageExamples: [
+        '📱 受注管理システムを導入して業務効率化したい時',
+        '💻 クラウド会計ソフトで経理業務を自動化したい時',
+        '🏪 POSレジと在庫管理を連携させたい時',
+        '📊 顧客管理システムで売上を向上させたい時'
+      ]
     },
     'monozukuri': {
       id: 'monozukuri',
@@ -53,7 +60,13 @@ export const SubsidyResults: React.FC = () => {
       targetBusiness: '中小企業・小規模事業者',
       isActive: true,
       publicNumber: '第20次',
-      deadline: '2025年7月25日'
+      deadline: '2025年7月25日',
+      usageExamples: [
+        '🏭 最新の製造設備を導入して生産性を向上させたい時',
+        '🔬 新しい技術で革新的な製品を開発したい時',
+        '🤖 自動化設備で人手不足を解消したい時',
+        '⚙️ 製造プロセスを改善して不良率を下げたい時'
+      ]
     },
     'jizokuka': {
       id: 'jizokuka',
@@ -70,7 +83,13 @@ export const SubsidyResults: React.FC = () => {
       isActive: false,
       publicNumber: '第17回',
       deadline: '2025年6月13日（予定）',
-      status: '2025年3月4日開始予定'
+      status: '2025年3月4日開始予定',
+      usageExamples: [
+        '🌐 ホームページを作って新規顧客を獲得したい時',
+        '📣 チラシやSNS広告で販路を拡大したい時',
+        '🛍️ ECサイトを開設してネット販売を始めたい時',
+        '🎯 地域の特産品を全国に売り出したい時'
+      ]
     },
     'jigyou-saikouchiku': {
       id: 'jigyou-saikouchiku',
@@ -88,7 +107,13 @@ export const SubsidyResults: React.FC = () => {
       isActive: false,
       publicNumber: '第13回（最終）',
       deadline: '2025年3月26日（終了）',
-      status: '募集終了'
+      status: '募集終了',
+      usageExamples: [
+        '🏢 飲食店からセントラルキッチン事業へ転換したい時',
+        '🏭 製造業から新分野のサービス業へ進出したい時',
+        '♻️ グリーン・環境分野の新事業を立ち上げたい時',
+        '🚀 思い切った事業転換でV字回復を目指したい時'
+      ]
     }
   };
 
@@ -271,6 +296,43 @@ export const SubsidyResults: React.FC = () => {
                       </div>
                     )}
 
+                    {/* 使用例 */}
+                    {subsidy.usageExamples && (
+                      <div style={{
+                        marginBottom: '16px',
+                        padding: '16px',
+                        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(102, 126, 234, 0.1)'
+                      }}>
+                        <h4 style={{
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          color: '#667eea',
+                          marginBottom: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}>
+                          💡 こんな時に使える補助金です
+                        </h4>
+                        <div style={{ display: 'grid', gap: '8px' }}>
+                          {subsidy.usageExamples.map((example, idx) => (
+                            <div 
+                              key={idx}
+                              style={{
+                                fontSize: '13px',
+                                color: '#4b5563',
+                                lineHeight: 1.5
+                              }}
+                            >
+                              {example}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     {/* 特徴 */}
                     <div style={{ marginBottom: '20px' }}>
                       {subsidy.features.map((feature, idx) => (
@@ -291,6 +353,22 @@ export const SubsidyResults: React.FC = () => {
                         </div>
                       ))}
                     </div>
+
+                    {/* 認定経営革新等支援機関の説明 */}
+                    {subsidy.id === 'jigyou-saikouchiku' && (
+                      <div style={{
+                        marginBottom: '16px',
+                        padding: '12px 16px',
+                        background: 'rgba(59, 130, 246, 0.05)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(59, 130, 246, 0.1)',
+                        fontSize: '13px',
+                        color: '#3b82f6'
+                      }}>
+                        <strong>📋 認定経営革新等支援機関とは？</strong><br />
+                        税理士・公認会計士・金融機関などの専門家で、国が認定した中小企業の経営相談や支援計画作成をサポートする機関です。
+                      </div>
+                    )}
 
                     {/* 補助金情報 */}
                     <div style={{ display: 'flex', gap: '40px' }}>
