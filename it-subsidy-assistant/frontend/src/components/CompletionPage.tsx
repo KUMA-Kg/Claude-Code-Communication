@@ -30,6 +30,19 @@ export const CompletionPage: React.FC<CompletionPageProps> = ({
   const [generatedContent, setGeneratedContent] = useState<any>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedContent, setEditedContent] = useState<any>(null);
+  const [isEditingApplicant, setIsEditingApplicant] = useState(false);
+  const [applicantData, setApplicantData] = useState<any>(null);
+  const [editedApplicantData, setEditedApplicantData] = useState<any>(null);
+
+  // 申請者プロファイルデータを読み込む
+  useEffect(() => {
+    const profileData = localStorage.getItem('applicantProfile');
+    if (profileData) {
+      const parsed = JSON.parse(profileData);
+      setApplicantData(parsed);
+      setEditedApplicantData(parsed);
+    }
+  }, []);
 
   // 補助金別のダウンロード書類を設定
   useEffect(() => {
@@ -1487,18 +1500,103 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
               gap: '24px'
             }}>
               <div>
-                <h3 style={{
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
                   marginBottom: '8px'
-                }}>申請者情報</h3>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                  {formData?.companyName || formData?.company_name || '企業名未設定'}
-                </p>
-                <p style={{ color: 'var(--text-secondary)' }}>
-                  {formData?.businessDescription || formData?.industry || '業種未設定'}
-                </p>
+                }}>
+                  <h3 style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: 'var(--text-primary)'
+                  }}>申請者情報</h3>
+                  <button
+                    onClick={() => {
+                      if (isEditingApplicant) {
+                        // 保存処理
+                        setApplicantData(editedApplicantData);
+                        localStorage.setItem('applicantProfile', JSON.stringify(editedApplicantData));
+                      }
+                      setIsEditingApplicant(!isEditingApplicant);
+                    }}
+                    style={{
+                      padding: '4px 8px',
+                      fontSize: '12px',
+                      background: isEditingApplicant ? '#10b981' : '#f59e0b',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    {isEditingApplicant ? '💾 保存' : '✏️ 編集'}
+                  </button>
+                </div>
+                {isEditingApplicant ? (
+                  <div style={{ display: 'grid', gap: '8px' }}>
+                    <input
+                      type="text"
+                      value={editedApplicantData?.companyName || ''}
+                      onChange={(e) => setEditedApplicantData({
+                        ...editedApplicantData,
+                        companyName: e.target.value
+                      })}
+                      placeholder="会社名"
+                      style={{
+                        padding: '6px 10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '4px',
+                        fontSize: '14px'
+                      }}
+                    />
+                    <input
+                      type="text"
+                      value={editedApplicantData?.address || ''}
+                      onChange={(e) => setEditedApplicantData({
+                        ...editedApplicantData,
+                        address: e.target.value
+                      })}
+                      placeholder="住所"
+                      style={{
+                        padding: '6px 10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '4px',
+                        fontSize: '14px'
+                      }}
+                    />
+                    <input
+                      type="text"
+                      value={editedApplicantData?.businessDescription || ''}
+                      onChange={(e) => setEditedApplicantData({
+                        ...editedApplicantData,
+                        businessDescription: e.target.value
+                      })}
+                      placeholder="事業内容"
+                      style={{
+                        padding: '6px 10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '4px',
+                        fontSize: '14px'
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '4px', fontSize: '14px' }}>
+                      <strong>会社名:</strong> {applicantData?.companyName || formData?.companyName || formData?.company_name || '未設定'}
+                    </p>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '4px', fontSize: '14px' }}>
+                      <strong>住所:</strong> {applicantData?.address || '未設定'}
+                    </p>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+                      <strong>事業内容:</strong> {applicantData?.businessDescription || formData?.businessDescription || formData?.industry || '未設定'}
+                    </p>
+                  </>
+                )}
               </div>
               <div>
                 <h3 style={{
@@ -1507,12 +1605,73 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
                   color: 'var(--text-primary)',
                   marginBottom: '8px'
                 }}>申請内容</h3>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                  従業員数: {formData?.employeeCount || formData?.employee_count || 'N/A'}名
-                </p>
-                <p style={{ color: 'var(--text-secondary)' }}>
-                  年間売上: {formData?.annualRevenue || formData?.annual_revenue || 'N/A'}万円
-                </p>
+                {isEditingApplicant ? (
+                  <div style={{ display: 'grid', gap: '8px' }}>
+                    <input
+                      type="text"
+                      value={editedApplicantData?.representativeName || ''}
+                      onChange={(e) => setEditedApplicantData({
+                        ...editedApplicantData,
+                        representativeName: e.target.value
+                      })}
+                      placeholder="代表者名"
+                      style={{
+                        padding: '6px 10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '4px',
+                        fontSize: '14px'
+                      }}
+                    />
+                    <input
+                      type="text"
+                      value={editedApplicantData?.contactPhone || ''}
+                      onChange={(e) => setEditedApplicantData({
+                        ...editedApplicantData,
+                        contactPhone: e.target.value
+                      })}
+                      placeholder="電話番号"
+                      style={{
+                        padding: '6px 10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '4px',
+                        fontSize: '14px'
+                      }}
+                    />
+                    <input
+                      type="email"
+                      value={editedApplicantData?.contactEmail || ''}
+                      onChange={(e) => setEditedApplicantData({
+                        ...editedApplicantData,
+                        contactEmail: e.target.value
+                      })}
+                      placeholder="メールアドレス"
+                      style={{
+                        padding: '6px 10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '4px',
+                        fontSize: '14px'
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '4px', fontSize: '14px' }}>
+                      <strong>代表者:</strong> {applicantData?.representativeName || '未設定'}
+                    </p>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '4px', fontSize: '14px' }}>
+                      <strong>電話番号:</strong> {applicantData?.contactPhone || '未設定'}
+                    </p>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '4px', fontSize: '14px' }}>
+                      <strong>メール:</strong> {applicantData?.contactEmail || '未設定'}
+                    </p>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '4px', fontSize: '14px' }}>
+                      <strong>従業員数:</strong> {applicantData?.employeeCount || formData?.employeeCount || formData?.employee_count || 'N/A'}名
+                    </p>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+                      <strong>年間売上:</strong> {applicantData?.annualRevenue || formData?.annualRevenue || formData?.annual_revenue || 'N/A'}万円
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </div>
