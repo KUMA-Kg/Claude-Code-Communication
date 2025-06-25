@@ -357,11 +357,89 @@ const ImprovedAIDocumentGenerator: React.FC = () => {
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-      padding: '40px 20px'
+      padding: '40px 20px',
+      position: 'relative'
     }}>
+      {/* グレーアウトオーバーレイ */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        zIndex: 10,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <div style={{
+          background: 'white',
+          borderRadius: '16px',
+          padding: '48px',
+          textAlign: 'center',
+          maxWidth: '500px',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
+        }}>
+          <div style={{
+            fontSize: '64px',
+            marginBottom: '24px',
+            filter: 'grayscale(100%)',
+            opacity: 0.5
+          }}>
+            🔒
+          </div>
+          <h2 style={{
+            fontSize: '28px',
+            fontWeight: 'bold',
+            marginBottom: '16px',
+            color: '#1f2937'
+          }}>
+            この機能は現在利用できません
+          </h2>
+          <p style={{
+            fontSize: '16px',
+            color: '#6b7280',
+            marginBottom: '32px',
+            lineHeight: 1.6
+          }}>
+            AI文書生成機能は、補助金診断を完了してからご利用ください。<br />
+            まずはトップページから診断を開始してください。
+          </p>
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              padding: '16px 48px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '18px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+            }}
+          >
+            診断を開始する →
+          </button>
+        </div>
+      </div>
+
       <div style={{
         maxWidth: '800px',
-        margin: '0 auto'
+        margin: '0 auto',
+        filter: 'blur(3px)',
+        opacity: 0.3,
+        pointerEvents: 'none'
       }}>
         <h1 style={{
           fontSize: '32px',
