@@ -40,6 +40,7 @@ export const SubsidyResults: React.FC = () => {
       publicNumber: '第3次',
       deadline: '2025年7月18日',
       usageExamples: [
+        '🤖 AIツールを導入して業務を自動化・効率化したい時',
         '📱 受注管理システムを導入して業務効率化したい時',
         '💻 クラウド会計ソフトで経理業務を自動化したい時',
         '🏪 POSレジと在庫管理を連携させたい時',
