@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシスタント - デモ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* トップページスタイル */
+        .top-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .hero-card {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .hero-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .hero-title {
+            font-size: 36px;
+            color: #1e40af;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+        
+        .hero-description {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+        
+        .features {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .features h3 {
+            color: #374151;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        
+        .feature-tags {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .feature-tag {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .feature-tag.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .feature-tag.inactive {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        /* 補助金選択画面スタイル */
+        .selection-page {
+            min-height: 100vh;
+            background: #f0f9ff;
+            padding: 40px 20px;
+            display: none;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 12px 20px;
+            cursor: pointer;
+            color: #1e40af;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .page-title {
+            font-size: 36px;
+            color: #1e40af;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+        
+        .page-subtitle {
+            font-size: 18px;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .subsidy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .subsidy-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subsidy-card.active {
+            opacity: 1;
+        }
+        
+        .subsidy-card.inactive {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .subsidy-card.active:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            border-color: #3b82f6;
+        }
+        
+        .status-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-badge.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-badge.preparing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            color: #1f2937;
+            margin-bottom: 12px;
+            font-weight: bold;
+            padding-right: 100px;
+        }
+        
+        .card-description {
+            color: #6b7280;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .card-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .deadline-info {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .deadline-info.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .deadline-info.preparing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .footer-info {
+            max-width: 1200px;
+            margin: 60px auto 0;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .footer-info p {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        /* 質問フローページ */
+        .questionnaire-page {
+            min-height: 100vh;
+            background: #f0f9ff;
+            padding: 40px 20px;
+            display: none;
+        }
+        
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        
+        .form-title {
+            font-size: 28px;
+            color: #1e40af;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+        
+        .form-description {
+            color: #6b7280;
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* 完了画面 */
+        .completion-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .completion-card {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .completion-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .completion-title {
+            font-size: 36px;
+            color: #1e40af;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+        
+        .completion-description {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .summary-card {
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        
+        .summary-title {
+            color: #374151;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .summary-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        .download-button {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+        
+        .return-button {
+            background: white;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. トップページ -->
+    <div id="top-page" class="top-page">
+        <div class="hero-card">
+            <div class="hero-icon">💰</div>
+            <h1 class="hero-title">IT補助金アシスタント</h1>
+            <p class="hero-description">
+                AIが最適な補助金を診断し、申請書類を自動生成します。<br/>
+                簡単な質問に答えるだけで、プロレベルの申請書が完成！
+            </p>
+            
+            <button class="cta-button" onclick="showSelectionPage()">
+                🚀 補助金診断を開始
+            </button>
+            
+            <div class="features">
+                <h3>📊 対応補助金</h3>
+                <div class="feature-tags">
+                    <span class="feature-tag active">IT導入補助金2025</span>
+                    <span class="feature-tag active">小規模事業者持続化補助金</span>
+                    <span class="feature-tag inactive">事業再構築補助金</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 補助金選択画面 -->
+    <div id="selection-page" class="selection-page">
+        <a href="#" class="back-button" onclick="showTopPage()">← トップに戻る</a>
+        
+        <div class="page-header">
+            <h1 class="page-title">📋 補助金を選択してください</h1>
+            <p class="page-subtitle">
+                あなたの事業に最適な補助金を選択して、申請書作成を開始しましょう
+            </p>
+        </div>
+        
+        <div class="subsidy-grid">
+            <!-- IT導入補助金 -->
+            <div class="subsidy-card active" onclick="showQuestionnaire('it-donyu')">
+                <div class="status-badge active">受付中</div>
+                <h3 class="card-title">IT導入補助金2025</h3>
+                <p class="card-description">ITツール導入で業務効率化を支援</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">補助上限</div>
+                        <div class="stat-value">450万円</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">補助率</div>
+                        <div class="stat-value">最大3/4</div>
+                    </div>
+                </div>
+                <div class="deadline-info active">
+                    📅 申請締切: 2025年3月31日
+                </div>
+            </div>
+            
+            <!-- 持続化補助金 -->
+            <div class="subsidy-card active" onclick="showQuestionnaire('jizokuka')">
+                <div class="status-badge active">受付中</div>
+                <h3 class="card-title">小規模事業者持続化補助金</h3>
+                <p class="card-description">販路開拓・生産性向上を支援</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">補助上限</div>
+                        <div class="stat-value">200万円</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">補助率</div>
+                        <div class="stat-value">最大2/3</div>
+                    </div>
+                </div>
+                <div class="deadline-info active">
+                    📅 申請締切: 2025年2月28日
+                </div>
+            </div>
+            
+            <!-- 事業再構築補助金 -->
+            <div class="subsidy-card inactive">
+                <div class="status-badge preparing">準備中</div>
+                <h3 class="card-title">事業再構築補助金</h3>
+                <p class="card-description">新分野展開・事業転換を支援</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">補助上限</div>
+                        <div class="stat-value">8,000万円</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">補助率</div>
+                        <div class="stat-value">最大2/3</div>
+                    </div>
+                </div>
+                <div class="deadline-info preparing">
+                    ⏳ 次回募集: 2025年4月予定
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-info">
+            <p>💡 補助金情報は随時更新されます。最新情報は各公式サイトでご確認ください。</p>
+        </div>
+    </div>
+
+    <!-- 3. 質問フローページ -->
+    <div id="questionnaire-page" class="questionnaire-page">
+        <div class="form-container">
+            <button class="back-button" onclick="showSelectionPage()">← 補助金選択に戻る</button>
+            
+            <div class="form-card">
+                <h1 class="form-title">📝 <span id="subsidy-name">IT導入補助金2025</span> 申請情報入力</h1>
+                <p class="form-description">
+                    以下の情報を入力してください。AIが最適な申請書を生成します。
+                </p>
+                
+                <form id="questionnaire-form">
+                    <div class="form-group">
+                        <label class="form-label">事業者名 *</label>
+                        <input type="text" class="form-input" name="companyName" placeholder="株式会社サンプル" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">業種 *</label>
+                        <select class="form-select" name="businessType" required>
+                            <option value="">選択してください</option>
+                            <option value="manufacturing">製造業</option>
+                            <option value="retail">小売業</option>
+                            <option value="service">サービス業</option>
+                            <option value="it">IT関連</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">現在の経営課題 *</label>
+                        <select class="form-select" name="challenge" required>
+                            <option value="">選択してください</option>
+                            <option value="efficiency">業務効率化</option>
+                            <option value="sales">売上拡大</option>
+                            <option value="cost">コスト削減</option>
+                            <option value="innovation">新商品・サービス開発</option>
+                            <option value="digitalization">デジタル化推進</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">
+                        🚀 AI申請書を生成する
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 完了画面 -->
+    <div id="completion-page" class="completion-page">
+        <div class="completion-card">
+            <div class="completion-icon">🎉</div>
+            <h1 class="completion-title">申請書作成完了！</h1>
+            <p class="completion-description">
+                <span id="company-name-result">サンプル株式会社</span>様の<br/>
+                <strong id="subsidy-name-result">IT導入補助金2025</strong>の申請書が生成されました。
+            </p>
+            
+            <div class="summary-card">
+                <h3 class="summary-title">📋 入力内容</h3>
+                <div class="summary-content">
+                    <div><strong>事業者名:</strong> <span id="summary-company"></span></div>
+                    <div><strong>業種:</strong> <span id="summary-business"></span></div>
+                    <div><strong>経営課題:</strong> <span id="summary-challenge"></span></div>
+                    <div><strong>申請補助金:</strong> <span id="summary-subsidy"></span></div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="download-button" onclick="downloadCSV()">
+                    📥 CSV ダウンロード
+                </button>
+                <a href="#" class="return-button" onclick="showTopPage()">
+                    🏠 トップに戻る
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSubsidy = '';
+        let formData = {};
+        
+        const subsidyData = {
+            'it-donyu': 'IT導入補助金2025',
+            'jizokuka': '小規模事業者持続化補助金'
+        };
+        
+        function showTopPage() {
+            document.getElementById('top-page').style.display = 'flex';
+            document.getElementById('selection-page').style.display = 'none';
+            document.getElementById('questionnaire-page').style.display = 'none';
+            document.getElementById('completion-page').style.display = 'none';
+        }
+        
+        function showSelectionPage() {
+            document.getElementById('top-page').style.display = 'none';
+            document.getElementById('selection-page').style.display = 'block';
+            document.getElementById('questionnaire-page').style.display = 'none';
+            document.getElementById('completion-page').style.display = 'none';
+        }
+        
+        function showQuestionnaire(subsidyId) {
+            currentSubsidy = subsidyId;
+            document.getElementById('subsidy-name').textContent = subsidyData[subsidyId];
+            document.getElementById('top-page').style.display = 'none';
+            document.getElementById('selection-page').style.display = 'none';
+            document.getElementById('questionnaire-page').style.display = 'block';
+            document.getElementById('completion-page').style.display = 'none';
+        }
+        
+        function showCompletion() {
+            document.getElementById('company-name-result').textContent = formData.companyName;
+            document.getElementById('subsidy-name-result').textContent = subsidyData[currentSubsidy];
+            document.getElementById('summary-company').textContent = formData.companyName;
+            document.getElementById('summary-business').textContent = getBusinessTypeText(formData.businessType);
+            document.getElementById('summary-challenge').textContent = getChallengeText(formData.challenge);
+            document.getElementById('summary-subsidy').textContent = subsidyData[currentSubsidy];
+            
+            document.getElementById('top-page').style.display = 'none';
+            document.getElementById('selection-page').style.display = 'none';
+            document.getElementById('questionnaire-page').style.display = 'none';
+            document.getElementById('completion-page').style.display = 'flex';
+        }
+        
+        function getBusinessTypeText(value) {
+            const types = {
+                'manufacturing': '製造業',
+                'retail': '小売業',
+                'service': 'サービス業',
+                'it': 'IT関連',
+                'other': 'その他'
+            };
+            return types[value] || value;
+        }
+        
+        function getChallengeText(value) {
+            const challenges = {
+                'efficiency': '業務効率化',
+                'sales': '売上拡大',
+                'cost': 'コスト削減',
+                'innovation': '新商品・サービス開発',
+                'digitalization': 'デジタル化推進'
+            };
+            return challenges[value] || value;
+        }
+        
+        function downloadCSV() {
+            const csvContent = `事業者名,業種,経営課題,補助金名\n${formData.companyName},${getBusinessTypeText(formData.businessType)},${getChallengeText(formData.challenge)},${subsidyData[currentSubsidy]}`;
+            
+            const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${formData.companyName}_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // フォーム送信処理
+        document.getElementById('questionnaire-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            formData = {
+                companyName: form.companyName.value,
+                businessType: form.businessType.value,
+                challenge: form.challenge.value
+            };
+            
+            showCompletion();
+        });
+    </script>
+</body>
+</html>

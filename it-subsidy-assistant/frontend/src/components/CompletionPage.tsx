@@ -28,6 +28,8 @@ export const CompletionPage: React.FC<CompletionPageProps> = ({
   const [showDocumentPreview, setShowDocumentPreview] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<string>('');
   const [generatedContent, setGeneratedContent] = useState<any>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedContent, setEditedContent] = useState<any>(null);
 
   // 補助金別のダウンロード書類を設定
   useEffect(() => {
@@ -1375,8 +1377,24 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
                 }}
                 onClick={() => {
                   setSelectedDocument(doc.type);
-                  setGeneratedContent(doc.content);
+                  
+                  // 保存済みの編集内容があるか確認
+                  const storageKey = `editedDocument_${selectedSubsidy}_${doc.type}`;
+                  const savedContent = localStorage.getItem(storageKey);
+                  
+                  if (savedContent) {
+                    // 保存済みの内容がある場合はそれを使用
+                    const parsedContent = JSON.parse(savedContent);
+                    setGeneratedContent(parsedContent);
+                    setEditedContent(parsedContent);
+                  } else {
+                    // 保存済みの内容がない場合は元のコンテンツを使用
+                    setGeneratedContent(doc.content);
+                    setEditedContent(doc.content);
+                  }
+                  
                   setShowDocumentPreview(true);
+                  setIsEditMode(false);
                 }}>
                   <div style={{
                     display: 'flex',
@@ -1410,6 +1428,22 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
                   }}>
                     <CheckCircle size={14} style={{ color: 'var(--success-color)' }} />
                     AI分析完了 • クリックして内容確認
+                    {(() => {
+                      const storageKey = `editedDocument_${selectedSubsidy}_${doc.type}`;
+                      const savedContent = localStorage.getItem(storageKey);
+                      return savedContent ? (
+                        <span style={{
+                          padding: '2px 8px',
+                          background: '#e0f2fe',
+                          color: '#0369a1',
+                          borderRadius: '4px',
+                          fontSize: '12px',
+                          fontWeight: '600'
+                        }}>
+                          編集済み
+                        </span>
+                      ) : null;
+                    })()}
                   </div>
                 </div>
               ))}
@@ -2066,8 +2100,110 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
                     {selectedDocument === 'investment_plan' && '設備投資計画書'}
                   </p>
                 </div>
-                <button
-                  onClick={() => setShowDocumentPreview(false)}
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <button
+                    onClick={() => {
+                      // ダウンロード用の内容を準備
+                      const contentToDownload = isEditMode ? editedContent : generatedContent;
+                      const docType = {
+                        'business_plan': '経営計画書',
+                        'sales_plan': '販路開拓計画書',
+                        'expected_effect': '事業効果説明書',
+                        'it_implementation': 'IT導入計画書',
+                        'productivity_plan': '生産性向上計画書',
+                        'wage_increase': '賃金引上げ計画書',
+                        'technical_plan': '技術開発計画書',
+                        'market_strategy': '市場戦略書',
+                        'investment_plan': '設備投資計画書'
+                      }[selectedDocument] || 'AI生成書類';
+                      
+                      // ファイル内容を作成
+                      let fileContent = `${docType}\n${'='.repeat(50)}\n\n`;
+                      
+                      contentToDownload.sections.forEach((section: any, index: number) => {
+                        fileContent += `${index + 1}. ${section.title}\n${'-'.repeat(30)}\n`;
+                        fileContent += `${section.content}\n\n`;
+                      });
+                      
+                      fileContent += `\n${'='.repeat(50)}\n生成日時: ${new Date().toLocaleString('ja-JP')}\n`;
+                      
+                      // ダウンロード実行
+                      const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+                      const url = URL.createObjectURL(blob);
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.download = `${selectedSubsidy}_${selectedDocument}_${new Date().toISOString().split('T')[0]}.txt`;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      URL.revokeObjectURL(url);
+                    }}
+                    style={{
+                      padding: '8px 16px',
+                      background: '#10b981',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    <Download size={14} />
+                    ダウンロード
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (isEditMode) {
+                        // 編集モードを終了して保存
+                        setGeneratedContent(editedContent);
+                        setIsEditMode(false);
+                        
+                        // 編集した内容をローカルストレージに保存
+                        const storageKey = `editedDocument_${selectedSubsidy}_${selectedDocument}`;
+                        localStorage.setItem(storageKey, JSON.stringify(editedContent));
+                        
+                        // 保存完了のフィードバック
+                        alert('編集内容を保存しました。次回アクセス時も編集内容が維持されます。');
+                      } else {
+                        // 編集モードに入る
+                        setIsEditMode(true);
+                      }
+                    }}
+                    style={{
+                      padding: '8px 16px',
+                      background: isEditMode ? '#10b981' : '#667eea',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {isEditMode ? '✓ 保存' : '✏️ 編集'}
+                  </button>
+                  <button
+                  onClick={() => {
+                    setShowDocumentPreview(false);
+                    setIsEditMode(false);
+                  }}
                   style={{
                     background: 'none',
                     border: 'none',
@@ -2089,6 +2225,7 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
                 >
                   ×
                 </button>
+                </div>
               </div>
 
               {/* コンテンツ */}
@@ -2149,17 +2286,63 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
                       }}>
                         {section.title}
                       </h3>
-                      <div style={{
-                        fontSize: '14px',
-                        lineHeight: '1.8',
-                        color: '#374151',
-                        whiteSpace: 'pre-wrap'
-                      }}>
-                        {section.content}
-                      </div>
+                      {isEditMode ? (
+                        <textarea
+                          value={editedContent.sections[index].content}
+                          onChange={(e) => {
+                            const newContent = { ...editedContent };
+                            newContent.sections[index].content = e.target.value;
+                            setEditedContent(newContent);
+                          }}
+                          style={{
+                            width: '100%',
+                            minHeight: '200px',
+                            padding: '12px',
+                            border: '2px solid #e5e7eb',
+                            borderRadius: '8px',
+                            fontSize: '14px',
+                            lineHeight: '1.8',
+                            color: '#374151',
+                            resize: 'vertical',
+                            fontFamily: 'inherit',
+                            outline: 'none'
+                          }}
+                          onFocus={(e) => {
+                            e.target.style.borderColor = '#667eea';
+                          }}
+                          onBlur={(e) => {
+                            e.target.style.borderColor = '#e5e7eb';
+                          }}
+                        />
+                      ) : (
+                        <div style={{
+                          fontSize: '14px',
+                          lineHeight: '1.8',
+                          color: '#374151',
+                          whiteSpace: 'pre-wrap'
+                        }}>
+                          {section.content}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
+
+                {isEditMode && (
+                  <div style={{
+                    marginTop: '16px',
+                    padding: '12px',
+                    background: '#fef3c7',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    color: '#92400e',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    💡 編集モードです。各セクションの内容を自由に編集できます。編集が完了したら「保存」ボタンをクリックしてください。
+                  </div>
+                )}
 
                 <div style={{
                   display: 'flex',
@@ -2168,7 +2351,20 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
                   marginTop: '24px'
                 }}>
                   <button
-                    onClick={() => window.print()}
+                    onClick={() => {
+                      // 編集した内容を含めて印刷
+                      const contentToPrint = isEditMode ? editedContent : generatedContent;
+                      // 一時的に編集モードを解除して印刷
+                      if (isEditMode) {
+                        setIsEditMode(false);
+                        setTimeout(() => {
+                          window.print();
+                          setIsEditMode(true);
+                        }, 100);
+                      } else {
+                        window.print();
+                      }
+                    }}
                     style={{
                       padding: '12px 24px',
                       background: 'var(--bg-secondary)',

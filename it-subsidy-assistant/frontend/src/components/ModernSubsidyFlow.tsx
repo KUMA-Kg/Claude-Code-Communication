@@ -245,25 +245,43 @@ export const ModernSubsidyFlow: React.FC = () => {
     let scores = {
       'it-donyu': 0,
       'monozukuri': 0,
-      'jizokuka': 0
+      'jizokuka': 0,
+      'jigyou-saikouchiku': 0
     };
 
     // スコア計算ロジック
     if (answers.q2 === 'efficiency') scores['it-donyu'] += 40;
     if (answers.q2 === 'sales') scores['jizokuka'] += 40;
     if (answers.q2 === 'innovation' || answers.q2 === 'cost') scores['monozukuri'] += 40;
+    if (answers.q2 === 'innovation') scores['jigyou-saikouchiku'] += 45; // 事業再構築は革新重視
 
     if (answers.q3 === 'micro' || answers.q3 === 'small') scores['jizokuka'] += 30;
-    if (answers.q3 === 'medium') scores['it-donyu'] += 20;
-    if (answers.q3 === 'medium' || answers.q3 === 'large') scores['monozukuri'] += 25;
+    if (answers.q3 === 'medium') {
+      scores['it-donyu'] += 20;
+      scores['jigyou-saikouchiku'] += 35; // 中規模企業向け
+    }
+    if (answers.q3 === 'medium' || answers.q3 === 'large') {
+      scores['monozukuri'] += 25;
+      scores['jigyou-saikouchiku'] += 30;
+    }
 
     if (answers.q4 === 'manufacturing') scores['monozukuri'] += 30;
     if (answers.q4 === 'it' || answers.q4 === 'service') scores['it-donyu'] += 20;
     if (answers.q4 === 'retail') scores['jizokuka'] += 20;
+    // 事業再構築は全業種対象
+    scores['jigyou-saikouchiku'] += 15;
 
     if (answers.q5 === 'small') scores['jizokuka'] += 25;
     if (answers.q5 === 'medium') scores['it-donyu'] += 25;
-    if (answers.q5 === 'large' || answers.q5 === 'xlarge') scores['monozukuri'] += 30;
+    if (answers.q5 === 'large' || answers.q5 === 'xlarge') {
+      scores['monozukuri'] += 30;
+      scores['jigyou-saikouchiku'] += 40; // 大規模投資向け
+    }
+
+    // 事業状況による加点
+    if (answers.q1 === 'existing' && answers.q2 === 'innovation') {
+      scores['jigyou-saikouchiku'] += 20; // 既存事業の革新
+    }
 
     // 正規化（0-100のスコアに）
     Object.keys(scores).forEach(key => {
@@ -289,9 +307,44 @@ export const ModernSubsidyFlow: React.FC = () => {
           <h1 style={{ fontSize: '36px', marginBottom: '12px', fontWeight: 'bold' }}>
             補助金診断
           </h1>
-          <p style={{ fontSize: '18px', opacity: 0.9 }}>
+          <p style={{ fontSize: '18px', opacity: 0.9, marginBottom: '24px' }}>
             6つの質問であなたに最適な補助金をご提案します
           </p>
+          
+          {/* AI文書生成ボタン */}
+          <div style={{ marginBottom: '20px' }}>
+            <button
+              onClick={() => navigate('/ai-document-generator')}
+              style={{
+                padding: '16px 32px',
+                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                boxShadow: '0 8px 24px rgba(245, 87, 108, 0.4)',
+                transition: 'all 0.3s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 12px 32px rgba(245, 87, 108, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(245, 87, 108, 0.4)';
+              }}
+            >
+              🤖 AI申請書作成
+            </button>
+            <p style={{ fontSize: '14px', opacity: 0.8, marginTop: '8px' }}>
+              質問に答えるだけで申請書類を自動生成
+            </p>
+          </div>
         </div>
 
         {/* 進捗バー */}

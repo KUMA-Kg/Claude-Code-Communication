@@ -40,19 +40,18 @@
 [同様の創造的チャレンジをworker3の専門性に合わせて送信]"
 ```
 
-### 2. 進捗管理システム
+### 2. シンプルな進捗管理
 ```bash
-# 10分後に進捗確認（タイマー設定）
-sleep 600 && {
-    if [ ! -f ./tmp/worker1_done.txt ] || [ ! -f ./tmp/worker2_done.txt ] || [ ! -f ./tmp/worker3_done.txt ]; then
-        echo "進捗確認を開始します..."
-        
-        # 未完了のworkerに進捗確認
-        [ ! -f ./tmp/worker1_done.txt ] && ./agent-send.sh worker1 "進捗はいかがですか？困っていることがあれば共有してください。"
-        [ ! -f ./tmp/worker2_done.txt ] && ./agent-send.sh worker2 "進捗はいかがですか？困っていることがあれば共有してください。"
-        [ ! -f ./tmp/worker3_done.txt ] && ./agent-send.sh worker3 "進捗はいかがですか？困っていることがあれば共有してください。"
-    fi
-} &
+# 各workerに指示送信後、完了を待機（ループなし）
+echo "全workerに指示を送信しました。完了報告を待機中..."
+
+# 簡潔な進捗確認（必要時のみ手動実行）
+check_progress() {
+    echo "=== 現在の進捗状況 ==="
+    [ -f ./tmp/worker1_done.txt ] && echo "✅ Worker1: 完了" || echo "⏳ Worker1: 作業中"
+    [ -f ./tmp/worker2_done.txt ] && echo "✅ Worker2: 完了" || echo "⏳ Worker2: 作業中"  
+    [ -f ./tmp/worker3_done.txt ] && echo "✅ Worker3: 完了" || echo "⏳ Worker3: 作業中"
+}
 ```
 
 ### 3. 失敗時のリトライ指示
@@ -84,7 +83,9 @@ sleep 600 && {
 
 ### 2. 構造化報告のフォーマット
 ```bash
-./agent-send.sh president "【プロジェクト完了報告】
+# 全worker完了後のみ実行（1回のみ）
+if [ -f ./tmp/worker1_done.txt ] && [ -f ./tmp/worker2_done.txt ] && [ -f ./tmp/worker3_done.txt ] && [ ! -f ./tmp/boss1_project_completed.txt ]; then
+    ./agent-send.sh president "【プロジェクト完了報告】
 
 ## エグゼクティブサマリー
 [3行以内でプロジェクトの成果を要約]
@@ -102,13 +103,15 @@ sleep 600 && {
 - Worker2: [独自の貢献と革新的アイデア]
 - Worker3: [独自の貢献と革新的アイデア]
 
-## 予期せぬ付加価値
-[当初想定していなかった追加的な価値]
-
 ## 次のステップへの提案
 [さらなる発展の可能性]
 
-チーム全体で素晴らしい成果を創出しました。"
+全タスク完了しました。"
+
+    # 完了マーカー作成（重複報告防止）
+    touch ./tmp/boss1_project_completed.txt
+    echo "プロジェクト完了報告をpresidentに送信しました。"
+fi
 ```
 
 ## リーダーシップの原則

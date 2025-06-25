@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3問でAI補助金申請書作成</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 100px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            width: 33.33%;
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question {
+            font-size: 24px;
+            color: #1f2937;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #e5e7eb;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-secondary:disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-section {
+            display: none;
+        }
+
+        .result-section.active {
+            display: block;
+        }
+
+        .document-section {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .document-section h3 {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .document-content {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: #4b5563;
+        }
+
+        .editable {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            min-height: 100px;
+            outline: none;
+        }
+
+        .editable:focus {
+            border-color: #667eea;
+        }
+
+        .subsidy-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .subsidy-option {
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .subsidy-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .subsidy-option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .subsidy-option h3 {
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .subsidy-option p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .hint {
+            background: #f0f4ff;
+            color: #4c51bf;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>3問でAI補助金申請書作成</h1>
+            
+            <!-- 補助金選択 -->
+            <div id="subsidySelection" class="subsidy-selection">
+                <h2>補助金を選択してください</h2>
+                <div class="subsidy-selector">
+                    <div class="subsidy-option" data-subsidy="it-donyu">
+                        <h3>IT導入補助金</h3>
+                        <p>業務効率化のためのITツール導入</p>
+                    </div>
+                    <div class="subsidy-option" data-subsidy="monozukuri">
+                        <h3>ものづくり補助金</h3>
+                        <p>革新的な製品・サービス開発</p>
+                    </div>
+                    <div class="subsidy-option" data-subsidy="jizokuka">
+                        <h3>持続化補助金</h3>
+                        <p>小規模事業者の販路開拓</p>
+                    </div>
+                    <div class="subsidy-option" data-subsidy="jigyou-saikouchiku">
+                        <h3>事業再構築補助金</h3>
+                        <p>事業転換・新分野展開</p>
+                    </div>
+                </div>
+                <div class="button-group" style="margin-top: 30px;">
+                    <div></div>
+                    <button class="btn-primary" id="startQuestions" disabled>質問を開始</button>
+                </div>
+            </div>
+
+            <!-- 質問フォーム -->
+            <div id="questionForm" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+
+                <!-- 質問1 -->
+                <div class="question-container active" data-question="0">
+                    <h2 class="question" id="question1">質問を読み込み中...</h2>
+                    <textarea id="answer1" placeholder="簡潔にお答えください"></textarea>
+                    <div class="hint">💡 簡潔に答えてください。AIが詳細な内容に拡張します</div>
+                </div>
+
+                <!-- 質問2 -->
+                <div class="question-container" data-question="1">
+                    <h2 class="question" id="question2">質問を読み込み中...</h2>
+                    <textarea id="answer2" placeholder="簡潔にお答えください"></textarea>
+                    <div class="hint">💡 簡潔に答えてください。AIが詳細な内容に拡張します</div>
+                </div>
+
+                <!-- 質問3 -->
+                <div class="question-container" data-question="2">
+                    <h2 class="question" id="question3">質問を読み込み中...</h2>
+                    <textarea id="answer3" placeholder="簡潔にお答えください"></textarea>
+                    <div class="hint">💡 簡潔に答えてください。AIが詳細な内容に拡張します</div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-secondary" id="prevBtn" disabled>← 前へ</button>
+                    <button class="btn-primary" id="nextBtn">次へ →</button>
+                </div>
+            </div>
+
+            <!-- ローディング -->
+            <div id="loading" style="display: none;">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <h2>AIが申請書類を作成中...</h2>
+                    <p style="color: #6b7280; margin-top: 10px;">入力内容を基に最適な申請書類を生成しています</p>
+                </div>
+            </div>
+
+            <!-- 結果表示 -->
+            <div id="result" class="result-section">
+                <h2>生成された申請書類</h2>
+                <div id="generatedDocument"></div>
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="location.reload()">やり直す</button>
+                    <button class="btn-primary" onclick="downloadDocument()">ダウンロード</button>
+                </div>
+            </div>
+
+            <!-- エラー表示 -->
+            <div id="error" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // 質問データ
+        const questions = {
+            'it-donyu': [
+                '解決したい業務課題を一言で教えてください',
+                '理想の解決方法は？',
+                '投資可能な予算規模は？'
+            ],
+            'monozukuri': [
+                '開発したい製品・技術の革新性を一言で',
+                'ターゲット市場と規模は？',
+                '期待される社会的インパクトは？'
+            ],
+            'jizokuka': [
+                'あなたのビジネスの強みは？',
+                '売上向上のためにやりたいことは？',
+                '3年後のビジョンは？'
+            ],
+            'jigyou-saikouchiku': [
+                '事業転換が必要な理由は？',
+                '新しいビジネスモデルは？',
+                '活用できる既存の強みは？'
+            ]
+        };
+
+        let selectedSubsidy = '';
+        let currentQuestion = 0;
+        const answers = {};
+
+        // 補助金選択
+        document.querySelectorAll('.subsidy-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.subsidy-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedSubsidy = this.dataset.subsidy;
+                document.getElementById('startQuestions').disabled = false;
+            });
+        });
+
+        // 質問開始
+        document.getElementById('startQuestions').addEventListener('click', function() {
+            if (!selectedSubsidy) return;
+            
+            document.getElementById('subsidySelection').style.display = 'none';
+            document.getElementById('questionForm').style.display = 'block';
+            
+            // 質問を設定
+            const subsidyQuestions = questions[selectedSubsidy];
+            document.getElementById('question1').textContent = subsidyQuestions[0];
+            document.getElementById('question2').textContent = subsidyQuestions[1];
+            document.getElementById('question3').textContent = subsidyQuestions[2];
+        });
+
+        // 次へボタン
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            const currentAnswer = document.getElementById(`answer${currentQuestion + 1}`).value;
+            
+            if (!currentAnswer.trim()) {
+                alert('回答を入力してください');
+                return;
+            }
+            
+            answers[`q${currentQuestion + 1}`] = currentAnswer;
+            
+            if (currentQuestion < 2) {
+                // 次の質問へ
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion++;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                
+                // プログレスバー更新
+                const progress = ((currentQuestion + 1) / 3) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+                
+                // ボタン状態更新
+                document.getElementById('prevBtn').disabled = false;
+                if (currentQuestion === 2) {
+                    document.getElementById('nextBtn').textContent = 'AIで生成';
+                }
+            } else {
+                // AI生成
+                generateDocument();
+            }
+        });
+
+        // 前へボタン
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            if (currentQuestion > 0) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion--;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                
+                // プログレスバー更新
+                const progress = ((currentQuestion + 1) / 3) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+                
+                // ボタン状態更新
+                if (currentQuestion === 0) {
+                    document.getElementById('prevBtn').disabled = true;
+                }
+                document.getElementById('nextBtn').textContent = '次へ →';
+            }
+        });
+
+        // AI文書生成
+        async function generateDocument() {
+            document.getElementById('questionForm').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            
+            console.log('AI生成開始:', { subsidyType: selectedSubsidy, answers: answers });
+            
+            try {
+                const response = await fetch('http://localhost:3002/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        subsidyType: selectedSubsidy,
+                        answers: answers
+                    })
+                });
+                
+                console.log('レスポンスステータス:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTPエラー: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('受信データ:', data);
+                
+                if (data.success) {
+                    displayResult(data.document);
+                } else {
+                    throw new Error(data.error || '生成に失敗しました');
+                }
+                
+            } catch (error) {
+                console.error('エラー詳細:', error);
+                showError(`エラーが発生しました: ${error.message}<br>フォールバックデータを使用します。`);
+                
+                // フォールバックとしてダミーデータを表示
+                setTimeout(() => {
+                    const dummyDoc = generateDummyDocument();
+                    displayResult(dummyDoc);
+                }, 1000);
+            }
+        }
+
+        // ダミー文書生成
+        function generateDummyDocument() {
+            const subsidyNames = {
+                'it-donyu': 'IT導入補助金',
+                'monozukuri': 'ものづくり補助金',
+                'jizokuka': '持続化補助金',
+                'jigyou-saikouchiku': '事業再構築補助金'
+            };
+            
+            return {
+                title: `${subsidyNames[selectedSubsidy]} 申請書`,
+                sections: [
+                    {
+                        title: '事業計画概要',
+                        content: `${answers.q1}を解決するため、革新的なアプローチで事業を展開します。`
+                    },
+                    {
+                        title: '実施内容',
+                        content: `${answers.q2}を実現し、業界に新たな価値を提供します。`
+                    },
+                    {
+                        title: '期待される効果',
+                        content: `${answers.q3}により、生産性向上と持続的成長を実現します。`
+                    },
+                    {
+                        title: '実施スケジュール',
+                        content: '第1四半期：準備・計画\n第2四半期：実施・導入\n第3四半期：運用・改善\n第4四半期：評価・展開'
+                    }
+                ]
+            };
+        }
+
+        // 結果表示
+        function displayResult(generatedDoc) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('result').classList.add('active');
+            
+            const container = document.getElementById('generatedDocument');
+            container.innerHTML = '';
+            
+            generatedDoc.sections.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'document-section';
+                sectionDiv.innerHTML = `
+                    <h3>${section.title}</h3>
+                    <div class="document-content editable" contenteditable="true">${section.content}</div>
+                `;
+                container.appendChild(sectionDiv);
+            });
+        }
+
+        // エラー表示
+        function showError(message) {
+            document.getElementById('questionForm').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+            const errorDiv = document.getElementById('error');
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = `<div class="error-message">${message}</div>`;
+        }
+
+        // ダウンロード機能
+        function downloadDocument() {
+            const content = Array.from(document.querySelectorAll('.document-section')).map(section => {
+                const title = section.querySelector('h3').textContent;
+                const text = section.querySelector('.document-content').textContent;
+                return `【${title}】\n${text}\n`;
+            }).join('\n');
+            
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${selectedSubsidy}_申請書_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

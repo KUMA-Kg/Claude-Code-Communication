@@ -5,6 +5,7 @@ import compression from 'compression';
 import morgan from 'morgan';
 import path from 'path';
 import fs from 'fs';
+import { createServer } from 'http';
 
 import { errorHandler } from '@/middleware/errorHandler';
 import { notFoundHandler } from '@/middleware/notFoundHandler';
@@ -19,11 +20,21 @@ import { scheduleRoutes } from '@/routes/schedules';
 import { diagnosisRoutes } from '@/routes/diagnosis';
 import { formRoutes } from '@/routes/forms';
 import { exportRoutes } from '@/routes/export';
+import healthRoutes from '@/routes/health';
+import diagnosisSessionRoutes from '@/routes/diagnosis-session';
+import authPhase1Routes from '@/routes/auth-phase1';
+import sessionsRoutes from '@/routes/sessions';
+import documentMagicRoutes from '@/routes/document-magic';
+import collaborationRoutes from '@/routes/collaboration';
+import { aiDocumentRoutes } from './routes/ai-document-generator';
+// import biometricAuthRoutes from '@/routes/biometric-auth';
+// import quantumSecureRoutes from '@/routes/quantum-secure-api';
 // import excelRoutes from '@/routes/excel';
 // import excelDownloadRoutes from '@/routes/excel-download';
 import { logger } from '@/utils/logger';
 import { validateEnvironment } from '@/config/environment';
 import { loadEnvironment } from '@/utils/loadEnv';
+import { setupSocketIO } from '@/config/socketio';
 
 // Load environment variables with proper precedence
 loadEnvironment();
@@ -61,8 +72,8 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000'],
-  credentials: process.env.CORS_CREDENTIALS === 'true'
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true
 }));
 
 app.use(compression());
@@ -79,14 +90,11 @@ if (NODE_ENV === 'development') {
 
 app.use(rateLimitMiddleware);
 
-app.get('/health', (_, res) => {
-  res.json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    version: process.env.API_VERSION || 'v1',
-    environment: NODE_ENV
-  });
-});
+// Health check routes (Worker1要求準拠)
+app.use('/', healthRoutes);
+
+// Phase 1 認証ルート
+app.use(`/${process.env.API_VERSION || 'v1'}/auth-phase1`, authPhase1Routes);
 
 app.use(`/${process.env.API_VERSION || 'v1'}/auth`, authRoutes);
 app.use(`/${process.env.API_VERSION || 'v1'}/subsidies`, subsidyRoutes);
@@ -96,17 +104,45 @@ app.use(`/${process.env.API_VERSION || 'v1'}/eligibility`, eligibilityRoutes);
 app.use(`/${process.env.API_VERSION || 'v1'}/required-documents`, documentsRequiredRoutes);
 app.use(`/${process.env.API_VERSION || 'v1'}/schedules`, scheduleRoutes);
 app.use(`/${process.env.API_VERSION || 'v1'}/diagnosis`, diagnosisRoutes);
+app.use(`/${process.env.API_VERSION || 'v1'}/diagnosis-sessions`, diagnosisSessionRoutes);
 app.use(`/${process.env.API_VERSION || 'v1'}/forms`, formRoutes);
 app.use(`/${process.env.API_VERSION || 'v1'}/export`, exportRoutes);
+
+// Worker1要求準拠 - セッション管理API
+app.use('/api/sessions', sessionsRoutes);
+
+// Document Magic Studio routes
+app.use(`/${process.env.API_VERSION || 'v1'}/document-magic`, documentMagicRoutes);
+
+// Collaboration routes
+app.use(`/${process.env.API_VERSION || 'v1'}/collaboration`, collaborationRoutes);
+
+// AI Document Generation routes
+app.use(`/${process.env.API_VERSION || 'v1'}/ai-document`, aiDocumentRoutes);
+
+// Biometric Authentication routes
+// app.use(`/${process.env.API_VERSION || 'v1'}/biometric`, biometricAuthRoutes);
+
+// Quantum-Secure API routes
+// app.use(`/${process.env.API_VERSION || 'v1'}/quantum`, quantumSecureRoutes);
+
 // app.use(`/${process.env.API_VERSION || 'v1'}/excel`, excelRoutes);
 // app.use('/api/excel-download', excelDownloadRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-const server = app.listen(PORT, () => {
+// HTTPサーバー作成とSocket.IO統合
+const httpServer = createServer(app);
+const io = setupSocketIO(httpServer);
+
+// Socket.IOインスタンスをグローバルに利用可能にする
+app.set('io', io);
+
+const server = httpServer.listen(PORT, () => {
   logger.info(`🚀 Server running on port ${PORT} in ${NODE_ENV} mode`);
-  logger.info(`📚 API Documentation: http://localhost:${PORT}/health`);
+  logger.info(`📚 API Documentation: http://localhost:${PORT}/v1/health`);
+  logger.info(`🔌 WebSocket server is ready`);
 });
 
 process.on('SIGTERM', () => {

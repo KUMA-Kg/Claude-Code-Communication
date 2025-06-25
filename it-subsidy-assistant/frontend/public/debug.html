@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デバッグページ</title>
+</head>
+<body>
+  <h1>IT補助金アシスタント - デバッグ</h1>
+  
+  <h2>アプリケーション状態</h2>
+  <p>開発サーバー: <a href="http://localhost:5174/" target="_blank">http://localhost:5174/</a></p>
+  
+  <h2>動作確認</h2>
+  <div id="status">確認中...</div>
+  
+  <h2>エラーログ</h2>
+  <pre id="errors" style="background: #f5f5f5; padding: 10px; border-radius: 5px;"></pre>
+  
+  <script>
+    const statusEl = document.getElementById('status');
+    const errorsEl = document.getElementById('errors');
+    
+    // アプリケーションの状態を確認
+    fetch('http://localhost:5174/')
+      .then(response => {
+        if (response.ok) {
+          statusEl.textContent = '✅ サーバーは正常に動作しています';
+          statusEl.style.color = 'green';
+        } else {
+          statusEl.textContent = '❌ サーバーエラー: ' + response.status;
+          statusEl.style.color = 'red';
+        }
+        return response.text();
+      })
+      .then(html => {
+        console.log('HTML取得成功');
+        // ReactアプリのJSを確認
+        if (html.includes('/src/main.tsx')) {
+          errorsEl.textContent += '✅ main.tsxが正しく読み込まれています\n';
+        } else {
+          errorsEl.textContent += '❌ main.tsxが見つかりません\n';
+        }
+      })
+      .catch(error => {
+        statusEl.textContent = '❌ 接続エラー: ' + error.message;
+        statusEl.style.color = 'red';
+        errorsEl.textContent = error.stack;
+      });
+    
+    // グローバルエラーをキャッチ
+    window.addEventListener('error', (e) => {
+      errorsEl.textContent += `\nエラー: ${e.message}\nファイル: ${e.filename}\n行: ${e.lineno}\n`;
+    });
+  </script>
+</body>
+</html>

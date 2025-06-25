@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 1 - 補助金選択システムデモ</title>
+    
+    <!-- React & React DOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- ダークモードCSS -->
+    <style>
+        /* CSS Variables for Theming */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-muted: #adb5bd;
+            --border-color: #dee2e6;
+            --accent-color: #007bff;
+            --success-color: #28a745;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --success-border: #22c55e;
+            --warning-color: #ffc107;
+            --warning-bg: #fef3c7;
+            --warning-text: #92400e;
+            --warning-border: #f59e0b;
+            --danger-color: #dc3545;
+            --danger-bg: #fee2e2;
+            --danger-text: #991b1b;
+            --danger-border: #ef4444;
+            --info-bg: #dbeafe;
+            --info-text: #1e40af;
+            --info-border: #3b82f6;
+            --shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #3d3d3d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #999999;
+            --border-color: #4a4a4a;
+            --accent-color: #4dabf7;
+            --success-color: #51cf66;
+            --success-bg: rgba(34, 197, 94, 0.2);
+            --success-text: #86efac;
+            --warning-bg: rgba(245, 158, 11, 0.2);
+            --warning-text: #fcd34d;
+            --danger-bg: rgba(239, 68, 68, 0.2);
+            --danger-text: #fca5a5;
+            --info-bg: rgba(59, 130, 246, 0.2);
+            --info-text: #93bbfc;
+            --shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .demo-section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .demo-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .demo-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .badge-demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .badge-demo-item {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+
+        .badge-demo-label {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Card Styles */
+        .subsidy-card {
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .subsidy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .subsidy-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .subsidy-card.disabled:hover {
+            transform: none;
+        }
+
+        /* Status Badge Styles */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 16px;
+            position: relative;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .status-badge.active {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 2px solid var(--success-border);
+        }
+
+        .status-badge.preparing {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border: 2px solid var(--warning-border);
+        }
+
+        .status-badge.closed {
+            background-color: var(--danger-bg);
+            color: var(--danger-text);
+            border: 2px solid var(--danger-border);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        .pulse-ring {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid var(--success-border);
+            border-radius: inherit;
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .badge-demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span class="theme-toggle-icon" id="themeIcon">🌙</span>
+    </button>
+
+    <div class="demo-container">
+        <!-- Header -->
+        <div style="text-align: center; padding: 40px 0;">
+            <h1 style="font-size: 36px; margin-bottom: 10px;">Phase 1 - 補助金選択システムデモ</h1>
+            <p style="font-size: 18px; color: var(--text-secondary);">StatusBadgeとEnhancedSubsidySelectionScreenの動作確認</p>
+        </div>
+
+        <!-- StatusBadge Demo Section -->
+        <div class="demo-section">
+            <h2 class="demo-title">📌 StatusBadgeコンポーネント</h2>
+            <p class="demo-subtitle">4つの状態とサイズバリエーション</p>
+            
+            <div class="badge-demo-grid">
+                <div class="badge-demo-item">
+                    <div class="status-badge active" style="position: relative;">
+                        <span class="pulse-ring"></span>
+                        <span>✓</span>
+                        <span>受付中</span>
+                        <span style="font-size: 12px; opacity: 0.8;">(3/31まで)</span>
+                    </div>
+                    <div class="badge-demo-label">Active (受付中)</div>
+                </div>
+
+                <div class="badge-demo-item">
+                    <div class="status-badge preparing">
+                        <span>🕐</span>
+                        <span>準備中</span>
+                    </div>
+                    <div class="badge-demo-label">Preparing (準備中)</div>
+                </div>
+
+                <div class="badge-demo-item">
+                    <div class="status-badge closed">
+                        <span>⚠️</span>
+                        <span>締切済</span>
+                    </div>
+                    <div class="badge-demo-label">Closed (締切済)</div>
+                </div>
+
+                <div class="badge-demo-item">
+                    <div class="status-badge" style="background-color: var(--info-bg); color: var(--info-text); border: 2px solid var(--info-border);">
+                        <span>📅</span>
+                        <span>近日公開</span>
+                    </div>
+                    <div class="badge-demo-label">Coming Soon (近日公開)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subsidy Selection Demo Section -->
+        <div class="demo-section">
+            <h2 class="demo-title">🎯 補助金選択画面</h2>
+            <p class="demo-subtitle">グレーアウト機能とインタラクティブ要素のデモ</p>
+            
+            <div id="subsidySelectionDemo"></div>
+        </div>
+
+        <!-- Feature Demo Section -->
+        <div class="demo-section">
+            <h2 class="demo-title">✨ 機能デモンストレーション</h2>
+            <p class="demo-subtitle">実装した機能の動作確認</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="padding: 20px; background-color: var(--bg-tertiary); border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px;">🎨 ダークモード</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">
+                        右上のボタンでライト/ダークモードを切り替えられます。
+                        すべてのコンポーネントがテーマに対応しています。
+                    </p>
+                </div>
+
+                <div style="padding: 20px; background-color: var(--bg-tertiary); border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px;">🚫 グレーアウト機能</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">
+                        「準備中」の補助金はグレーアウト表示され、クリックすると
+                        メッセージが表示されます。
+                    </p>
+                </div>
+
+                <div style="padding: 20px; background-color: var(--bg-tertiary); border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px;">🖱️ ホバーエフェクト</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">
+                        アクティブな補助金カードにマウスを重ねると、
+                        浮き上がるアニメーションが発生します。
+                    </p>
+                </div>
+
+                <div style="padding: 20px; background-color: var(--bg-tertiary); border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px;">♿ アクセシビリティ</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">
+                        キーボードナビゲーション、ARIA属性、
+                        スクリーンリーダー対応を実装しています。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/babel">
+        // Theme Toggle Function
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const icon = document.getElementById('themeIcon');
+            
+            if (newTheme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+                icon.textContent = '☀️';
+            } else {
+                html.removeAttribute('data-theme');
+                icon.textContent = '🌙';
+            }
+            
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Initialize theme on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const icon = document.getElementById('themeIcon');
+            
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                icon.textContent = '☀️';
+            }
+        });
+
+        // React Component for Subsidy Selection Demo
+        const SubsidySelectionDemo = () => {
+            const [showMessage, setShowMessage] = React.useState(null);
+            
+            const subsidies = [
+                {
+                    id: 'it-donyu',
+                    name: 'IT導入補助金',
+                    description: 'ITツールの導入で業務効率化・デジタル化を支援する補助金',
+                    status: 'active',
+                    score: 95,
+                    matchLevel: 'high',
+                    maxAmount: '最大450万円',
+                    subsidyRate: '1/2～3/4補助',
+                    deadline: '2025年3月31日',
+                    icon: '💻'
+                },
+                {
+                    id: 'jizokuka',
+                    name: '小規模事業者持続化補助金',
+                    description: '小規模事業者の販路開拓・マーケティング活動を支援する補助金',
+                    status: 'active',
+                    score: 90,
+                    matchLevel: 'high',
+                    maxAmount: '最大200万円',
+                    subsidyRate: '2/3補助',
+                    deadline: '2025年2月28日',
+                    icon: '🏪'
+                },
+                {
+                    id: 'saikochiku',
+                    name: '事業再構築補助金',
+                    description: '新分野展開や業態転換等の事業再構築を支援する大型補助金',
+                    status: 'preparing',
+                    score: 0,
+                    matchLevel: 'low',
+                    maxAmount: '最大1.5億円',
+                    subsidyRate: '1/2～3/4補助',
+                    comingSoon: '2025年4月',
+                    icon: '🏭'
+                }
+            ];
+
+            const handleCardClick = (subsidy) => {
+                if (subsidy.status !== 'active') {
+                    setShowMessage(subsidy.id);
+                    setTimeout(() => setShowMessage(null), 3000);
+                } else {
+                    alert(`${subsidy.name}が選択されました！`);
+                }
+            };
+
+            const getMatchLevelStyle = (level, isDisabled) => {
+                if (isDisabled) {
+                    return {
+                        backgroundColor: 'var(--bg-tertiary)',
+                        color: 'var(--text-secondary)',
+                        border: '2px solid var(--border-color)'
+                    };
+                }
+
+                switch (level) {
+                    case 'high':
+                        return {
+                            backgroundColor: 'var(--success-bg)',
+                            color: 'var(--success-text)',
+                            border: '2px solid var(--success-border)'
+                        };
+                    case 'low':
+                        return {
+                            backgroundColor: 'var(--danger-bg)',
+                            color: 'var(--danger-text)',
+                            border: '2px solid var(--danger-border)'
+                        };
+                    default:
+                        return {};
+                }
+            };
+
+            return (
+                <div>
+                    {subsidies.map((subsidy, index) => {
+                        const isDisabled = subsidy.status !== 'active';
+                        const matchStyle = getMatchLevelStyle(subsidy.matchLevel, isDisabled);
+                        
+                        return (
+                            <div
+                                key={subsidy.id}
+                                className={`subsidy-card ${isDisabled ? 'disabled' : ''}`}
+                                style={matchStyle}
+                                onClick={() => handleCardClick(subsidy)}
+                            >
+                                {/* Ranking Badge */}
+                                {!isDisabled && index < 2 && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '-12px',
+                                        left: '20px',
+                                        backgroundColor: index === 0 ? '#fbbf24' : '#9ca3af',
+                                        color: 'white',
+                                        padding: '8px 16px',
+                                        borderRadius: '20px',
+                                        fontSize: '14px',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        {index === 0 && '⭐ '}第{index + 1}位
+                                    </div>
+                                )}
+
+                                {/* Status Badge */}
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '16px',
+                                    right: '20px'
+                                }}>
+                                    <div className={`status-badge ${subsidy.status}`}>
+                                        {subsidy.status === 'active' && <span className="pulse-ring"></span>}
+                                        <span>{subsidy.status === 'active' ? '✓' : '🕐'}</span>
+                                        <span>{subsidy.status === 'active' ? '受付中' : '準備中'}</span>
+                                        {subsidy.deadline && (
+                                            <span style={{ fontSize: '12px', opacity: 0.8 }}>
+                                                ({subsidy.deadline.replace('2025年', '')}まで)
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div style={{ paddingTop: '20px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '16px' }}>
+                                        <div style={{ fontSize: '24px', filter: isDisabled ? 'grayscale(1)' : 'none' }}>
+                                            {subsidy.icon}
+                                        </div>
+                                        <div style={{ flex: 1 }}>
+                                            <h3 style={{
+                                                fontSize: '20px',
+                                                fontWeight: 'bold',
+                                                marginBottom: '4px',
+                                                color: isDisabled ? 'var(--text-secondary)' : 'var(--text-primary)'
+                                            }}>
+                                                {subsidy.name}
+                                                {isDisabled && ' 🔒'}
+                                            </h3>
+                                            <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>
+                                                {subsidy.description}
+                                            </p>
+                                        </div>
+
+                                        {/* Score */}
+                                        {!isDisabled && (
+                                            <div style={{ textAlign: 'center', minWidth: '80px' }}>
+                                                <div style={{
+                                                    fontSize: '24px',
+                                                    fontWeight: 'bold',
+                                                    color: matchStyle.color
+                                                }}>
+                                                    {subsidy.score}点
+                                                </div>
+                                                <div style={{
+                                                    fontSize: '12px',
+                                                    padding: '4px 8px',
+                                                    borderRadius: '12px',
+                                                    backgroundColor: matchStyle.backgroundColor,
+                                                    color: matchStyle.color
+                                                }}>
+                                                    高適合
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Details */}
+                                    <div style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: '1fr 1fr',
+                                        gap: '16px',
+                                        marginBottom: '16px',
+                                        opacity: isDisabled ? 0.6 : 1
+                                    }}>
+                                        <div>
+                                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>補助上限額</div>
+                                            <div style={{ fontWeight: 'bold' }}>{subsidy.maxAmount}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>補助率</div>
+                                            <div style={{ fontWeight: 'bold' }}>{subsidy.subsidyRate}</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Coming Soon Message */}
+                                    {subsidy.comingSoon && (
+                                        <div style={{
+                                            backgroundColor: 'var(--info-bg)',
+                                            color: 'var(--info-text)',
+                                            padding: '12px',
+                                            borderRadius: '8px',
+                                            marginBottom: '16px',
+                                            fontSize: '14px'
+                                        }}>
+                                            ℹ️ {subsidy.comingSoon}より受付開始予定です
+                                        </div>
+                                    )}
+
+                                    {/* Disabled Message */}
+                                    {showMessage === subsidy.id && (
+                                        <div style={{
+                                            backgroundColor: 'var(--warning-bg)',
+                                            color: 'var(--warning-text)',
+                                            padding: '12px',
+                                            borderRadius: '8px',
+                                            marginBottom: '16px',
+                                            fontSize: '14px'
+                                        }}>
+                                            ℹ️ この補助金は現在準備中です
+                                        </div>
+                                    )}
+
+                                    {/* Action Button */}
+                                    <button
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            backgroundColor: isDisabled ? 'var(--text-secondary)' : 'var(--accent-color)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '8px',
+                                            fontSize: '16px',
+                                            fontWeight: 'bold',
+                                            cursor: isDisabled ? 'not-allowed' : 'pointer',
+                                            opacity: isDisabled ? 0.6 : 1,
+                                            transition: 'all 0.3s ease'
+                                        }}
+                                        disabled={isDisabled}
+                                    >
+                                        {isDisabled ? '現在選択できません' : 'この補助金で申請を進める →'}
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        };
+
+        // Render React Component
+        ReactDOM.render(<SubsidySelectionDemo />, document.getElementById('subsidySelectionDemo'));
+    </script>
+</body>
+</html>

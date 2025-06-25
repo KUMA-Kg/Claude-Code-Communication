@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT補助金アシスタント - リアルタイム監視ダッシュボード</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #e8f5e8;
+            padding: 8px 16px;
+            border-radius: 25px;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .status-indicator.warning {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-indicator.critical {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .metric-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-security {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .icon-performance {
+            background: linear-gradient(45deg, #4834d4, #6c5ce7);
+            color: white;
+        }
+
+        .icon-quality {
+            background: linear-gradient(45deg, #00d2d3, #01a3a4);
+            color: white;
+        }
+
+        .icon-system {
+            background: linear-gradient(45deg, #feca57, #ff9ff3);
+            color: white;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            color: #27ae60;
+        }
+
+        .trend-down {
+            color: #e74c3c;
+        }
+
+        .trend-stable {
+            color: #f39c12;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chart-canvas {
+            width: 100%;
+            height: 400px;
+        }
+
+        .alerts-panel {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+
+        .alert-critical {
+            background: #ffebee;
+            border-left-color: #d32f2f;
+        }
+
+        .alert-warning {
+            background: #fff3e0;
+            border-left-color: #f57c00;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border-left-color: #1976d2;
+        }
+
+        .alert-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .alert-time {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .control-button.active {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #27ae60;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard {
+                padding: 15px;
+            }
+        }
+
+        .system-health {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .health-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .health-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .health-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>🔒 セキュリティ・品質監視ダッシュボード</h1>
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                リアルタイム監視中
+            </div>
+            <div id="systemStatus" class="status-indicator">
+                🟢 システム正常
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-button active" onclick="setTimeRange('1h')">1時間</button>
+            <button class="control-button" onclick="setTimeRange('6h')">6時間</button>
+            <button class="control-button" onclick="setTimeRange('24h')">24時間</button>
+            <button class="control-button" onclick="setTimeRange('7d')">7日間</button>
+            <button class="control-button" onclick="exportReport()">レポート出力</button>
+            <button class="control-button" onclick="refreshData()">更新</button>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">セキュリティ脅威</span>
+                    <div class="metric-icon icon-security">🛡️</div>
+                </div>
+                <div class="metric-value" id="securityThreats">0</div>
+                <div class="metric-label">過去24時間の検出数</div>
+                <div class="metric-trend trend-down">
+                    ↓ 15% 前日比
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">平均応答時間</span>
+                    <div class="metric-icon icon-performance">⚡</div>
+                </div>
+                <div class="metric-value" id="avgResponseTime">245ms</div>
+                <div class="metric-label">過去1時間の平均</div>
+                <div class="metric-trend trend-up">
+                    ↑ 8% 前時間比
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">品質スコア</span>
+                    <div class="metric-icon icon-quality">📊</div>
+                </div>
+                <div class="metric-value" id="qualityScore">98.5%</div>
+                <div class="metric-label">総合品質評価</div>
+                <div class="metric-trend trend-stable">
+                    → 安定
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">システム稼働率</span>
+                    <div class="metric-icon icon-system">🔄</div>
+                </div>
+                <div class="metric-value" id="uptime">99.98%</div>
+                <div class="metric-label">過去30日間</div>
+                <div class="metric-trend trend-stable">
+                    → 目標達成
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="chart-container">
+                <div class="chart-title">リアルタイム監視メトリクス</div>
+                <canvas id="metricsChart" class="chart-canvas"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">セキュリティインシデント推移</div>
+                <canvas id="securityChart" class="chart-canvas"></canvas>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="chart-container">
+                <div class="chart-title">システムヘルス</div>
+                <div class="system-health">
+                    <div class="health-item">
+                        <div class="health-value" id="cpuUsage">45%</div>
+                        <div class="health-label">CPU使用率</div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-value" id="memoryUsage">68%</div>
+                        <div class="health-label">メモリ使用率</div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-value" id="diskUsage">32%</div>
+                        <div class="health-label">ディスク使用率</div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-value" id="activeUsers">1,247</div>
+                        <div class="health-label">アクティブユーザー</div>
+                    </div>
+                </div>
+                <canvas id="systemChart" class="chart-canvas"></canvas>
+            </div>
+
+            <div class="alerts-panel">
+                <h3 class="chart-title">最新のアラート</h3>
+                <div id="alertsList">
+                    <div class="alert-item alert-critical">
+                        <div class="alert-icon" style="background: #d32f2f;">!</div>
+                        <div class="alert-content">
+                            <div class="alert-title">高レート制限違反</div>
+                            <div class="alert-time">3分前</div>
+                        </div>
+                    </div>
+                    <div class="alert-item alert-warning">
+                        <div class="alert-icon" style="background: #f57c00;">⚠</div>
+                        <div class="alert-content">
+                            <div class="alert-title">応答時間増加</div>
+                            <div class="alert-time">15分前</div>
+                        </div>
+                    </div>
+                    <div class="alert-item alert-info">
+                        <div class="alert-icon" style="background: #1976d2;">ℹ</div>
+                        <div class="alert-content">
+                            <div class="alert-title">定期セキュリティスキャン完了</div>
+                            <div class="alert-time">1時間前</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // グローバル変数
+        let metricsChart, securityChart, systemChart;
+        let currentTimeRange = '1h';
+        let updateInterval;
+
+        // ダッシュボード初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            startRealTimeUpdates();
+            updateMetrics();
+        });
+
+        // チャート初期化
+        function initializeCharts() {
+            // メトリクスチャート
+            const metricsCtx = document.getElementById('metricsChart').getContext('2d');
+            metricsChart = new Chart(metricsCtx, {
+                type: 'line',
+                data: {
+                    labels: generateTimeLabels(),
+                    datasets: [
+                        {
+                            label: '応答時間 (ms)',
+                            data: generateRandomData(50, 200, 300),
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'エラー率 (%)',
+                            data: generateRandomData(50, 0, 5),
+                            borderColor: '#ff6b6b',
+                            backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: '応答時間 (ms)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'エラー率 (%)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+
+            // セキュリティチャート
+            const securityCtx = document.getElementById('securityChart').getContext('2d');
+            securityChart = new Chart(securityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['SQL注入', 'XSS', 'CSRF', 'DDoS', 'ブルートフォース', 'その他'],
+                    datasets: [{
+                        label: '脅威検出数',
+                        data: [12, 8, 3, 15, 22, 7],
+                        backgroundColor: [
+                            '#ff6b6b',
+                            '#feca57',
+                            '#48cae4',
+                            '#ff9ff3',
+                            '#54a0ff',
+                            '#5f27cd'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // システムチャート
+            const systemCtx = document.getElementById('systemChart').getContext('2d');
+            systemChart = new Chart(systemCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['正常', '警告', '重要'],
+                    datasets: [{
+                        data: [85, 12, 3],
+                        backgroundColor: ['#27ae60', '#f39c12', '#e74c3c']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // リアルタイム更新開始
+        function startRealTimeUpdates() {
+            updateInterval = setInterval(updateMetrics, 5000); // 5秒ごと
+        }
+
+        // メトリクス更新
+        function updateMetrics() {
+            // API呼び出しのシミュレーション
+            const metrics = simulateAPICall();
+            
+            // メトリクス値更新
+            document.getElementById('securityThreats').textContent = metrics.securityThreats;
+            document.getElementById('avgResponseTime').textContent = metrics.avgResponseTime + 'ms';
+            document.getElementById('qualityScore').textContent = metrics.qualityScore + '%';
+            document.getElementById('uptime').textContent = metrics.uptime + '%';
+            
+            // システムヘルス更新
+            document.getElementById('cpuUsage').textContent = metrics.cpuUsage + '%';
+            document.getElementById('memoryUsage').textContent = metrics.memoryUsage + '%';
+            document.getElementById('diskUsage').textContent = metrics.diskUsage + '%';
+            document.getElementById('activeUsers').textContent = metrics.activeUsers.toLocaleString();
+
+            // システムステータス更新
+            updateSystemStatus(metrics.systemHealth);
+
+            // チャートデータ更新
+            updateChartData(metrics);
+        }
+
+        // APIコールシミュレーション
+        function simulateAPICall() {
+            return {
+                securityThreats: Math.floor(Math.random() * 10),
+                avgResponseTime: 200 + Math.floor(Math.random() * 100),
+                qualityScore: (98 + Math.random() * 2).toFixed(1),
+                uptime: (99.9 + Math.random() * 0.1).toFixed(2),
+                cpuUsage: Math.floor(40 + Math.random() * 20),
+                memoryUsage: Math.floor(60 + Math.random() * 20),
+                diskUsage: Math.floor(30 + Math.random() * 10),
+                activeUsers: 1200 + Math.floor(Math.random() * 100),
+                systemHealth: Math.random() > 0.8 ? 'warning' : 'healthy'
+            };
+        }
+
+        // システムステータス更新
+        function updateSystemStatus(health) {
+            const statusElement = document.getElementById('systemStatus');
+            
+            if (health === 'critical') {
+                statusElement.className = 'status-indicator critical';
+                statusElement.innerHTML = '🔴 システム障害';
+            } else if (health === 'warning') {
+                statusElement.className = 'status-indicator warning';
+                statusElement.innerHTML = '🟡 注意が必要';
+            } else {
+                statusElement.className = 'status-indicator';
+                statusElement.innerHTML = '🟢 システム正常';
+            }
+        }
+
+        // チャートデータ更新
+        function updateChartData(metrics) {
+            // メトリクスチャートにデータ追加
+            const now = new Date();
+            const timeLabel = now.toLocaleTimeString();
+            
+            metricsChart.data.labels.push(timeLabel);
+            metricsChart.data.datasets[0].data.push(metrics.avgResponseTime);
+            metricsChart.data.datasets[1].data.push(Math.random() * 5);
+            
+            // 古いデータを削除（50ポイントまで保持）
+            if (metricsChart.data.labels.length > 50) {
+                metricsChart.data.labels.shift();
+                metricsChart.data.datasets[0].data.shift();
+                metricsChart.data.datasets[1].data.shift();
+            }
+            
+            metricsChart.update('none');
+        }
+
+        // 時間範囲設定
+        function setTimeRange(range) {
+            currentTimeRange = range;
+            
+            // ボタンのアクティブ状態更新
+            document.querySelectorAll('.control-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // データ更新
+            updateMetrics();
+        }
+
+        // データ更新
+        function refreshData() {
+            updateMetrics();
+            
+            // 視覚的フィードバック
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '更新中...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+            }, 1000);
+        }
+
+        // レポート出力
+        function exportReport() {
+            const reportData = {
+                timestamp: new Date().toISOString(),
+                timeRange: currentTimeRange,
+                metrics: {
+                    securityThreats: document.getElementById('securityThreats').textContent,
+                    avgResponseTime: document.getElementById('avgResponseTime').textContent,
+                    qualityScore: document.getElementById('qualityScore').textContent,
+                    uptime: document.getElementById('uptime').textContent
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(reportData, null, 2)], {
+                type: 'application/json'
+            });
+            
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `security-quality-report-${new Date().toISOString().slice(0, 19)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ユーティリティ関数
+        function generateTimeLabels() {
+            const labels = [];
+            const now = new Date();
+            for (let i = 49; i >= 0; i--) {
+                const time = new Date(now.getTime() - i * 60000); // 1分間隔
+                labels.push(time.toLocaleTimeString());
+            }
+            return labels;
+        }
+
+        function generateRandomData(count, min, max) {
+            const data = [];
+            for (let i = 0; i < count; i++) {
+                data.push(Math.floor(Math.random() * (max - min + 1)) + min);
+            }
+            return data;
+        }
+
+        // Webページが非表示になったら更新を停止
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                if (updateInterval) {
+                    clearInterval(updateInterval);
+                }
+            } else {
+                startRealTimeUpdates();
+            }
+        });
+
+        // ページ離脱時のクリーンアップ
+        window.addEventListener('beforeunload', function() {
+            if (updateInterval) {
+                clearInterval(updateInterval);
+            }
+        });
+    </script>
+</body>
+</html>

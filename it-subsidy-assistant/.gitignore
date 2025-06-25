@@ -13,10 +13,15 @@ out/
 
 # Environment variables
 .env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.phase1
+backend/.env*
+frontend/.env*
+minimal-ai-backend/.env
 
 # IDE
 .vscode/

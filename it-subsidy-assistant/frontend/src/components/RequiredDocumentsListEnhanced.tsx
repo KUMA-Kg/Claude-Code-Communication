@@ -654,18 +654,47 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
           詳細ガイドを見る
         </button>
         <button
-          onClick={() => navigate('/input-form')}
-          disabled={!canProceed}
-          className="btn-primary"
+          onClick={() => navigate(`/document-upload/${subsidyType}`)}
+          className="btn-secondary"
+          style={{
+            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+            color: 'white'
+          }}
         >
-          {canProceed ? (
-            <>
-              申請書作成へ進む
-              <ArrowRight className="w-5 h-5" />
-            </>
-          ) : (
-            'すべての必須書類を確認してください'
-          )}
+          <Download className="w-5 h-5" />
+          書類をアップロード
+        </button>
+        <button
+          onClick={() => navigate(`/ai-document/${subsidyType}`)}
+          className="btn-secondary"
+          style={{
+            background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+            color: 'white'
+          }}
+        >
+          <Sparkles className="w-5 h-5" />
+          AI文書生成
+        </button>
+        <button
+          onClick={() => navigate(`/minimal-form/${subsidyType}`)}
+          className="btn-primary"
+          style={{
+            background: 'linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)'
+          }}
+        >
+          <>
+            <Sparkles className="w-5 h-5" />
+            3問でAI申請書作成
+          </>
+        </button>
+        <button
+          onClick={() => navigate(`/simplified-form/${subsidyType}`)}
+          className="btn-secondary"
+        >
+          <>
+            簡単入力で申請書作成
+            <ArrowRight className="w-5 h-5" />
+          </>
         </button>
       </div>
     </div>

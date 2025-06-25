@@ -243,6 +243,56 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
         ],
         required: true
       }
+    ],
+    'jigyou-saikouchiku': [
+      {
+        id: 'application_frame',
+        question: '申請予定の事業類型を選択してください',
+        type: 'radio',
+        options: [
+          { value: 'growth_normal', label: '成長枠（通常類型）' },
+          { value: 'growth_gx', label: '成長枠（グリーン成長類型）' },
+          { value: 'covid_recovery', label: 'コロナ回復加速化枠' },
+          { value: 'graduation', label: '卒業促進上乗せ措置' }
+        ],
+        required: true
+      },
+      {
+        id: 'value_added_plan',
+        question: '付加価値額の増加計画について',
+        type: 'radio',
+        options: [
+          { value: '3percent', label: '年率3%以上の増加を計画' },
+          { value: '4percent', label: '年率4%以上の増加を計画' },
+          { value: '5percent', label: '年率5%以上の増加を計画' },
+          { value: 'uncertain', label: '達成可能か不確実' }
+        ],
+        required: true
+      },
+      {
+        id: 'support_organization',
+        question: '認定経営革新等支援機関との連携状況は？',
+        type: 'radio',
+        options: [
+          { value: 'confirmed', label: '確認書を取得済み' },
+          { value: 'in_progress', label: '事業計画を策定中' },
+          { value: 'searching', label: '支援機関を探している' },
+          { value: 'not_started', label: 'まだ何もしていない' }
+        ],
+        required: true
+      },
+      {
+        id: 'financial_institution',
+        question: '金融機関（メインバンク等）の確認状況は？',
+        type: 'radio',
+        options: [
+          { value: 'confirmed', label: '確認書を取得済み' },
+          { value: 'discussing', label: '相談・協議中' },
+          { value: 'scheduled', label: '相談予定あり' },
+          { value: 'not_yet', label: 'まだ相談していない' }
+        ],
+        required: true
+      }
     ]
   };
 
@@ -310,6 +360,35 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
         { id: 'F1', name: '創業計画書（創業枠申請者）', required: false, category: 'other' },
         { id: 'F2', name: '事業承継診断書（事業承継枠）', required: false, category: 'other' },
         { id: 'F3', name: '災害証明書（災害枠）', required: false, category: 'other' }
+      ],
+      'jigyou-saikouchiku': [
+        // A. 申請基本書類（必須）
+        { id: 'A1', name: '事業計画書（表紙）', required: true, category: 'application' },
+        { id: 'A2', name: '認定経営革新等支援機関による確認書', required: true, category: 'application' },
+        { id: 'A3', name: '金融機関による確認書', required: true, category: 'application' },
+        { id: 'A4', name: '電子申請入力項目', required: true, category: 'application' },
+        // B. 財務関係書類
+        { id: 'B1', name: '決算書（直近2年間）', required: true, category: 'financial' },
+        { id: 'B2', name: '法人税納税証明書', required: true, category: 'financial' },
+        { id: 'B3', name: '消費税納税証明書', required: true, category: 'financial' },
+        // C. 事業計画関連
+        { id: 'C1', name: '事業再構築の必要性を説明する書類', required: true, category: 'project' },
+        { id: 'C2', name: '事業再構築の具体的内容を説明する書類', required: true, category: 'project' },
+        { id: 'C3', name: '将来の展望を説明する書類', required: true, category: 'project' },
+        { id: 'C4', name: '実施体制・スケジュール', required: true, category: 'project' },
+        // D. 企業情報
+        { id: 'D1', name: '履歴事項全部証明書', required: true, category: 'company' },
+        { id: 'D2', name: '従業員数を示す書類', required: true, category: 'company' },
+        { id: 'D3', name: '労働者名簿', required: true, category: 'company' },
+        // E. 見積・投資計画
+        { id: 'E1', name: '建物費の見積書・図面', required: false, category: 'quotation' },
+        { id: 'E2', name: '機械装置・システム費の見積書', required: false, category: 'quotation' },
+        { id: 'E3', name: '経費明細表', required: true, category: 'quotation' },
+        // F. 枠別追加書類
+        { id: 'F1', name: '市場拡大要件を説明する書類（成長枠）', required: false, category: 'other' },
+        { id: 'F2', name: 'グリーン成長戦略の課題解決を説明する書類（GX枠）', required: false, category: 'other' },
+        { id: 'F3', name: '賃金引上計画書（大規模賃金引上枠）', required: false, category: 'other' },
+        { id: 'F4', name: '成長に係る事業計画書（卒業促進枠）', required: false, category: 'other' }
       ]
     };
 
@@ -398,6 +477,36 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
       }
       
       // 事業支援計画書の状況（これは注意事項として表示するものなので削除）
+    }
+
+    if (subsidyType === 'jigyou-saikouchiku') {
+      // 申請枠に応じた追加書類
+      if (answers.application_frame === 'growth_normal') {
+        documents.push({ id: 'F1', name: '市場拡大要件を説明する書類（成長枠）', required: true, category: 'other' });
+      }
+      if (answers.application_frame === 'growth_gx') {
+        documents.push({ id: 'F2', name: 'グリーン成長戦略の課題解決を説明する書類（GX枠）', required: true, category: 'other' });
+      }
+      if (answers.application_frame === 'wage_increase') {
+        documents.push({ id: 'F3', name: '賃金引上計画書（大規模賃金引上枠）', required: true, category: 'other' });
+      }
+      if (answers.application_frame === 'graduation') {
+        documents.push({ id: 'F4', name: '成長に係る事業計画書（卒業促進枠）', required: true, category: 'other' });
+      }
+      
+      // 支援機関の確認書状況
+      if (answers.support_organization !== 'confirmed') {
+        documents.push({ id: 'support_urgent', name: '【重要】認定支援機関の確認書が必要です', required: true, category: 'alert' });
+      }
+      
+      // 金融機関の確認書状況
+      if (answers.financial_institution !== 'confirmed') {
+        documents.push({ id: 'financial_urgent', name: '【重要】金融機関の確認書が必要です', required: true, category: 'alert' });
+      }
+      
+      // 建物・設備投資がある場合
+      documents.push({ id: 'E1', name: '建物費の見積書・図面', required: true, category: 'quotation' });
+      documents.push({ id: 'E2', name: '機械装置・システム費の見積書', required: true, category: 'quotation' });
       
       // 経費額に応じた見積書（既にbaseDocumentsに含まれているので、条件に応じてrequiredを変更）
       const quotationDocIndex = documents.findIndex(doc => doc.id === 'C1');

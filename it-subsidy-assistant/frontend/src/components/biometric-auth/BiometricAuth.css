@@ -1,0 +1,1119 @@
+/* Biometric Authentication Styles */
+
+.biometric-auth-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Start Screen */
+.biometric-auth-start {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.biometric-auth-start h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.biometric-auth-start p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.auth-factors-status {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.factor-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.factor-status.enrolled {
+  border-color: #4a90e2;
+  background-color: #f0f7ff;
+}
+
+.factor-status i {
+  font-size: 3rem;
+  color: #999;
+}
+
+.factor-status.enrolled i {
+  color: #4a90e2;
+}
+
+.factor-status span {
+  font-weight: 500;
+  color: #666;
+}
+
+.auth-start-button {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+.auth-start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}
+
+.auth-start-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.enrollment-prompt {
+  margin-top: 2rem;
+  color: #666;
+}
+
+.enrollment-prompt button {
+  background: none;
+  border: none;
+  color: #4a90e2;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+/* Authentication Flow */
+.biometric-auth-flow {
+  padding: 2rem;
+}
+
+.auth-progress {
+  margin-bottom: 3rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a90e2 0%, #357abd 100%);
+  transition: width 0.5s ease;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.progress-steps::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: -1;
+}
+
+.step {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #999;
+  transition: all 0.3s ease;
+}
+
+.step.active {
+  background-color: #4a90e2;
+  color: white;
+  transform: scale(1.1);
+}
+
+.step.complete {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Behavioral Tracker */
+.behavioral-tracker {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.behavioral-tracker h3 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.typing-test {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.test-phrase {
+  font-size: 1.2rem;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  line-height: 1.8;
+}
+
+.typing-input {
+  width: 100%;
+  min-height: 100px;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-family: 'Courier New', monospace;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  resize: none;
+  transition: border-color 0.3s ease;
+}
+
+.typing-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.typing-stats {
+  margin-top: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.mouse-tracking {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mouse-tracking h4 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.mouse-canvas {
+  width: 100%;
+  background-color: #fafafa;
+  cursor: crosshair;
+}
+
+.tracking-hint {
+  margin-top: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.tracker-progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tracker-progress .progress-bar {
+  flex: 1;
+}
+
+.tracking-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  color: #e74c3c;
+  font-size: 0.9rem;
+}
+
+.recording {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Facial Recognition */
+.facial-recognition {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.facial-recognition h3 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.status-message {
+  color: #666;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.camera-container {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto 2rem;
+  background-color: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.camera-feed {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.face-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.face-guide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 350px;
+  transition: all 0.3s ease;
+}
+
+.face-outline {
+  width: 100%;
+  height: 100%;
+  border: 3px dashed rgba(255, 255, 255, 0.5);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+.face-guide.detected .face-outline {
+  border-color: #4caf50;
+  border-style: solid;
+}
+
+.countdown-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.countdown-number {
+  font-size: 5rem;
+  color: white;
+  font-weight: bold;
+  animation: countdown-pulse 1s ease-in-out;
+}
+
+@keyframes countdown-pulse {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.challenge-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.challenge-instruction {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.challenge-progress {
+  margin-top: 1rem;
+}
+
+.progress-dots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot.filled {
+  background-color: #4caf50;
+}
+
+.quality-indicators {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quality-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.quality-indicator.good {
+  background-color: rgba(76, 175, 80, 0.8);
+}
+
+.quality-indicator.warning {
+  background-color: rgba(255, 152, 0, 0.8);
+}
+
+.captured-image {
+  width: 100%;
+  height: auto;
+}
+
+.captured-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.facial-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.capture-button,
+.retry-button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.capture-button:hover,
+.retry-button:hover {
+  background-color: #357abd;
+  transform: translateY(-2px);
+}
+
+.capture-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Voice Recognition */
+.voice-recognition {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.voice-recognition h3 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.voice-challenge {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.challenge-text {
+  position: relative;
+  padding: 1.5rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.challenge-text i:first-child {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #ccc;
+}
+
+.challenge-text i:last-child {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #ccc;
+}
+
+.challenge-text p {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  text-align: center;
+  margin: 0;
+  color: #333;
+}
+
+.challenge-hint {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.audio-visualizer {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.waveform-canvas {
+  width: 100%;
+  height: 150px;
+  background-color: #fafafa;
+  border-radius: 4px;
+}
+
+.volume-indicator {
+  margin-top: 1rem;
+}
+
+.volume-bar {
+  height: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.volume-fill {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.1s ease;
+}
+
+.volume-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.audio-playback {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.audio-playback audio {
+  width: 100%;
+  max-width: 400px;
+}
+
+.recording-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.record-button,
+.stop-button,
+.process-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.record-button {
+  background-color: #4a90e2;
+}
+
+.record-button:hover {
+  background-color: #357abd;
+}
+
+.stop-button:hover {
+  background-color: #c0392b;
+}
+
+.stop-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.process-button {
+  background-color: #4caf50;
+}
+
+.process-button:hover {
+  background-color: #45a049;
+}
+
+.recording-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.recording-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  color: #e74c3c;
+}
+
+.recording-dot {
+  font-size: 0.8rem;
+  animation: pulse 1s infinite;
+}
+
+.recording-progress {
+  width: 100%;
+}
+
+.recording-progress .progress-bar {
+  margin-bottom: 0.5rem;
+}
+
+.progress-label {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+}
+
+.recording-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.voice-tips {
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.voice-tips h4 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.voice-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.voice-tips li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.voice-tips li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* Privacy Notice */
+.privacy-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  color: #4a90e2;
+  font-size: 0.9rem;
+}
+
+/* Processing and Complete States */
+.auth-processing,
+.auth-complete {
+  text-align: center;
+  padding: 3rem;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #f0f0f0;
+  border-top: 4px solid #4a90e2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 2rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.auth-complete i {
+  font-size: 5rem;
+  color: #4caf50;
+  margin-bottom: 1rem;
+}
+
+/* Error State */
+.auth-error {
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c62828;
+  margin-top: 1rem;
+}
+
+/* Enrollment Styles */
+.biometric-enrollment {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.enrollment-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.enrollment-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.progress-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-top: 2rem;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.step-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #999;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .step-icon {
+  background-color: #4a90e2;
+  color: white;
+  transform: scale(1.1);
+}
+
+.progress-step.completed .step-icon {
+  background-color: #4caf50;
+  color: white;
+}
+
+.progress-step.skipped .step-icon {
+  background-color: #ff9800;
+  color: white;
+}
+
+.step-name {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.step-connector {
+  position: absolute;
+  top: 30px;
+  left: 60px;
+  width: 100px;
+  height: 2px;
+  background-color: #e0e0e0;
+}
+
+/* Enrollment Content */
+.enrollment-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.enrollment-intro h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.biometric-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.feature {
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.feature:hover {
+  background-color: #f9f9f9;
+  transform: translateY(-5px);
+}
+
+.feature i {
+  font-size: 3rem;
+  color: #4a90e2;
+  margin-bottom: 1rem;
+}
+
+.feature h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.feature p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.privacy-info {
+  display: flex;
+  gap: 1.5rem;
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.privacy-info i {
+  font-size: 2rem;
+  color: #4a90e2;
+  flex-shrink: 0;
+}
+
+.privacy-info h4 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.privacy-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.privacy-info li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.privacy-info li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.enrollment-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.primary-button {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.primary-button:hover {
+  background-color: #357abd;
+  transform: translateY(-2px);
+}
+
+.secondary-button {
+  background-color: transparent;
+  color: #4a90e2;
+  border: 2px solid #4a90e2;
+}
+
+.secondary-button:hover {
+  background-color: #f0f7ff;
+}
+
+.skip-button {
+  background: none;
+  border: none;
+  color: #999;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.skip-button:hover {
+  color: #666;
+}
+
+/* Enrollment Complete */
+.enrollment-complete {
+  text-align: center;
+  padding: 2rem;
+}
+
+.success-icon {
+  font-size: 5rem;
+  color: #4caf50;
+  margin-bottom: 2rem;
+}
+
+.enrollment-summary {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.enrollment-summary h3 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.summary-items {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: white;
+  border-radius: 50px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-item.completed {
+  background-color: #e8f5e9;
+}
+
+.summary-item.skipped {
+  background-color: #fff3e0;
+}
+
+.status-icon {
+  margin-left: 0.5rem;
+}
+
+.summary-item.completed .status-icon {
+  color: #4caf50;
+}
+
+.summary-item.skipped .status-icon {
+  color: #ff9800;
+}
+
+.next-steps {
+  text-align: left;
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.next-steps h3 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.next-steps ul {
+  list-style: none;
+  padding: 0;
+}
+
+.next-steps li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.next-steps li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #4a90e2;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .biometric-auth-container,
+  .biometric-enrollment {
+    padding: 1rem;
+  }
+
+  .auth-factors-status {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .factor-status {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .biometric-features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .progress-indicator {
+    overflow-x: auto;
+    padding: 0 1rem;
+  }
+
+  .enrollment-content {
+    padding: 1.5rem;
+  }
+
+  .camera-container {
+    max-width: 100%;
+  }
+
+  .recording-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .recording-actions button {
+    width: 100%;
+  }
+}

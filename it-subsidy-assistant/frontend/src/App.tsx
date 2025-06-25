@@ -6,10 +6,20 @@ import DocumentRequirementQuestions from './components/DocumentRequirementQuesti
 import { ApplicationGuidePage } from './pages/ApplicationGuidePage';
 import { subsidyDetailedQuestions } from './data/subsidy-questions-detailed';
 import AIDocumentAssistant from './components/AIDocumentAssistant';
+import { ImprovedAIDocumentGenerator } from './components/ImprovedAIDocumentGenerator';
 import SmartFormDemoPage from './pages/SmartFormDemoPage';
 import JizokukaCompletionPage from './components/JizokukaCompletionPage';
 import EnhancedInputForm from './components/EnhancedInputForm';
+import DarkModeToggle from './components/DarkModeToggle';
+import { ResponsiveLayout, ResponsiveContainer, ResponsiveGrid } from './components/layout/ResponsiveLayout';
+import { useResponsive, useDevice } from './hooks/useResponsive';
+import InnovativeFeaturesDemo from './pages/InnovativeFeaturesDemo';
+import VisualNavigatorDemo from './pages/VisualNavigatorDemo';
+import DocumentMagicStudioPage from './pages/DocumentMagicStudioPage';
+import { QuantumMatchingDemo } from './pages/QuantumMatchingDemo';
 import './styles/guide.css';
+import './styles/darkmode.css';
+import './styles/responsive.css';
 
 // ===== データ型定義 =====
 interface QuestionnaireData {
@@ -125,6 +135,7 @@ function App() {
   return (
     <Router>
       <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+        <DarkModeToggle />
         <Header isLoggedIn={isLoggedIn} userEmail={userEmail} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<QuestionnaireWizard />} />
@@ -178,6 +189,10 @@ function App() {
           <Route path="/ai-assistant" element={<AIDocumentAssistant />} />
           <Route path="/smart-form" element={<SmartFormDemoPage />} />
           <Route path="/completion/jizokuka" element={<JizokukaCompletionPage />} />
+          <Route path="/innovative-demo" element={<InnovativeFeaturesDemo />} />
+          <Route path="/visual-navigator" element={<VisualNavigatorDemo />} />
+          <Route path="/document-magic" element={<DocumentMagicStudioPage />} />
+          <Route path="/quantum-matching-demo" element={<QuantumMatchingDemo />} />
         </Routes>
       </div>
     </Router>
@@ -215,6 +230,46 @@ const Header: React.FC<{ isLoggedIn: boolean; userEmail: string; onLogout: () =>
             fontWeight: '500'
           }}>
             🤖 AIアシスタント
+          </Link>
+          <Link to="/innovative-demo" style={{ 
+            textDecoration: 'none', 
+            color: '#ef4444',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontWeight: '500'
+          }}>
+            🚀 革新的機能デモ
+          </Link>
+          <Link to="/visual-navigator" style={{ 
+            textDecoration: 'none', 
+            color: '#3b82f6',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontWeight: '500'
+          }}>
+            🎯 3Dナビゲーター
+          </Link>
+          <Link to="/document-magic" style={{ 
+            textDecoration: 'none', 
+            color: '#ec4899',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontWeight: '500'
+          }}>
+            🎨 Document Magic
+          </Link>
+          <Link to="/quantum-matching-demo" style={{ 
+            textDecoration: 'none', 
+            color: '#06b6d4',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontWeight: '500'
+          }}>
+            ⚛️ Quantum Engine
           </Link>
           {isLoggedIn ? (
             <>
@@ -271,6 +326,7 @@ const QuestionnaireWizard: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<QuestionnaireData>({});
+  const { isMobile, isTablet, isDesktop } = useResponsive();
 
   const questions = [
     {
@@ -360,57 +416,84 @@ const QuestionnaireWizard: React.FC = () => {
   
   if (!hasStarted) {
     return (
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px', textAlign: 'center' }}>
-        <h2 style={{ fontSize: '32px', marginBottom: '16px' }}>IT補助金申請を簡単に</h2>
-        <p style={{ fontSize: '18px', color: '#6b7280', marginBottom: '32px' }}>
-          申請書作成方法を選択してください
-        </p>
-        
-        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', marginTop: '48px', flexWrap: 'wrap' }}>
-          <div style={{
-            backgroundColor: 'white',
-            padding: '32px',
-            borderRadius: '12px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            flex: 1,
-            maxWidth: '280px',
-            minWidth: '250px',
-            cursor: 'pointer',
-            transition: 'transform 0.2s',
-            border: '2px solid transparent'
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'translateY(-4px)';
-            e.currentTarget.style.borderColor = '#10b981';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.borderColor = 'transparent';
-          }}
-          onClick={() => navigate('/smart-form')}
+      <ResponsiveContainer maxWidth="xl" padding center>
+        <div style={{ padding: isMobile ? '20px 10px' : '40px 20px', textAlign: 'center' }}>
+          <h2 style={{ 
+            fontSize: isMobile ? '24px' : isTablet ? '28px' : '32px', 
+            marginBottom: '16px' 
+          }}>
+            IT補助金申請を簡単に
+          </h2>
+          <p style={{ 
+            fontSize: isMobile ? '16px' : '18px', 
+            color: '#6b7280', 
+            marginBottom: '32px' 
+          }}>
+            申請書作成方法を選択してください
+          </p>
+          
+          <ResponsiveGrid 
+            cols={{ mobile: 1, tablet: 2, desktop: 4 }} 
+            gap={isMobile ? '16px' : '24px'}
+            style={{ marginTop: isMobile ? '32px' : '48px' }}
           >
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>✨</div>
-            <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>スマートフォーム</h3>
-            <p style={{ color: '#6b7280', fontSize: '14px', lineHeight: '1.6' }}>
-              簡単な質問に答えるだけで<br />
-              必要書類を自動作成
-            </p>
-            <button
-              style={{
-                marginTop: '20px',
-                backgroundColor: '#10b981',
-                color: 'white',
-                padding: '12px 24px',
-                fontSize: '16px',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                width: '100%'
-              }}
+            <div style={{
+              backgroundColor: 'white',
+              padding: isMobile ? '24px' : '32px',
+              borderRadius: '12px',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+              cursor: 'pointer',
+              transition: 'transform 0.2s',
+              border: '2px solid transparent',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.borderColor = '#10b981';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = 'transparent';
+            }}
+            onClick={() => navigate('/smart-form')}
             >
-              スマート入力開始
-            </button>
-          </div>
+              <div>
+                <div style={{ fontSize: isMobile ? '40px' : '48px', marginBottom: '16px' }}>✨</div>
+                <h3 style={{ 
+                  fontSize: isMobile ? '18px' : '20px', 
+                  marginBottom: '12px', 
+                  fontWeight: '600' 
+                }}>
+                  スマートフォーム
+                </h3>
+                <p style={{ 
+                  color: '#6b7280', 
+                  fontSize: isMobile ? '13px' : '14px', 
+                  lineHeight: '1.6' 
+                }}>
+                  簡単な質問に答えるだけで<br />
+                  必要書類を自動作成
+                </p>
+              </div>
+              <button
+                style={{
+                  marginTop: '20px',
+                  backgroundColor: '#10b981',
+                  color: 'white',
+                  padding: isMobile ? '10px 20px' : '12px 24px',
+                  fontSize: isMobile ? '14px' : '16px',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  width: '100%'
+                }}
+              >
+                スマート入力開始
+              </button>
+            </div>
 
           <div style={{
             backgroundColor: 'white',
@@ -501,8 +584,67 @@ const QuestionnaireWizard: React.FC = () => {
               診断を開始
             </button>
           </div>
+          
+          <div style={{
+            backgroundColor: 'white',
+            padding: isMobile ? '24px' : '32px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            cursor: 'pointer',
+            transition: 'transform 0.2s',
+            border: '2px solid transparent',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between'
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.borderColor = '#ec4899';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'transparent';
+          }}
+          onClick={() => navigate('/document-magic')}
+          >
+            <div>
+              <div style={{ fontSize: isMobile ? '40px' : '48px', marginBottom: '16px' }}>🎨</div>
+              <h3 style={{ 
+                fontSize: isMobile ? '18px' : '20px', 
+                marginBottom: '12px', 
+                fontWeight: '600' 
+              }}>
+                Document Magic
+              </h3>
+              <p style={{ 
+                color: '#6b7280', 
+                fontSize: isMobile ? '13px' : '14px', 
+                lineHeight: '1.6' 
+              }}>
+                ドラッグ&ドロップで<br />
+                90%時間削減の文書作成
+              </p>
+            </div>
+            <button
+              style={{
+                marginTop: '20px',
+                backgroundColor: '#ec4899',
+                color: 'white',
+                padding: isMobile ? '10px 20px' : '12px 24px',
+                fontSize: isMobile ? '14px' : '16px',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                width: '100%'
+              }}
+            >
+              Magic Studio開始
+            </button>
+          </div>
+          </ResponsiveGrid>
         </div>
-      </div>
+      </ResponsiveContainer>
     );
   }
 
@@ -510,20 +652,20 @@ const QuestionnaireWizard: React.FC = () => {
     <div style={{ 
       minHeight: '100vh',
       backgroundColor: '#f0f9ff',
-      padding: '40px 20px'
+      padding: isMobile ? '20px 10px' : '40px 20px'
     }}>
-      <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+      <ResponsiveContainer maxWidth="lg" padding center>
         {/* ヘッダー */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <div style={{ textAlign: 'center', marginBottom: isMobile ? '24px' : '40px' }}>
           <div style={{ 
-            fontSize: '48px', 
+            fontSize: isMobile ? '36px' : '48px', 
             marginBottom: '16px',
             filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
           }}>
             🎯
           </div>
           <h2 style={{ 
-            fontSize: '32px', 
+            fontSize: isMobile ? '24px' : isTablet ? '28px' : '32px', 
             color: '#1e40af',
             marginBottom: '8px',
             fontWeight: 'bold'
@@ -531,7 +673,7 @@ const QuestionnaireWizard: React.FC = () => {
             補助金診断
           </h2>
           <p style={{ 
-            fontSize: '18px', 
+            fontSize: isMobile ? '16px' : '18px', 
             color: '#6b7280'
           }}>
             あなたに最適な補助金を見つけます
@@ -592,14 +734,14 @@ const QuestionnaireWizard: React.FC = () => {
         {/* 質問カード */}
         <div style={{ 
           backgroundColor: 'white', 
-          padding: '40px', 
+          padding: isMobile ? '24px' : '40px', 
           borderRadius: '16px', 
           boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           border: '1px solid #e2e8f0'
         }}>
           <h3 style={{ 
-            fontSize: '28px', 
-            marginBottom: '32px', 
+            fontSize: isMobile ? '20px' : isTablet ? '24px' : '28px', 
+            marginBottom: isMobile ? '24px' : '32px', 
             textAlign: 'center',
             color: '#1e40af',
             fontWeight: '600'
@@ -607,19 +749,19 @@ const QuestionnaireWizard: React.FC = () => {
             {currentQuestion.question}
           </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '12px' : '16px' }}>
             {currentQuestion.options.map((option) => (
               <button
                 key={option.value}
                 onClick={() => handleAnswer(option.value)}
                 style={{
-                  padding: '20px 24px',
+                  padding: isMobile ? '16px 20px' : '20px 24px',
                   backgroundColor: 'white',
                   border: '2px solid #e5e7eb',
                   borderRadius: '12px',
                   cursor: 'pointer',
                   textAlign: 'left',
-                  fontSize: '18px',
+                  fontSize: isMobile ? '16px' : '18px',
                   fontWeight: '500',
                   transition: 'all 0.2s',
                   display: 'flex',
@@ -690,7 +832,7 @@ const QuestionnaireWizard: React.FC = () => {
             </button>
           </div>
         )}
-      </div>
+      </ResponsiveContainer>
     </div>
   );
 };
@@ -699,6 +841,7 @@ const QuestionnaireWizard: React.FC = () => {
 const SubsidyListPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedSubsidy, setSelectedSubsidy] = useState<string>('');
+  const { isMobile, isTablet, isDesktop } = useResponsive();
 
   const subsidies: SubsidyMatch[] = [
     {
@@ -737,20 +880,20 @@ const SubsidyListPage: React.FC = () => {
     <div style={{ 
       minHeight: '100vh',
       backgroundColor: '#f0f9ff',
-      padding: '40px 20px'
+      padding: isMobile ? '20px 10px' : '40px 20px'
     }}>
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+      <ResponsiveContainer maxWidth="xl" padding center>
         {/* ヘッダー */}
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div style={{ textAlign: 'center', marginBottom: isMobile ? '32px' : '48px' }}>
           <div style={{ 
-            fontSize: '48px', 
+            fontSize: isMobile ? '36px' : '48px', 
             marginBottom: '16px',
             filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
           }}>
             🎊
           </div>
           <h2 style={{ 
-            fontSize: '36px', 
+            fontSize: isMobile ? '24px' : isTablet ? '30px' : '36px', 
             color: '#1e40af',
             marginBottom: '16px',
             fontWeight: 'bold'
@@ -758,22 +901,23 @@ const SubsidyListPage: React.FC = () => {
             診断結果：おすすめの補助金
           </h2>
           <p style={{ 
-            fontSize: '18px', 
+            fontSize: isMobile ? '16px' : '18px', 
             color: '#6b7280',
             maxWidth: '600px',
-            margin: '0 auto'
+            margin: '0 auto',
+            padding: isMobile ? '0 10px' : '0'
           }}>
             回答内容から、以下の補助金が活用できる可能性があります
           </p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '16px' : '24px' }}>
           {subsidies.map((subsidy) => (
             <div
               key={subsidy.id}
               style={{
                 backgroundColor: 'white',
-                padding: '32px',
+                padding: isMobile ? '20px' : '32px',
                 borderRadius: '16px',
                 border: '3px solid',
                 borderColor: selectedSubsidy === subsidy.id ? '#3b82f6' : 'transparent',
@@ -797,10 +941,17 @@ const SubsidyListPage: React.FC = () => {
                 }
               }}
             >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '20px' }}>
-              <div>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: isMobile ? 'center' : 'start', 
+              marginBottom: '20px',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: isMobile ? '16px' : '0'
+            }}>
+              <div style={{ flex: 1 }}>
                 <h3 style={{ 
-                  fontSize: '24px', 
+                  fontSize: isMobile ? '20px' : '24px', 
                   margin: '0 0 8px 0',
                   color: '#1e40af',
                   fontWeight: '600' 
@@ -809,15 +960,17 @@ const SubsidyListPage: React.FC = () => {
                 </h3>
                 <p style={{ 
                   color: '#6b7280', 
-                  fontSize: '16px',
-                  margin: 0 
+                  fontSize: isMobile ? '14px' : '16px',
+                  margin: 0,
+                  lineHeight: '1.5'
                 }}>
                   {subsidy.description}
                 </p>
               </div>
               <div style={{ 
                 textAlign: 'center',
-                minWidth: '120px' 
+                minWidth: isMobile ? 'auto' : '120px',
+                alignSelf: isMobile ? 'stretch' : 'flex-start'
               }}>
                 <div style={{
                   backgroundColor: subsidy.matchScore >= 90 ? '#dcfce7' : 
@@ -845,10 +998,10 @@ const SubsidyListPage: React.FC = () => {
             
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(2, 1fr)', 
-              gap: '20px', 
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', 
+              gap: isMobile ? '16px' : '20px', 
               marginBottom: '24px',
-              padding: '20px',
+              padding: isMobile ? '16px' : '20px',
               backgroundColor: '#f8fafc',
               borderRadius: '12px'
             }}>
@@ -861,7 +1014,7 @@ const SubsidyListPage: React.FC = () => {
                   最大補助額
                 </span>
                 <p style={{ 
-                  fontSize: '24px', 
+                  fontSize: isMobile ? '20px' : '24px', 
                   fontWeight: 'bold', 
                   margin: '4px 0',
                   color: '#1e40af' 
@@ -878,7 +1031,7 @@ const SubsidyListPage: React.FC = () => {
                   補助率
                 </span>
                 <p style={{ 
-                  fontSize: '24px', 
+                  fontSize: isMobile ? '20px' : '24px', 
                   fontWeight: 'bold', 
                   margin: '4px 0',
                   color: '#1e40af' 
@@ -895,13 +1048,13 @@ const SubsidyListPage: React.FC = () => {
               }}
               style={{
                 width: '100%',
-                padding: '16px',
+                padding: isMobile ? '14px' : '16px',
                 backgroundColor: selectedSubsidy === subsidy.id ? '#3b82f6' : 'white',
                 color: selectedSubsidy === subsidy.id ? 'white' : '#3b82f6',
                 border: `2px solid #3b82f6`,
                 borderRadius: '12px',
                 cursor: 'pointer',
-                fontSize: '18px',
+                fontSize: isMobile ? '16px' : '18px',
                 fontWeight: '600',
                 transition: 'all 0.2s',
                 display: 'flex',
@@ -926,7 +1079,8 @@ const SubsidyListPage: React.FC = () => {
             </button>
           </div>
         ))}
-      </div>
+        </div>
+      </ResponsiveContainer>
     </div>
   );
 };

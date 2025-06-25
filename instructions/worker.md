@@ -114,19 +114,20 @@ fi
 ## 完了管理と報告システム
 ### 1. 個人タスク完了処理
 ```bash
-# 自分の完了ファイル作成（worker番号に応じて）
-WORKER_NUM=1  # worker1の場合（2,3は適宜変更）
+# 自分の完了ファイル作成（重要：自分の番号のみ）
+WORKER_NUM=1  # worker1の場合（worker2は2、worker3は3に変更）
 touch ./tmp/worker${WORKER_NUM}_done.txt
+echo "[$(date)] Worker${WORKER_NUM} 全タスク完了" >> ./tmp/worker${WORKER_NUM}_progress.log
 
-# 完了報告の準備
+# 完了報告の準備（簡潔に）
 COMPLETION_REPORT="【Worker${WORKER_NUM} 完了報告】
 
 ## 実施したタスク
-$(cat ./tmp/worker${WORKER_NUM}_progress.log | grep "完了")
+$(cat ./tmp/worker${WORKER_NUM}_progress.log | tail -10)
 
 ## 創出した価値
 1. [具体的な成果1]
-2. [具体的な成果2]
+2. [具体的な成果2]  
 3. [具体的な成果3]
 
 ## 革新的な要素
@@ -137,38 +138,17 @@ $(cat ./tmp/worker${WORKER_NUM}_progress.log | grep "完了")
 - 使用技術: [技術スタック]
 - アーキテクチャ: [設計概要]
 - 特筆事項: [工夫した点]
-"
+
+Worker${WORKER_NUM}のタスクが完了しました。"
 ```
 
-### 2. チーム完了確認と最終報告
+### 2. シンプルな完了報告
 ```bash
-# 全員の完了確認
-if [ -f ./tmp/worker1_done.txt ] && [ -f ./tmp/worker2_done.txt ] && [ -f ./tmp/worker3_done.txt ]; then
-    echo "全員の作業完了を確認"
-    
-    # 最後の完了者として統合報告
-    ./agent-send.sh boss1 "【プロジェクト完了報告】全Worker作業完了
+# 自分のタスク完了報告のみ（他のworkerの監視はしない）
+./agent-send.sh boss1 "$COMPLETION_REPORT"
 
-## Worker1の成果
-$(cat ./tmp/worker1_progress.log | tail -20)
-
-## Worker2の成果
-$(cat ./tmp/worker2_progress.log | tail -20)
-
-## Worker3の成果
-$(cat ./tmp/worker3_progress.log | tail -20)
-
-## 統合的な成果
-- 全体として実現した価値
-- チームシナジーによる相乗効果
-- 今後の発展可能性
-
-素晴らしいチームワークで革新的な成果を創出できました！"
-else
-    echo "他のworkerの完了を待機中..."
-    # 自分の完了状況だけ報告
-    ./agent-send.sh boss1 "$COMPLETION_REPORT"
-fi
+echo "✅ 自分のタスク完了報告をboss1に送信しました"
+echo "他のworkerの状況は boss1 が管理します"
 ```
 
 ## 専門性を活かした実行能力

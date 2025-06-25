@@ -10,6 +10,10 @@ interface SubsidyInfo {
   subsidyRate: string;
   features: string[];
   targetBusiness: string;
+  isActive?: boolean;
+  publicNumber?: string;
+  deadline?: string;
+  status?: string;
 }
 
 export const SubsidyResults: React.FC = () => {
@@ -21,7 +25,7 @@ export const SubsidyResults: React.FC = () => {
   const subsidies: Record<string, SubsidyInfo> = {
     'it-donyu': {
       id: 'it-donyu',
-      name: 'IT導入補助金2025',
+      name: 'IT導入補助金2025（第3次募集）',
       description: 'ITツール導入による生産性向上や業務効率化を支援',
       maxAmount: '450万円',
       subsidyRate: '最大3/4',
@@ -30,11 +34,14 @@ export const SubsidyResults: React.FC = () => {
         'ハードウェア購入費も補助対象',
         '賃上げ要件で補助率アップ'
       ],
-      targetBusiness: '中小企業・小規模事業者'
+      targetBusiness: '中小企業・小規模事業者',
+      isActive: true,
+      publicNumber: '第3次',
+      deadline: '2025年7月18日'
     },
     'monozukuri': {
       id: 'monozukuri',
-      name: 'ものづくり補助金',
+      name: 'ものづくり補助金（第20次公募）',
       description: '革新的な製品・サービス開発や生産プロセス改善を支援',
       maxAmount: '1,250万円',
       subsidyRate: '最大2/3',
@@ -43,11 +50,14 @@ export const SubsidyResults: React.FC = () => {
         '試作品開発費も対象',
         '専門家のサポート付き'
       ],
-      targetBusiness: '中小企業・小規模事業者'
+      targetBusiness: '中小企業・小規模事業者',
+      isActive: true,
+      publicNumber: '第20次',
+      deadline: '2025年7月25日'
     },
     'jizokuka': {
       id: 'jizokuka',
-      name: '小規模事業者持続化補助金',
+      name: '小規模事業者持続化補助金（第17回公募予定）',
       description: '販路開拓や業務効率化など小規模事業者の取り組みを支援',
       maxAmount: '200万円',
       subsidyRate: '最大3/4',
@@ -56,7 +66,29 @@ export const SubsidyResults: React.FC = () => {
         'ホームページ制作費も対象',
         '申請書類が比較的シンプル'
       ],
-      targetBusiness: '小規模事業者'
+      targetBusiness: '小規模事業者',
+      isActive: false,
+      publicNumber: '第17回',
+      deadline: '2025年6月13日（予定）',
+      status: '2025年3月4日開始予定'
+    },
+    'jigyou-saikouchiku': {
+      id: 'jigyou-saikouchiku',
+      name: '事業再構築補助金（第13回・最終公募）',
+      description: 'ポストコロナ時代の経済社会の変化に対応し、成長分野への大胆な事業再構築を支援',
+      maxAmount: '最大1億円（通常枠）',
+      subsidyRate: '中小1/2、中堅1/3',
+      features: [
+        '成長枠（通常類型）：新市場進出・市場拡大を支援',
+        'グリーン成長枠（GX類型）：グリーン分野での事業再構築',
+        '付加価値額を年3〜4%以上増加が必須要件',
+        '認定経営革新等支援機関の事業計画確認が必須'
+      ],
+      targetBusiness: '中小企業・中堅企業',
+      isActive: false,
+      publicNumber: '第13回（最終）',
+      deadline: '2025年3月26日（終了）',
+      status: '募集終了'
     }
   };
 
@@ -74,10 +106,31 @@ export const SubsidyResults: React.FC = () => {
   }, []);
 
   const sortedSubsidies = Object.keys(subsidies).sort((a, b) => {
+    const subsidyA = subsidies[a];
+    const subsidyB = subsidies[b];
+    
+    // まずアクティブステータスで並び替え（アクティブなものが上）
+    if (subsidyA.isActive !== subsidyB.isActive) {
+      return subsidyA.isActive === false ? 1 : -1;
+    }
+    
+    // 同じアクティブステータスの場合はスコアで並び替え
     return (scores[b] || 0) - (scores[a] || 0);
   });
 
   const handleSelectSubsidy = (subsidyId: string) => {
+    const subsidy = subsidies[subsidyId];
+    
+    // 募集停止中の補助金の場合は警告表示
+    if (subsidy.isActive === false) {
+      if (subsidyId === 'jizokuka') {
+        alert('小規模事業者持続化補助金は2025年3月4日から募集開始予定です。開始までお待ちください。');
+      } else {
+        alert('申し訳ございません。この補助金は現在募集を停止しております。他の補助金をご検討ください。');
+      }
+      return;
+    }
+    
     setSelectedSubsidy(subsidyId);
     sessionStorage.setItem('selectedSubsidy', subsidyId);
     
@@ -135,16 +188,34 @@ export const SubsidyResults: React.FC = () => {
             return (
               <div
                 key={subsidyId}
-                className={`subsidy-card ${selectedSubsidy === subsidyId ? 'selected' : ''}`}
+                className={`subsidy-card ${selectedSubsidy === subsidyId ? 'selected' : ''} ${subsidy.isActive === false ? 'inactive' : ''}`}
                 onClick={() => handleSelectSubsidy(subsidyId)}
                 style={{
                   marginBottom: '20px',
                   animation: isAnimating ? `slideUp 0.5s ${index * 0.1}s both` : 'none',
-                  position: 'relative'
+                  position: 'relative',
+                  opacity: subsidy.isActive === false ? 0.5 : 1,
+                  filter: subsidy.isActive === false ? 'grayscale(70%)' : 'none',
+                  cursor: subsidy.isActive === false ? 'not-allowed' : 'pointer'
                 }}
               >
-                {/* ランキング表示 */}
-                {index === 0 && (
+                {/* ランキング表示・募集状況 */}
+                {subsidy.isActive === false ? (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-12px',
+                    left: '20px',
+                    background: 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)',
+                    color: 'white',
+                    padding: '4px 16px',
+                    borderRadius: '100px',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    boxShadow: 'var(--shadow-md)'
+                  }}>
+                    🚫 募集停止中
+                  </div>
+                ) : index === 0 && sortedSubsidies.filter(id => subsidies[id].isActive !== false).indexOf(subsidyId) === 0 && (
                   <div style={{
                     position: 'absolute',
                     top: '-12px',
@@ -173,10 +244,32 @@ export const SubsidyResults: React.FC = () => {
                     </h3>
                     <p style={{ 
                       color: 'var(--text-secondary)',
-                      marginBottom: '16px'
+                      marginBottom: '8px'
                     }}>
                       {subsidy.description}
                     </p>
+                    
+                    {/* 締切日表示 */}
+                    {subsidy.deadline && (
+                      <div style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '6px 12px',
+                        background: subsidy.isActive === false ? 'rgba(156, 163, 175, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                        borderRadius: '100px',
+                        marginBottom: '16px',
+                        fontSize: '14px',
+                        color: subsidy.isActive === false ? '#6b7280' : '#dc2626',
+                        fontWeight: '600'
+                      }}>
+                        <span style={{ fontSize: '16px' }}>📅</span>
+                        {subsidy.isActive === false && subsidy.status ? 
+                          subsidy.status : 
+                          `締切: ${subsidy.deadline}`
+                        }
+                      </div>
+                    )}
 
                     {/* 特徴 */}
                     <div style={{ marginBottom: '20px' }}>
@@ -327,14 +420,18 @@ export const SubsidyResults: React.FC = () => {
                     className="btn-gradient"
                     style={{
                       flex: 2,
-                      fontSize: '18px'
+                      fontSize: '18px',
+                      opacity: subsidy.isActive === false ? 0.5 : 1,
+                      cursor: subsidy.isActive === false ? 'not-allowed' : 'pointer',
+                      filter: subsidy.isActive === false ? 'grayscale(50%)' : 'none'
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectSubsidy(subsidyId);
                     }}
+                    disabled={subsidy.isActive === false}
                   >
-                    この補助金で申請を進める →
+                    {subsidy.isActive === false ? '募集停止中' : 'この補助金で申請を進める →'}
                   </button>
                 </div>
               </div>

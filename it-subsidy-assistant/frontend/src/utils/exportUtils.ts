@@ -1,20 +1,33 @@
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
-
-// jsPDF用の型定義
-declare module 'jspdf' {
-  interface jsPDF {
-    autoTable: (options: any) => jsPDF;
-  }
-}
 
 interface ExportData {
   companyData: any;
   questionnaireData: any;
   subsidyType: string;
   subsidyName: string;
+  matchingResults?: any[];
+  applicationData?: any;
+}
+
+interface CSVExportOptions {
+  includeHeaders?: boolean;
+  delimiter?: string;
+  encoding?: string;
+  dateFormat?: 'ISO' | 'Japanese';
+}
+
+interface ExcelExportOptions {
+  multiSheet?: boolean;
+  includeSummary?: boolean;
+  formatting?: boolean;
+}
+
+interface PDFExportOptions {
+  includeCharts?: boolean;
+  template?: 'simple' | 'detailed' | 'official';
+  pageSize?: 'A4' | 'A3' | 'Letter';
 }
 
 // 日本語フォントの設定（実際の実装では日本語フォントファイルが必要）
@@ -231,53 +244,44 @@ export const generateExcelFile = (data: ExportData) => {
   }
 };
 
-// PDF出力関数
+// PDF出力関数（シンプル版 - autoTable依存を削除）
 export const generatePDFFile = (data: ExportData) => {
   try {
     const pdf = new jsPDF();
     
-    // 日本語フォントの設定（現在はデフォルトフォントを使用）
-    // setupJapaneseFont(pdf);
-    
     // タイトル
-    pdf.setFontSize(20);
-    pdf.text(data.subsidyName + ' Application Form', 105, 20, { align: 'center' });
+    pdf.setFontSize(16);
+    pdf.text(`${data.subsidyName} Application`, 20, 20);
     
     // 作成日
     pdf.setFontSize(10);
-    pdf.text('Created: ' + new Date().toLocaleDateString('ja-JP'), 105, 30, { align: 'center' });
+    pdf.text(`Created: ${new Date().toLocaleDateString('ja-JP')}`, 20, 30);
     
     // データの準備
     const rows = formatDataForExport(data);
-    const tableData: any[] = [];
+    let yPosition = 50;
     
     rows.forEach(row => {
-      if (row.length === 1 && row[0].startsWith('【')) {
-        // セクションヘッダー
-        tableData.push([{ content: row[0], colSpan: 2, styles: { fillColor: [229, 231, 235], fontStyle: 'bold' } }]);
-      } else if (row.length === 2) {
-        // データ行
-        tableData.push(row);
+      if (yPosition > 270) {
+        pdf.addPage();
+        yPosition = 20;
       }
-    });
-    
-    // テーブルの作成
-    (pdf as any).autoTable({
-      startY: 40,
-      head: [],
-      body: tableData,
-      styles: {
-        font: 'helvetica',
-        fontSize: 10,
-        cellPadding: 5,
-        overflow: 'linebreak',
-        cellWidth: 'wrap'
-      },
-      columnStyles: {
-        0: { cellWidth: 60 },
-        1: { cellWidth: 120 }
-      },
-      theme: 'grid'
+      
+      if (row.length === 1 && row[0] && row[0].startsWith('【')) {
+        // セクションヘッダー
+        pdf.setFontSize(12);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(row[0], 20, yPosition);
+        yPosition += 10;
+      } else if (row.length === 2 && row[0] && row[1]) {
+        // データ行
+        pdf.setFontSize(10);
+        pdf.setFont('helvetica', 'normal');
+        const label = String(row[0]).substring(0, 30); // 文字数制限
+        const value = String(row[1]).substring(0, 50); // 文字数制限
+        pdf.text(`${label}: ${value}`, 20, yPosition);
+        yPosition += 8;
+      }
     });
     
     // ファイル名の生成
@@ -289,6 +293,6 @@ export const generatePDFFile = (data: ExportData) => {
     return true;
   } catch (error) {
     console.error('PDF出力エラー:', error);
-    throw new Error('PDF出力に失敗しました（日本語フォントのサポートが必要です）');
+    throw new Error('PDF出力に失敗しました');
   }
 };
