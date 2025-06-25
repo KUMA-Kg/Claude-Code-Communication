@@ -647,39 +647,12 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
       {/* アクションボタン */}
       <div className="action-section">
         <button
-          onClick={() => navigate(`/guide/${subsidyType}-documents`)}
-          className="btn-secondary"
-        >
-          <BookOpen className="w-5 h-5" />
-          詳細ガイドを見る
-        </button>
-        <button
-          onClick={() => navigate(`/document-upload/${subsidyType}`)}
-          className="btn-secondary"
-          style={{
-            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-            color: 'white'
-          }}
-        >
-          <Download className="w-5 h-5" />
-          書類をアップロード
-        </button>
-        <button
-          onClick={() => navigate(`/ai-document/${subsidyType}`)}
-          className="btn-secondary"
-          style={{
-            background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-            color: 'white'
-          }}
-        >
-          <Sparkles className="w-5 h-5" />
-          AI文書生成
-        </button>
-        <button
           onClick={() => navigate(`/minimal-form/${subsidyType}`)}
           className="btn-primary"
           style={{
-            background: 'linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)'
+            background: 'linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)',
+            padding: '16px 32px',
+            fontSize: '18px'
           }}
         >
           <>
@@ -688,13 +661,11 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
           </>
         </button>
         <button
-          onClick={() => navigate(`/simplified-form/${subsidyType}`)}
+          onClick={() => navigate(`/guide/${subsidyType}-documents`)}
           className="btn-secondary"
         >
-          <>
-            簡単入力で申請書作成
-            <ArrowRight className="w-5 h-5" />
-          </>
+          <BookOpen className="w-5 h-5" />
+          詳細ガイドを見る
         </button>
       </div>
     </div>

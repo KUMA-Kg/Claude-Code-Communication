@@ -260,7 +260,7 @@ body {
   transition: all var(--transition-normal);
   cursor: pointer;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .subsidy-card::before {
