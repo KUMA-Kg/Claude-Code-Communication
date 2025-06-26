@@ -26,6 +26,18 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
   }>> = {
     'it-donyu': [
       {
+        id: 'application_type',
+        question: '申請予定の枠を選択してください',
+        type: 'select',
+        options: [
+          { value: 'normal', label: '通常枠（A・B類型） - 業務効率化・売上向上のITツール導入' },
+          { value: 'security', label: 'セキュリティ対策推進枠 - サイバーセキュリティ対策強化' },
+          { value: 'digital', label: 'デジタル化基盤導入枠 - 会計・受発注・決済・EC機能' },
+          { value: 'complex', label: '複数社連携IT導入枠 - 複数社が連携したIT導入' }
+        ],
+        required: true
+      },
+      {
         id: 'business_duration',
         question: '創業からの年数を教えてください',
         type: 'radio',
@@ -78,10 +90,10 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
         question: '申請予定の枠を選択してください',
         type: 'select',
         options: [
-          { value: 'normal', label: '通常枠' },
-          { value: 'digital', label: 'デジタル枠' },
-          { value: 'green', label: 'グリーン枠' },
-          { value: 'joint', label: '共同申請枠' }
+          { value: 'normal', label: '通常枠 - 一般的な設備投資や新商品開発' },
+          { value: 'digital', label: 'デジタル枠 - DX推進、デジタル技術活用' },
+          { value: 'green', label: 'グリーン枠 - 脱炭素、環境対応の取組' },
+          { value: 'joint', label: '共同申請枠 - 複数事業者での共同事業' }
         ],
         required: true
       },
@@ -197,10 +209,10 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
         question: '申請予定の枠を選択してください',
         type: 'select',
         options: [
-          { value: 'general', label: '一般型' },
-          { value: 'startup', label: '創業枠' },
-          { value: 'succession', label: '事業承継枠' },
-          { value: 'disaster', label: '災害枠' }
+          { value: 'general', label: '一般型 - 販路開拓・業務効率化の一般的な取組' },
+          { value: 'startup', label: '創業枠 - 創業間もない事業者の販路開拓' },
+          { value: 'succession', label: '事業承継枠 - 事業承継を控えた経営者の新たな取組' },
+          { value: 'disaster', label: '災害枠 - 自然災害等の被災事業者の事業再建' }
         ],
         required: true
       },
@@ -250,10 +262,10 @@ const DocumentRequirementQuestions: React.FC<DocumentRequirementQuestionsProps> 
         question: '申請予定の事業類型を選択してください',
         type: 'radio',
         options: [
-          { value: 'growth_normal', label: '成長枠（通常類型）' },
-          { value: 'growth_gx', label: '成長枠（グリーン成長類型）' },
-          { value: 'covid_recovery', label: 'コロナ回復加速化枠' },
-          { value: 'graduation', label: '卒業促進上乗せ措置' }
+          { value: 'growth_normal', label: '成長枠（通常類型） - 新市場進出、事業転換等の一般的な再構築' },
+          { value: 'growth_gx', label: '成長枠（グリーン成長類型） - 脱炭素・環境分野での事業再構築' },
+          { value: 'covid_recovery', label: 'コロナ回復加速化枠 - コロナの影響からの回復を目指す事業者' },
+          { value: 'graduation', label: '卒業促進上乗せ措置 - 中小企業から中堅企業への成長' }
         ],
         required: true
       },

@@ -47,10 +47,30 @@ const SubsidyFlowApp: React.FC = () => {
   const [requiredDocuments, setRequiredDocuments] = useState<DocumentRequirement[]>([]);
   const [formData, setFormData] = useState<FormData>({});
   const [currentDocumentIndex, setCurrentDocumentIndex] = useState(0);
+  const [companyData, setCompanyData] = useState<any>({});
+  const [questionnaireData, setQuestionnaireData] = useState<any>({});
+
+  // 補助金タイプのマッピング関数
+  const getSubsidyTypeMapping = (subsidyType: string): string => {
+    const mappings: { [key: string]: string } = {
+      'it-subsidy': 'it_donyu_2025',
+      'monozukuri': 'monozukuri',
+      'jizokuka': 'jizokuka'
+    };
+    return mappings[subsidyType] || subsidyType;
+  };
 
   const handleQuestionnaireComplete = (questionnaireAnswers: AkinatorAnswer[], subsidyMatches: SubsidyMatch[]) => {
     setAnswers(questionnaireAnswers);
     setMatches(subsidyMatches);
+    
+    // questionnaireAnswersを扱いやすい形式に変換
+    const qaData: any = {};
+    questionnaireAnswers.forEach(answer => {
+      qaData[answer.questionId] = answer.selectedValue;
+    });
+    setQuestionnaireData(qaData);
+    
     setCurrentStep('selection');
   };
 
@@ -66,6 +86,19 @@ const SubsidyFlowApp: React.FC = () => {
 
   const handleFormsNext = (data: FormData) => {
     setFormData(data);
+    
+    // formDataをcompanyDataに統合（フラットな構造で保存）
+    const updatedCompanyData = { ...companyData };
+    Object.entries(data).forEach(([docId, docData]) => {
+      if (typeof docData === 'object' && docData !== null) {
+        Object.entries(docData).forEach(([key, value]) => {
+          // ドキュメントごとのデータをフラットに保存
+          updatedCompanyData[key] = value;
+        });
+      }
+    });
+    setCompanyData(updatedCompanyData);
+    
     setCurrentStep('confirmation');
   };
 
@@ -145,6 +178,9 @@ const SubsidyFlowApp: React.FC = () => {
             requiredDocuments={requiredDocuments}
             formData={formData}
             subsidyName={selectedSubsidy.subsidyName}
+            subsidyType={getSubsidyTypeMapping(selectedSubsidy.subsidyType)}
+            companyData={companyData}
+            questionnaireData={questionnaireData}
             onBack={handleBackToForms}
             onEdit={handleEditDocument}
           />

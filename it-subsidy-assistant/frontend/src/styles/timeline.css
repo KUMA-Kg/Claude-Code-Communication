@@ -1,0 +1,266 @@
+/* タイムラインのスタイル */
+
+.subsidy-timeline {
+  margin: 40px 0;
+}
+
+/* 締切カウントダウン */
+.deadline-countdown {
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  border: 3px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.deadline-countdown:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.countdown-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.countdown-content {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.countdown-days {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.days-number {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.days-unit {
+  font-size: 24px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.deadline-info {
+  flex: 1;
+}
+
+.deadline-date {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.deadline-message {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-icon {
+  font-size: 20px;
+}
+
+/* タイムラインコンテナ */
+.timeline-container {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 32px;
+}
+
+/* タイムライン */
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 48px;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item.current {
+  opacity: 1;
+}
+
+.timeline-item.completed {
+  opacity: 1;
+}
+
+/* コネクターライン */
+.timeline-connector {
+  position: absolute;
+  left: -20px;
+  top: 32px;
+  bottom: 0;
+  width: 2px;
+}
+
+.connector-line {
+  width: 100%;
+  height: 100%;
+  background: #e5e7eb;
+}
+
+.timeline-item.completed .connector-line {
+  background: #10b981;
+}
+
+/* マーカー */
+.timeline-marker {
+  position: absolute;
+  left: -32px;
+  top: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.marker-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.timeline-item.current .marker-icon {
+  border-color: #f59e0b;
+  background: #fef3c7;
+  transform: scale(1.1);
+  box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.1);
+}
+
+.timeline-item.completed .marker-icon {
+  border-color: #10b981;
+  background: #d1fae5;
+  color: #10b981;
+}
+
+/* コンテンツ */
+.timeline-content {
+  padding-left: 24px;
+  min-height: 40px;
+}
+
+.milestone-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.milestone-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.milestone-timing {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.timing-future {
+  color: #6b7280;
+}
+
+.timing-today {
+  color: #f59e0b;
+  background: #fef3c7;
+  padding: 4px 12px;
+  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.timing-overdue {
+  color: #ef4444;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.timing-completed {
+  color: #10b981;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .countdown-content {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .days-number {
+    font-size: 48px;
+  }
+  
+  .timeline {
+    padding-left: 24px;
+  }
+  
+  .timeline-marker {
+    left: -24px;
+  }
+  
+  .timeline-connector {
+    left: -13px;
+  }
+  
+  .marker-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  
+  .timeline-content {
+    padding-left: 16px;
+  }
+}

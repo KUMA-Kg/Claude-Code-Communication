@@ -8,6 +8,9 @@ import {
   Sparkles, Lock, Unlock, RefreshCw, Save, Share2, Search
 } from 'lucide-react';
 import { getDocumentGuidesBySubsidyType, DocumentGuide } from '../data/enhanced-document-guidance';
+import { subsidySchedules } from '../data/subsidy-schedules';
+import SubsidyTimeline from './SubsidyTimeline';
+import NextActionGuide from './NextActionGuide';
 import '../styles/modern-ui.css';
 import '../styles/enhanced-documents.css';
 
@@ -596,6 +599,26 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
         ))}
       </div>
 
+      {/* スケジュール可視化 - タイムライン表示 */}
+      {subsidySchedules[subsidyType] && (
+        <SubsidyTimeline 
+          schedule={subsidySchedules[subsidyType]}
+          completedMilestones={new Set(
+            documentGuides
+              .filter(d => checkedDocuments.has(d.id))
+              .map(d => {
+                // 書類の準備状況からマイルストーンの完了を推測
+                if (subsidyType === 'it-donyu') {
+                  if (d.name.includes('gBizID')) return 'gbiz-id';
+                  if (d.name.includes('SECURITY ACTION')) return 'security-action';
+                }
+                return null;
+              })
+              .filter(Boolean) as string[]
+          )}
+        />
+      )}
+
       {/* 役立つリンク集 */}
       <div className="links-section">
         <h3 className="links-title">
@@ -643,6 +666,15 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
           )}
         </div>
       </div>
+
+      {/* 次のアクションガイド - 書類準備完了後の具体的なステップ */}
+      {subsidySchedules[subsidyType] && canProceed && (
+        <NextActionGuide
+          nextActions={subsidySchedules[subsidyType].nextActions}
+          applicationLinks={subsidySchedules[subsidyType].applicationLinks}
+          subsidyName={subsidyName}
+        />
+      )}
 
       {/* アクションボタン */}
       <div className="action-section">

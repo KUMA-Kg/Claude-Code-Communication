@@ -5,6 +5,8 @@ import { styles } from '../styles';
 import * as XLSX from 'xlsx';
 import InlineEditor from './InlineEditor';
 import FigmaIntegration from './FigmaIntegration';
+import { DocumentGenerator } from '../utils/documentGenerator';
+import DocumentFieldSummary from './DocumentFieldSummary';
 
 interface DocumentRequirement {
   id: string;
@@ -24,6 +26,9 @@ interface EnhancedConfirmationScreenProps {
   requiredDocuments: DocumentRequirement[];
   formData: FormData;
   subsidyName: string;
+  subsidyType?: string;
+  companyData?: any;
+  questionnaireData?: any;
   onBack: () => void;
   onEdit: (documentIndex: number) => void;
 }
@@ -32,6 +37,9 @@ const EnhancedConfirmationScreen: React.FC<EnhancedConfirmationScreenProps> = ({
   requiredDocuments,
   formData: initialFormData,
   subsidyName,
+  subsidyType,
+  companyData,
+  questionnaireData,
   onBack,
   onEdit
 }) => {
@@ -133,13 +141,20 @@ const EnhancedConfirmationScreen: React.FC<EnhancedConfirmationScreenProps> = ({
     setIsExporting(true);
     
     try {
-      const workbook = generateExcelData();
-      const timestamp = new Date().toISOString().split('T')[0];
-      const templateSuffix = appliedTemplate ? `_${appliedTemplate}` : '';
-      const filename = `${subsidyName}_申請書類${templateSuffix}_${timestamp}.xlsx`;
-      
-      // ファイルをダウンロード
-      XLSX.writeFile(workbook, filename);
+      // 新しいDocumentGeneratorを使用
+      if (subsidyType) {
+        const generator = new DocumentGenerator();
+        const documentIds = requiredDocuments.map(doc => doc.id);
+        // companyDataとquestionnaireDataも渡す（asyncメソッドなのでawait）
+        await generator.generateExcel(subsidyType, documentIds, formData, companyData, questionnaireData);
+      } else {
+        // 旧来の方式（後方互換性のため）
+        const workbook = generateExcelData();
+        const timestamp = new Date().toISOString().split('T')[0];
+        const templateSuffix = appliedTemplate ? `_${appliedTemplate}` : '';
+        const filename = `${subsidyName}_申請書類${templateSuffix}_${timestamp}.xlsx`;
+        XLSX.writeFile(workbook, filename);
+      }
       
       setExportComplete(true);
       setTimeout(() => setExportComplete(false), 3000);
@@ -278,10 +293,30 @@ const EnhancedConfirmationScreen: React.FC<EnhancedConfirmationScreenProps> = ({
         </div>
       </motion.div>
 
+      {/* 書類別必要情報サマリー（subsidyTypeが提供されている場合のみ表示） */}
+      {subsidyType && companyData && questionnaireData && (
+        <div style={{ marginBottom: '32px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#111827', marginBottom: '16px' }}>
+            書類別必要情報の入力状況
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {requiredDocuments.map((doc) => (
+              <DocumentFieldSummary
+                key={doc.id}
+                subsidyType={subsidyType}
+                documentId={doc.id}
+                companyData={companyData}
+                questionnaireData={questionnaireData}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* 書類一覧 */}
       <div style={{ marginBottom: '32px' }}>
         <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#111827', marginBottom: '16px' }}>
-          書類一覧 ({requiredDocuments.length}件)
+          書類プレビュー ({requiredDocuments.length}件)
         </h3>
         
         {requiredDocuments.map((doc, index) => {

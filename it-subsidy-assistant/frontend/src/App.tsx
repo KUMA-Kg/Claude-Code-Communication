@@ -9,6 +9,7 @@ import AIDocumentAssistant from './components/AIDocumentAssistant';
 import { ImprovedAIDocumentGenerator } from './components/ImprovedAIDocumentGenerator';
 import SmartFormDemoPage from './pages/SmartFormDemoPage';
 import JizokukaCompletionPage from './components/JizokukaCompletionPage';
+import MonozukuriCompletionPage from './components/MonozukuriCompletionPage';
 import EnhancedInputForm from './components/EnhancedInputForm';
 import DarkModeToggle from './components/DarkModeToggle';
 import { ResponsiveLayout, ResponsiveContainer, ResponsiveGrid } from './components/layout/ResponsiveLayout';
@@ -189,6 +190,7 @@ function App() {
           <Route path="/ai-assistant" element={<AIDocumentAssistant />} />
           <Route path="/smart-form" element={<SmartFormDemoPage />} />
           <Route path="/completion/jizokuka" element={<JizokukaCompletionPage />} />
+          <Route path="/completion/monozukuri" element={<MonozukuriCompletionPage />} />
           <Route path="/innovative-demo" element={<InnovativeFeaturesDemo />} />
           <Route path="/visual-navigator" element={<VisualNavigatorDemo />} />
           <Route path="/document-magic" element={<DocumentMagicStudioPage />} />

@@ -1,0 +1,486 @@
+{
+  "it_donyu_2025": {
+    "sensei_sho": {
+      "document_name": "宣誓書",
+      "required_fields": [
+        {
+          "field_id": "application_date",
+          "source": "auto",
+          "default": "current_date"
+        },
+        {
+          "field_id": "company_name",
+          "source": "companyData.companyName"
+        },
+        {
+          "field_id": "representative_name",
+          "source": "companyData.representativeName"
+        },
+        {
+          "field_id": "corporate_number",
+          "source": "companyData.corporateNumber"
+        },
+        {
+          "field_id": "antisocial_confirmation",
+          "source": "auto",
+          "default": true
+        },
+        {
+          "field_id": "no_duplicate_application",
+          "source": "auto",
+          "default": true
+        },
+        {
+          "field_id": "no_false_application",
+          "source": "auto",
+          "default": true
+        },
+        {
+          "field_id": "return_understanding",
+          "source": "auto",
+          "default": true
+        },
+        {
+          "field_id": "information_disclosure_consent",
+          "source": "auto",
+          "default": true
+        }
+      ]
+    },
+    "invoice_taiou_keikaku": {
+      "document_name": "インボイス対応計画書",
+      "required_fields": [
+        {
+          "field_id": "invoice_issuer_number",
+          "source": "companyData.invoiceNumber"
+        },
+        {
+          "field_id": "invoice_registration_date",
+          "source": "companyData.invoiceRegistrationDate"
+        },
+        {
+          "field_id": "current_invoice_method",
+          "source": "questionnaireData.currentInvoiceMethod"
+        },
+        {
+          "field_id": "monthly_invoice_count",
+          "source": "companyData.monthlyInvoiceCount"
+        },
+        {
+          "field_id": "invoice_challenges",
+          "source": "companyData.invoiceChallenges"
+        },
+        {
+          "field_id": "planned_it_tool",
+          "source": "companyData.itToolName"
+        },
+        {
+          "field_id": "expected_effects",
+          "source": "companyData.expectedEffects"
+        },
+        {
+          "field_id": "system_integration_needed",
+          "source": "companyData.systemIntegrationNeeded"
+        },
+        {
+          "field_id": "systems_to_integrate",
+          "source": "companyData.systemsToIntegrate",
+          "conditional": {
+            "field": "system_integration_needed",
+            "value": "必要"
+          }
+        }
+      ]
+    },
+    "fukususha_renkei_keikaku": {
+      "document_name": "複数社連携計画書",
+      "required_fields": [
+        {
+          "field_id": "representative_company",
+          "source": "companyData.companyName"
+        },
+        {
+          "field_id": "partner_count",
+          "source": "companyData.partnerCount"
+        },
+        {
+          "field_id": "partner_info",
+          "source": "companyData.partnerInfo",
+          "type": "array"
+        },
+        {
+          "field_id": "collaboration_purpose",
+          "source": "companyData.collaborationPurpose"
+        },
+        {
+          "field_id": "shared_it_tools",
+          "source": "companyData.sharedItTools"
+        },
+        {
+          "field_id": "data_sharing_scope",
+          "source": "companyData.dataSharingScope"
+        },
+        {
+          "field_id": "security_measures",
+          "source": "companyData.securityMeasures"
+        },
+        {
+          "field_id": "cost_sharing_method",
+          "source": "companyData.costSharingMethod"
+        }
+      ]
+    }
+  },
+  "monozukuri": {
+    "hojo_taisho_keihi_seiyaku": {
+      "document_name": "補助対象経費誓約書【様式1】",
+      "required_fields": [
+        {
+          "field_id": "application_date",
+          "source": "auto",
+          "default": "current_date"
+        },
+        {
+          "field_id": "company_name",
+          "source": "companyData.companyName"
+        },
+        {
+          "field_id": "representative_title",
+          "source": "companyData.representativeTitle"
+        },
+        {
+          "field_id": "representative_name",
+          "source": "companyData.representativeName"
+        },
+        {
+          "field_id": "project_name",
+          "source": "companyData.projectName"
+        },
+        {
+          "field_id": "proper_use_pledge",
+          "source": "auto",
+          "default": true
+        },
+        {
+          "field_id": "proper_accounting_pledge",
+          "source": "auto",
+          "default": true
+        },
+        {
+          "field_id": "document_retention_pledge",
+          "source": "auto",
+          "default": true
+        },
+        {
+          "field_id": "inspection_cooperation_pledge",
+          "source": "auto",
+          "default": true
+        },
+        {
+          "field_id": "return_if_fraud_pledge",
+          "source": "auto",
+          "default": true
+        }
+      ]
+    },
+    "chingin_hikiage_seiyaku": {
+      "document_name": "賃金引上げ計画の誓約書【様式2】",
+      "required_fields": [
+        {
+          "field_id": "current_average_wage",
+          "source": "companyData.currentAverageWage"
+        },
+        {
+          "field_id": "plan_period",
+          "source": "companyData.wagePlanPeriod"
+        },
+        {
+          "field_id": "wage_increase_rate",
+          "source": "companyData.wageIncreaseRate"
+        },
+        {
+          "field_id": "target_employee_count",
+          "source": "companyData.targetEmployeeCount"
+        },
+        {
+          "field_id": "wage_increase_date",
+          "source": "companyData.wageIncreaseDate"
+        },
+        {
+          "field_id": "after_average_wage",
+          "source": "calculated",
+          "calculation": "current_average_wage * (1 + wage_increase_rate / 100)"
+        },
+        {
+          "field_id": "wage_increase_source",
+          "source": "companyData.wageIncreaseSource"
+        },
+        {
+          "field_id": "productivity_improvement",
+          "source": "companyData.productivityImprovement"
+        },
+        {
+          "field_id": "implementation_pledge",
+          "source": "auto",
+          "default": true
+        }
+      ]
+    },
+    "roudousha_meibo": {
+      "document_name": "労働者名簿",
+      "required_fields": [
+        {
+          "field_id": "creation_date",
+          "source": "auto",
+          "default": "current_date"
+        },
+        {
+          "field_id": "worker_info",
+          "source": "companyData.workerInfo",
+          "type": "array",
+          "array_mapping": {
+            "employee_number": "employeeNumber",
+            "employee_name": "employeeName",
+            "employment_type": "employmentType",
+            "hire_date": "hireDate",
+            "current_monthly_wage": "currentMonthlyWage",
+            "after_monthly_wage": "afterMonthlyWage",
+            "wage_increase_amount": "wageIncreaseAmount",
+            "individual_increase_rate": "individualIncreaseRate"
+          }
+        },
+        {
+          "field_id": "total_count",
+          "source": "calculated",
+          "calculation": "worker_info.length"
+        },
+        {
+          "field_id": "average_increase_rate",
+          "source": "calculated",
+          "calculation": "average(worker_info.individual_increase_rate)"
+        }
+      ]
+    },
+    "oohaba_chinageKeikaku": {
+      "document_name": "大幅賃上げ計画書【様式4】",
+      "required_fields": [
+        {
+          "field_id": "base_year",
+          "source": "companyData.baseYear"
+        },
+        {
+          "field_id": "base_total_salary",
+          "source": "companyData.baseTotalSalary"
+        },
+        {
+          "field_id": "base_employee_count",
+          "source": "companyData.baseEmployeeCount"
+        },
+        {
+          "field_id": "target_year",
+          "source": "companyData.targetYear"
+        },
+        {
+          "field_id": "target_total_salary",
+          "source": "companyData.targetTotalSalary"
+        },
+        {
+          "field_id": "target_employee_count",
+          "source": "companyData.targetEmployeeCount"
+        },
+        {
+          "field_id": "salary_increase_rate",
+          "source": "calculated",
+          "calculation": "(target_total_salary - base_total_salary) / base_total_salary * 100"
+        },
+        {
+          "field_id": "per_capita_increase_rate",
+          "source": "calculated",
+          "calculation": "((target_total_salary / target_employee_count) - (base_total_salary / base_employee_count)) / (base_total_salary / base_employee_count) * 100"
+        },
+        {
+          "field_id": "recovery_rationale",
+          "source": "companyData.recoveryRationale"
+        },
+        {
+          "field_id": "new_employment_plan",
+          "source": "companyData.newEmploymentPlan"
+        },
+        {
+          "field_id": "value_improvement_measures",
+          "source": "companyData.valueImprovementMeasures"
+        }
+      ]
+    }
+  },
+  "jizokuka": {
+    "yoshiki_1_shinseisho": {
+      "document_name": "様式1 申請書",
+      "required_fields": [
+        {
+          "field_id": "application_date",
+          "source": "auto",
+          "default": "current_date"
+        },
+        {
+          "field_id": "chamber_name",
+          "source": "companyData.chamberName"
+        },
+        {
+          "field_id": "company_name",
+          "source": "companyData.companyName"
+        },
+        {
+          "field_id": "representative_title",
+          "source": "companyData.representativeTitle"
+        },
+        {
+          "field_id": "representative_name",
+          "source": "companyData.representativeName"
+        },
+        {
+          "field_id": "postal_code",
+          "source": "companyData.postalCode"
+        },
+        {
+          "field_id": "address",
+          "source": "companyData.address"
+        },
+        {
+          "field_id": "phone_number",
+          "source": "companyData.phoneNumber"
+        },
+        {
+          "field_id": "email",
+          "source": "companyData.email"
+        },
+        {
+          "field_id": "industry",
+          "source": "questionnaireData.businessType",
+          "mapping": {
+            "manufacturing": "製造業",
+            "retail": "小売業",
+            "service": "サービス業",
+            "other": "その他"
+          }
+        },
+        {
+          "field_id": "regular_employees",
+          "source": "companyData.regularEmployees"
+        },
+        {
+          "field_id": "capital",
+          "source": "companyData.capital"
+        },
+        {
+          "field_id": "founding_date",
+          "source": "companyData.foundingDate"
+        },
+        {
+          "field_id": "application_frame",
+          "source": "companyData.applicationFrame"
+        }
+      ]
+    },
+    "yoshiki_4_hojokin_kofu": {
+      "document_name": "様式4 補助金交付申請書",
+      "required_fields": [
+        {
+          "field_id": "project_title",
+          "source": "companyData.projectTitle"
+        },
+        {
+          "field_id": "project_summary",
+          "source": "companyData.projectSummary"
+        },
+        {
+          "field_id": "project_start_date",
+          "source": "companyData.projectStartDate"
+        },
+        {
+          "field_id": "project_end_date",
+          "source": "companyData.projectEndDate"
+        },
+        {
+          "field_id": "total_eligible_expenses",
+          "source": "companyData.totalEligibleExpenses"
+        },
+        {
+          "field_id": "subsidy_amount",
+          "source": "companyData.subsidyAmount"
+        },
+        {
+          "field_id": "subsidy_rate",
+          "source": "companyData.subsidyRate"
+        },
+        {
+          "field_id": "expense_breakdown",
+          "source": "companyData.expenseBreakdown",
+          "type": "array",
+          "array_mapping": {
+            "expense_category": "category",
+            "expense_description": "description",
+            "unit_price": "unitPrice",
+            "quantity": "quantity",
+            "amount": "amount"
+          }
+        },
+        {
+          "field_id": "funding_breakdown",
+          "source": "companyData.fundingBreakdown",
+          "type": "object",
+          "object_mapping": {
+            "self_funding": "selfFunding",
+            "loan": "loan",
+            "subsidy": "subsidy"
+          }
+        }
+      ]
+    },
+    "tsukibetsu_uriage_suii": {
+      "document_name": "月別売上高推移データ",
+      "required_fields": [
+        {
+          "field_id": "data_period",
+          "source": "companyData.dataPeriod"
+        },
+        {
+          "field_id": "monthly_sales_data",
+          "source": "companyData.monthlySalesData",
+          "type": "array",
+          "array_mapping": {
+            "year_month": "yearMonth",
+            "sales_amount": "salesAmount",
+            "year_on_year_rate": "yearOnYearRate"
+          }
+        },
+        {
+          "field_id": "total_sales",
+          "source": "calculated",
+          "calculation": "sum(monthly_sales_data.sales_amount)"
+        },
+        {
+          "field_id": "average_monthly_sales",
+          "source": "calculated",
+          "calculation": "total_sales / monthly_sales_data.length"
+        },
+        {
+          "field_id": "sales_trend_analysis",
+          "source": "companyData.salesTrendAnalysis"
+        },
+        {
+          "field_id": "seasonal_variation",
+          "source": "companyData.seasonalVariation"
+        },
+        {
+          "field_id": "seasonal_details",
+          "source": "companyData.seasonalDetails",
+          "conditional": {
+            "field": "seasonal_variation",
+            "value": "あり"
+          }
+        }
+      ]
+    }
+  }
+}
