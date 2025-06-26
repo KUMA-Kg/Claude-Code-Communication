@@ -1,44 +1,25 @@
-import React from 'react';
-import { clsx } from 'clsx';
+import * as React from "react"
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-}
+import { cn } from "../../lib/utils"
 
-export const Input: React.FC<InputProps> = ({
-  label,
-  error,
-  helperText,
-  className,
-  id,
-  ...props
-}) => {
-  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-  return (
-    <div className="form-group">
-      {label && (
-        <label htmlFor={inputId} className="form-label">
-          {label}
-        </label>
-      )}
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
       <input
-        id={inputId}
-        className={clsx(
-          'form-input',
-          error && 'border-color-error',
+        type={type}
+        className={cn(
+          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
+        ref={ref}
         {...props}
       />
-      {helperText && !error && (
-        <p className="form-help">{helperText}</p>
-      )}
-      {error && (
-        <p className="form-error">{error}</p>
-      )}
-    </div>
-  );
-};
+    )
+  }
+)
+Input.displayName = "Input"
+
+export { Input }

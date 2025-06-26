@@ -21,6 +21,7 @@ import { QuantumMatchingDemo } from './pages/QuantumMatchingDemo';
 import './styles/guide.css';
 import './styles/darkmode.css';
 import './styles/responsive.css';
+import './styles/minimal.css';
 
 // ===== データ型定義 =====
 interface QuestionnaireData {
@@ -436,38 +437,37 @@ const QuestionnaireWizard: React.FC = () => {
           
           <ResponsiveGrid 
             cols={{ mobile: 1, tablet: 2, desktop: 4 }} 
-            gap={isMobile ? '16px' : '24px'}
-            style={{ marginTop: isMobile ? '32px' : '48px' }}
+            gap={isMobile ? '12px' : '16px'}
+            style={{ marginTop: isMobile ? '24px' : '32px' }}
           >
             <div style={{
               backgroundColor: 'white',
-              padding: isMobile ? '24px' : '32px',
-              borderRadius: '12px',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+              padding: isMobile ? '16px' : '20px',
+              borderRadius: '4px',
+              border: '1px solid #e5e7eb',
               cursor: 'pointer',
-              transition: 'transform 0.2s',
-              border: '2px solid transparent',
+              transition: 'all 0.2s',
               height: '100%',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
               e.currentTarget.style.borderColor = '#10b981';
+              e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = 'transparent';
+              e.currentTarget.style.borderColor = '#e5e7eb';
+              e.currentTarget.style.boxShadow = 'none';
             }}
             onClick={() => navigate('/smart-form')}
             >
               <div>
-                <div style={{ fontSize: isMobile ? '40px' : '48px', marginBottom: '16px' }}>✨</div>
+                <div style={{ fontSize: isMobile ? '24px' : '28px', marginBottom: '8px' }}>✨</div>
                 <h3 style={{ 
-                  fontSize: isMobile ? '18px' : '20px', 
-                  marginBottom: '12px', 
-                  fontWeight: '600' 
+                  fontSize: isMobile ? '16px' : '18px', 
+                  marginBottom: '8px', 
+                  fontWeight: '500' 
                 }}>
                   スマートフォーム
                 </h3>
@@ -482,15 +482,16 @@ const QuestionnaireWizard: React.FC = () => {
               </div>
               <button
                 style={{
-                  marginTop: '20px',
+                  marginTop: '16px',
                   backgroundColor: '#10b981',
                   color: 'white',
-                  padding: isMobile ? '10px 20px' : '12px 24px',
-                  fontSize: isMobile ? '14px' : '16px',
+                  padding: isMobile ? '8px 16px' : '8px 20px',
+                  fontSize: isMobile ? '13px' : '14px',
                   border: 'none',
-                  borderRadius: '8px',
+                  borderRadius: '2px',
                   cursor: 'pointer',
-                  width: '100%'
+                  width: '100%',
+                  fontWeight: '500'
                 }}
               >
                 スマート入力開始
@@ -499,43 +500,43 @@ const QuestionnaireWizard: React.FC = () => {
 
           <div style={{
             backgroundColor: 'white',
-            padding: '32px',
-            borderRadius: '12px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            padding: '20px',
+            borderRadius: '4px',
+            border: '1px solid #e5e7eb',
             flex: 1,
             maxWidth: '280px',
             minWidth: '250px',
             cursor: 'pointer',
-            transition: 'transform 0.2s',
-            border: '2px solid transparent'
+            transition: 'all 0.2s'
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'translateY(-4px)';
             e.currentTarget.style.borderColor = '#8b5cf6';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.borderColor = 'transparent';
+            e.currentTarget.style.borderColor = '#e5e7eb';
+            e.currentTarget.style.boxShadow = 'none';
           }}
           onClick={() => navigate('/ai-assistant')}
           >
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤖</div>
-            <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>AIアシスタント</h3>
+            <div style={{ fontSize: '28px', marginBottom: '8px' }}>🤖</div>
+            <h3 style={{ fontSize: '18px', marginBottom: '8px', fontWeight: '500' }}>AIアシスタント</h3>
             <p style={{ color: '#6b7280', fontSize: '14px', lineHeight: '1.6' }}>
               AIとの対話形式で<br />
               申請書を作成
             </p>
             <button
               style={{
-                marginTop: '20px',
+                marginTop: '16px',
                 backgroundColor: '#8b5cf6',
                 color: 'white',
-                padding: '12px 24px',
-                fontSize: '16px',
+                padding: '8px 20px',
+                fontSize: '14px',
                 border: 'none',
-                borderRadius: '8px',
+                borderRadius: '2px',
                 cursor: 'pointer',
-                width: '100%'
+                width: '100%',
+                fontWeight: '500'
               }}
             >
               AIで作成開始
@@ -544,28 +545,27 @@ const QuestionnaireWizard: React.FC = () => {
           
           <div style={{
             backgroundColor: 'white',
-            padding: '32px',
-            borderRadius: '12px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            padding: '20px',
+            borderRadius: '4px',
+            border: '1px solid #e5e7eb',
             flex: 1,
             maxWidth: '280px',
             minWidth: '250px',
             cursor: 'pointer',
-            transition: 'transform 0.2s',
-            border: '2px solid transparent'
+            transition: 'all 0.2s'
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'translateY(-4px)';
             e.currentTarget.style.borderColor = '#2563eb';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.borderColor = 'transparent';
+            e.currentTarget.style.borderColor = '#e5e7eb';
+            e.currentTarget.style.boxShadow = 'none';
           }}
           onClick={() => setHasStarted(true)}
           >
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📝</div>
-            <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>クイック診断</h3>
+            <div style={{ fontSize: '28px', marginBottom: '8px' }}>📝</div>
+            <h3 style={{ fontSize: '18px', marginBottom: '8px', fontWeight: '500' }}>クイック診断</h3>
             <p style={{ color: '#6b7280', fontSize: '14px', lineHeight: '1.6' }}>
               質問に答えて<br />
               最適な補助金を提案
@@ -589,33 +589,32 @@ const QuestionnaireWizard: React.FC = () => {
           
           <div style={{
             backgroundColor: 'white',
-            padding: isMobile ? '24px' : '32px',
-            borderRadius: '12px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            padding: isMobile ? '16px' : '20px',
+            borderRadius: '4px',
+            border: '1px solid #e5e7eb',
             cursor: 'pointer',
-            transition: 'transform 0.2s',
-            border: '2px solid transparent',
+            transition: 'all 0.2s',
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between'
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'translateY(-4px)';
             e.currentTarget.style.borderColor = '#ec4899';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.borderColor = 'transparent';
+            e.currentTarget.style.borderColor = '#e5e7eb';
+            e.currentTarget.style.boxShadow = 'none';
           }}
           onClick={() => navigate('/document-magic')}
           >
             <div>
-              <div style={{ fontSize: isMobile ? '40px' : '48px', marginBottom: '16px' }}>🎨</div>
+              <div style={{ fontSize: isMobile ? '24px' : '28px', marginBottom: '8px' }}>🎨</div>
               <h3 style={{ 
-                fontSize: isMobile ? '18px' : '20px', 
-                marginBottom: '12px', 
-                fontWeight: '600' 
+                fontSize: isMobile ? '16px' : '18px', 
+                marginBottom: '8px', 
+                fontWeight: '500' 
               }}>
                 Document Magic
               </h3>
@@ -630,15 +629,16 @@ const QuestionnaireWizard: React.FC = () => {
             </div>
             <button
               style={{
-                marginTop: '20px',
+                marginTop: '16px',
                 backgroundColor: '#ec4899',
                 color: 'white',
-                padding: isMobile ? '10px 20px' : '12px 24px',
-                fontSize: isMobile ? '14px' : '16px',
+                padding: isMobile ? '8px 16px' : '8px 20px',
+                fontSize: isMobile ? '13px' : '14px',
                 border: 'none',
-                borderRadius: '8px',
+                borderRadius: '2px',
                 cursor: 'pointer',
-                width: '100%'
+                width: '100%',
+                fontWeight: '500'
               }}
             >
               Magic Studio開始
@@ -706,20 +706,18 @@ const QuestionnaireWizard: React.FC = () => {
             </span>
           </div>
           <div style={{ 
-            backgroundColor: 'white', 
-            height: '12px', 
-            borderRadius: '100px',
-            boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#f3f4f6', 
+            height: '6px', 
+            borderRadius: '2px',
             overflow: 'hidden'
           }}>
             <div
               style={{
                 backgroundColor: '#3b82f6',
                 height: '100%',
-                borderRadius: '100px',
+                borderRadius: '2px',
                 width: `${progress}%`,
-                transition: 'width 0.5s ease-out',
-                boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)'
+                transition: 'width 0.3s ease-out'
               }}
             />
           </div>
@@ -736,17 +734,16 @@ const QuestionnaireWizard: React.FC = () => {
         {/* 質問カード */}
         <div style={{ 
           backgroundColor: 'white', 
-          padding: isMobile ? '24px' : '40px', 
-          borderRadius: '16px', 
-          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-          border: '1px solid #e2e8f0'
+          padding: isMobile ? '20px' : '24px', 
+          borderRadius: '4px', 
+          border: '1px solid #e5e7eb'
         }}>
           <h3 style={{ 
-            fontSize: isMobile ? '20px' : isTablet ? '24px' : '28px', 
-            marginBottom: isMobile ? '24px' : '32px', 
+            fontSize: isMobile ? '18px' : isTablet ? '20px' : '22px', 
+            marginBottom: isMobile ? '16px' : '20px', 
             textAlign: 'center',
             color: '#1e40af',
-            fontWeight: '600'
+            fontWeight: '500'
           }}>
             {currentQuestion.question}
           </h3>
@@ -757,31 +754,26 @@ const QuestionnaireWizard: React.FC = () => {
                 key={option.value}
                 onClick={() => handleAnswer(option.value)}
                 style={{
-                  padding: isMobile ? '16px 20px' : '20px 24px',
+                  padding: isMobile ? '12px 16px' : '14px 20px',
                   backgroundColor: 'white',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '12px',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '2px',
                   cursor: 'pointer',
                   textAlign: 'left',
-                  fontSize: isMobile ? '16px' : '18px',
-                  fontWeight: '500',
+                  fontSize: isMobile ? '14px' : '15px',
+                  fontWeight: '400',
                   transition: 'all 0.2s',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '12px',
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                  gap: '12px'
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f0f9ff';
+                  e.currentTarget.style.backgroundColor = '#f9fafb';
                   e.currentTarget.style.borderColor = '#3b82f6';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.backgroundColor = 'white';
                   e.currentTarget.style.borderColor = '#e5e7eb';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
                 }}
               >
                 <span style={{
@@ -808,13 +800,13 @@ const QuestionnaireWizard: React.FC = () => {
             <button
               onClick={() => setCurrentStep(currentStep - 1)}
               style={{
-                padding: '12px 24px',
+                padding: '8px 20px',
                 backgroundColor: '#6b7280',
                 color: 'white',
                 border: 'none',
-                borderRadius: '8px',
+                borderRadius: '2px',
                 cursor: 'pointer',
-                fontSize: '16px',
+                fontSize: '14px',
                 fontWeight: '500',
                 display: 'flex',
                 alignItems: 'center',

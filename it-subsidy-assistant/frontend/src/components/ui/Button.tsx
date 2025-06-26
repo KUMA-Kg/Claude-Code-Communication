@@ -1,110 +1,56 @@
-import React from 'react';
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
-  isLoading?: boolean;
-  children: React.ReactNode;
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-8 px-3 py-1.5",
+        sm: "h-7 rounded px-2 text-xs",
+        lg: "h-9 rounded px-4",
+        icon: "h-8 w-8",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
 
-export const Button: React.FC<ButtonProps> = ({
-  variant = 'primary',
-  size = 'md',
-  isLoading = false,
-  disabled,
-  children,
-  style,
-  ...props
-}) => {
-  const baseStyle: React.CSSProperties = {
-    border: 'none',
-    borderRadius: '6px',
-    cursor: disabled || isLoading ? 'not-allowed' : 'pointer',
-    fontWeight: '500',
-    transition: 'all 0.2s ease',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '8px',
-    ...style
-  };
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
 
-  const variantStyle: React.CSSProperties = (() => {
-    switch (variant) {
-      case 'primary':
-        return {
-          backgroundColor: disabled ? '#9ca3af' : '#2563eb',
-          color: 'white',
-          border: '1px solid transparent'
-        };
-      case 'secondary':
-        return {
-          backgroundColor: disabled ? '#f3f4f6' : '#f3f4f6',
-          color: disabled ? '#9ca3af' : '#374151',
-          border: '1px solid #e5e7eb'
-        };
-      case 'ghost':
-        return {
-          backgroundColor: 'transparent',
-          color: disabled ? '#9ca3af' : '#374151',
-          border: '1px solid transparent'
-        };
-      default:
-        return {};
-    }
-  })();
-
-  const sizeStyle: React.CSSProperties = (() => {
-    switch (size) {
-      case 'sm':
-        return {
-          padding: '6px 12px',
-          fontSize: '14px'
-        };
-      case 'lg':
-        return {
-          padding: '12px 24px',
-          fontSize: '16px'
-        };
-      case 'md':
-      default:
-        return {
-          padding: '8px 16px',
-          fontSize: '14px'
-        };
-    }
-  })();
-
-  return (
-    <button
-      style={{
-        ...baseStyle,
-        ...variantStyle,
-        ...sizeStyle
-      }}
-      disabled={disabled || isLoading}
-      {...props}
-    >
-      {isLoading && (
-        <div style={{
-          width: '16px',
-          height: '16px',
-          border: '2px solid currentColor',
-          borderTopColor: 'transparent',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
-      )}
-      {children}
-      
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `
-      }} />
-    </button>
-  );
-};
+export { Button, buttonVariants }

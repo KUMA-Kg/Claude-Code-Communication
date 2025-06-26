@@ -5,6 +5,13 @@ import SubsidySelectionScreen from './SubsidySelectionScreen';
 import DocumentRequirementScreen from './DocumentRequirementScreen';
 import DocumentFormScreen from './DocumentFormScreen';
 import EnhancedConfirmationScreen from './EnhancedConfirmationScreen';
+import { Progress } from './ui/progress';
+import { Badge } from './ui/badge';
+import { Button } from './ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import StepIndicator from './ui/StepIndicator';
+import { X, FileSpreadsheet } from 'lucide-react';
+import { cn } from '../lib/utils';
 import '../../templates/darkmode.css';
 
 // ダークモード統合
@@ -42,6 +49,14 @@ interface FormData {
 }
 
 type FlowStep = 'conversation' | 'selection' | 'documents' | 'forms' | 'confirmation';
+
+const FLOW_STEPS = [
+  { id: 'conversation', label: 'ヒアリング', description: '基本情報の入力' },
+  { id: 'selection', label: '補助金選択', description: '最適な補助金を選択' },
+  { id: 'documents', label: '必要書類確認', description: '提出書類の確認' },
+  { id: 'forms', label: '書類作成', description: '申請書類の作成' },
+  { id: 'confirmation', label: '確認・完了', description: '内容確認と出力' }
+];
 
 const EnhancedSubsidyFlowApp: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<FlowStep>('conversation');
@@ -223,79 +238,58 @@ const EnhancedSubsidyFlowApp: React.FC = () => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-primary)',
-      color: 'var(--text-primary)',
-      position: 'relative',
-      transition: 'all 0.3s ease'
-    }}>
+    <div className="min-h-screen bg-background text-foreground relative transition-all duration-300 flex flex-col">
       {/* Excel プレビューボタン（会話型フォーム以外で表示） */}
       {currentStep !== 'conversation' && (
-        <motion.button
+        <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setShowExcelPreview(!showExcelPreview)}
-          style={{
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            zIndex: 1000,
-            backgroundColor: 'var(--success-color)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '50%',
-            width: '60px',
-            height: '60px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '24px',
-            cursor: 'pointer',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-            transition: 'all 0.3s ease'
-          }}
+          className="fixed bottom-5 right-5 z-50"
         >
-          📊
-        </motion.button>
+          <Button
+            onClick={() => setShowExcelPreview(!showExcelPreview)}
+            size="lg"
+            className="rounded-full w-14 h-14 p-0 shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <FileSpreadsheet className="w-6 h-6" />
+          </Button>
+        </motion.div>
       )}
 
       {/* プログレスインジケーター（会話型フォーム以外で表示） */}
       {currentStep !== 'conversation' && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '4px',
-          backgroundColor: 'var(--bg-tertiary)',
-          zIndex: 999
-        }}>
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ 
-              width: `${
-                currentStep === 'selection' ? 20 :
-                currentStep === 'documents' ? 40 :
-                currentStep === 'forms' ? 60 :
-                currentStep === 'confirmation' ? 80 : 0
-              }%` 
-            }}
-            transition={{ duration: 0.3 }}
-            style={{
-              height: '100%',
-              backgroundColor: 'var(--accent-color)'
-            }}
+        <div className="fixed top-0 left-0 right-0 z-40 bg-background border-b">
+          {/* Progress Bar */}
+          <Progress 
+            value={
+              currentStep === 'selection' ? 20 :
+              currentStep === 'documents' ? 40 :
+              currentStep === 'forms' ? 60 :
+              currentStep === 'confirmation' ? 80 : 0
+            } 
+            className="h-1 rounded-none"
           />
+          
+          {/* Step Indicator */}
+          <div className="container mx-auto px-4 py-6">
+            <StepIndicator 
+              steps={FLOW_STEPS.slice(1)} 
+              currentStep={currentStep}
+              orientation="horizontal"
+            />
+          </div>
         </div>
       )}
 
       {/* メインコンテンツ */}
-      <AnimatePresence mode="wait">
-        {renderCurrentStep()}
-      </AnimatePresence>
+      <div className={cn(
+        "flex-1 transition-all duration-300",
+        currentStep !== 'conversation' && "pt-24"
+      )}>
+        <AnimatePresence mode="wait">
+          {renderCurrentStep()}
+        </AnimatePresence>
+      </div>
 
       {/* Excel プレビューパネル */}
       <AnimatePresence>
@@ -305,106 +299,120 @@ const EnhancedSubsidyFlowApp: React.FC = () => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 20 }}
-            style={{
-              position: 'fixed',
-              top: 0,
-              right: 0,
-              bottom: 0,
-              width: '400px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderLeft: '1px solid var(--border-color)',
-              boxShadow: '-4px 0 8px rgba(0, 0, 0, 0.1)',
-              padding: '20px',
-              overflowY: 'auto',
-              zIndex: 998
-            }}
+            className="fixed top-0 right-0 bottom-0 w-96 bg-background border-l shadow-xl p-6 overflow-y-auto z-40"
           >
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '20px'
-            }}>
-              <h3 style={{ margin: 0 }}>Excel出力プレビュー</h3>
-              <button
+            {/* Header */}
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-semibold">Excel出力プレビュー</h3>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setShowExcelPreview(false)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  fontSize: '24px',
-                  cursor: 'pointer',
-                  color: 'var(--text-secondary)'
-                }}
+                className="h-8 w-8 p-0"
               >
-                ×
-              </button>
+                <X className="h-4 w-4" />
+              </Button>
             </div>
             
-            <div style={{
-              backgroundColor: 'var(--bg-tertiary)',
-              padding: '16px',
-              borderRadius: '8px',
-              marginBottom: '16px'
-            }}>
-              <h4 style={{ margin: '0 0 8px 0' }}>基本情報</h4>
-              <p style={{ margin: '4px 0', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                業種: {conversationData.businessType || '未入力'}
-              </p>
-              <p style={{ margin: '4px 0', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                従業員数: {conversationData.employeeCount || '未入力'}
-              </p>
-              <p style={{ margin: '4px 0', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                年商: {conversationData.annualRevenue || '未入力'}
-              </p>
-            </div>
+            {/* Basic Information Card */}
+            <Card className="mb-4">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">基本情報</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">業種:</span>
+                  <Badge variant="secondary">
+                    {conversationData.businessType || '未入力'}
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">従業員数:</span>
+                  <Badge variant="secondary">
+                    {conversationData.employeeCount || '未入力'}
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">年商:</span>
+                  <Badge variant="secondary">
+                    {conversationData.annualRevenue || '未入力'}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
 
-            <div style={{
-              backgroundColor: 'var(--bg-tertiary)',
-              padding: '16px',
-              borderRadius: '8px',
-              marginBottom: '16px'
-            }}>
-              <h4 style={{ margin: '0 0 8px 0' }}>選択した補助金</h4>
-              <p style={{ margin: '4px 0', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                {selectedSubsidy?.subsidyName || '未選択'}
-              </p>
-            </div>
+            {/* Selected Subsidy Card */}
+            <Card className="mb-4">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">選択した補助金</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Badge variant={selectedSubsidy ? "default" : "outline"} className="w-full justify-center py-2">
+                  {selectedSubsidy?.subsidyName || '未選択'}
+                </Badge>
+              </CardContent>
+            </Card>
 
-            <div style={{
-              backgroundColor: 'var(--bg-tertiary)',
-              padding: '16px',
-              borderRadius: '8px'
-            }}>
-              <h4 style={{ margin: '0 0 8px 0' }}>入力済み項目数</h4>
-              <p style={{ margin: '4px 0', fontSize: '24px', fontWeight: 'bold', color: 'var(--success-color)' }}>
-                {Object.keys(formData).length} / {requiredDocuments.length}
-              </p>
-            </div>
+            {/* Progress Card */}
+            <Card className="mb-6">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">入力進捗</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-2xl font-bold text-primary">
+                      {Object.keys(formData).length}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      / {requiredDocuments.length} 項目
+                    </span>
+                  </div>
+                  <Progress 
+                    value={(Object.keys(formData).length / requiredDocuments.length) * 100} 
+                    className="h-2"
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
-            <button
-              style={{
-                width: '100%',
-                padding: '12px',
-                marginTop: '20px',
-                backgroundColor: 'var(--success-color)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
+            {/* Download Button */}
+            <Button
+              className="w-full"
+              size="lg"
               onClick={() => {
                 // Excel出力処理
                 console.log('Excel出力');
               }}
             >
+              <FileSpreadsheet className="mr-2 h-4 w-4" />
               Excel形式でダウンロード
-            </button>
+            </Button>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Footer */}
+      <footer className="mt-auto border-t bg-muted/10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-sm text-muted-foreground">
+              © 2025 IT補助金アシスタント. All rights reserved.
+            </div>
+            <nav className="flex gap-6">
+              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                利用規約
+              </a>
+              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                プライバシーポリシー
+              </a>
+              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                お問い合わせ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

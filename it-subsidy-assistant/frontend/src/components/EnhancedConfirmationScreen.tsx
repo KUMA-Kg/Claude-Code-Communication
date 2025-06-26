@@ -1,12 +1,17 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, FileText, CheckCircle, Edit, ArrowLeft, Wand2, Save } from 'lucide-react';
-import { styles } from '../styles';
 import * as XLSX from 'xlsx';
 import InlineEditor from './InlineEditor';
 import FigmaIntegration from './FigmaIntegration';
 import { DocumentGenerator } from '../utils/documentGenerator';
 import DocumentFieldSummary from './DocumentFieldSummary';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { cn } from '@/lib/utils';
 
 interface DocumentRequirement {
   id: string;
@@ -194,112 +199,110 @@ const EnhancedConfirmationScreen: React.FC<EnhancedConfirmationScreenProps> = ({
   };
 
   return (
-    <div style={styles.container}>
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
       {/* ヘッダー */}
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <div style={{ ...styles.flex.center, gap: '12px', marginBottom: '16px' }}>
-          <CheckCircle size={32} color="#22c55e" />
-          <h1 style={styles.text.title}>申請書類の確認・編集</h1>
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <CheckCircle size={32} className="text-green-500" />
+          <h1 className="text-3xl font-bold text-gray-900">申請書類の確認・編集</h1>
         </div>
-        <p style={styles.text.subtitle}>
+        <p className="text-gray-600">
           内容を確認・編集してExcelファイルをダウンロードしてください
         </p>
       </div>
 
       {/* 編集モード切り替え & 保存 */}
-      <div style={{ ...styles.flex.between, marginBottom: '24px' }}>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <button
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex gap-3 items-center">
+          <Button
             onClick={() => setInlineEditMode(!inlineEditMode)}
-            style={{
-              ...styles.button.secondary,
-              backgroundColor: inlineEditMode ? '#dbeafe' : undefined,
-              border: inlineEditMode ? '2px solid #2563eb' : undefined
-            }}
+            variant={inlineEditMode ? "default" : "outline"}
+            size="sm"
+            className={cn(
+              "gap-2",
+              inlineEditMode && "bg-blue-500 hover:bg-blue-600"
+            )}
           >
             <Edit size={16} />
             {inlineEditMode ? '編集モード終了' : 'インライン編集モード'}
-          </button>
+          </Button>
           
           {appliedTemplate && (
-            <div style={{
-              padding: '8px 12px',
-              backgroundColor: '#dcfce7',
-              color: '#166534',
-              borderRadius: '6px',
-              fontSize: '14px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px'
-            }}>
+            <Badge variant="secondary" className="bg-green-100 text-green-700 gap-1">
               <Wand2 size={14} />
               テンプレート適用済み: {appliedTemplate}
-            </div>
+            </Badge>
           )}
         </div>
 
         <AnimatePresence>
           {hasUnsavedChanges && (
-            <motion.button
+            <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              onClick={handleSaveAll}
-              style={{
-                ...styles.button.primary,
-                backgroundColor: '#059669'
-              }}
             >
-              <Save size={16} />
-              変更を保存
-            </motion.button>
+              <Button
+                onClick={handleSaveAll}
+                variant="default"
+                size="sm"
+                className="bg-green-600 hover:bg-green-700 gap-2"
+              >
+                <Save size={16} />
+                変更を保存
+              </Button>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>
 
       {/* 完了ステータス */}
-      <motion.div 
-        style={{ 
-          ...styles.card, 
-          marginBottom: '32px',
-          backgroundColor: allDocumentsComplete ? '#f0fdf4' : '#fef3c7',
-          border: allDocumentsComplete ? '2px solid #22c55e' : '2px solid #f59e0b'
-        }}
-        layout
-      >
-        <div style={{ ...styles.flex.center, gap: '12px', marginBottom: '16px' }}>
-          {allDocumentsComplete ? (
-            <>
-              <CheckCircle size={24} color="#22c55e" />
-              <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#166534' }}>
-                すべての書類が完成しました！
-              </h3>
-            </>
-          ) : (
-            <>
-              <FileText size={24} color="#f59e0b" />
-              <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#92400e' }}>
-                一部の書類が未完成です
-              </h3>
-            </>
-          )}
-        </div>
-        
-        <div style={{ fontSize: '14px', color: allDocumentsComplete ? '#166534' : '#92400e' }}>
-          {allDocumentsComplete 
-            ? 'Excelファイルをダウンロードして申請手続きを進めてください。'
-            : '未完成の書類を完成させてからダウンロードすることをお勧めします。'
-          }
-        </div>
+      <motion.div layout>
+        <Card className={cn(
+          "mb-8",
+          allDocumentsComplete 
+            ? "bg-green-50 border-green-500 border-2" 
+            : "bg-amber-50 border-amber-500 border-2"
+        )}>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              {allDocumentsComplete ? (
+                <>
+                  <CheckCircle size={24} className="text-green-500" />
+                  <h3 className="text-lg font-bold text-green-800">
+                    すべての書類が完成しました！
+                  </h3>
+                </>
+              ) : (
+                <>
+                  <FileText size={24} className="text-amber-500" />
+                  <h3 className="text-lg font-bold text-amber-800">
+                    一部の書類が未完成です
+                  </h3>
+                </>
+              )}
+            </div>
+            
+            <p className={cn(
+              "text-sm text-center",
+              allDocumentsComplete ? "text-green-700" : "text-amber-700"
+            )}>
+              {allDocumentsComplete 
+                ? 'Excelファイルをダウンロードして申請手続きを進めてください。'
+                : '未完成の書類を完成させてからダウンロードすることをお勧めします。'
+              }
+            </p>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* 書類別必要情報サマリー（subsidyTypeが提供されている場合のみ表示） */}
       {subsidyType && companyData && questionnaireData && (
-        <div style={{ marginBottom: '32px' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#111827', marginBottom: '16px' }}>
+        <div className="mb-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">
             書類別必要情報の入力状況
           </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="flex flex-col gap-4">
             {requiredDocuments.map((doc) => (
               <DocumentFieldSummary
                 key={doc.id}
@@ -314,8 +317,8 @@ const EnhancedConfirmationScreen: React.FC<EnhancedConfirmationScreenProps> = ({
       )}
 
       {/* 書類一覧 */}
-      <div style={{ marginBottom: '32px' }}>
-        <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#111827', marginBottom: '16px' }}>
+      <div className="mb-8">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
           書類プレビュー ({requiredDocuments.length}件)
         </h3>
         
@@ -324,172 +327,137 @@ const EnhancedConfirmationScreen: React.FC<EnhancedConfirmationScreenProps> = ({
           const docData = formData[doc.id] || {};
           
           return (
-            <motion.div
-              key={doc.id}
-              layout
-              style={{
-                ...styles.card,
-                marginBottom: '16px',
-                backgroundColor: status.isComplete ? '#f0fdf4' : '#fef3c7',
-                border: status.isComplete ? '1px solid #22c55e' : '1px solid #f59e0b'
-              }}
-            >
-              <div style={{ ...styles.flex.between, alignItems: 'flex-start', marginBottom: '16px' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ ...styles.flex.start, gap: '12px', marginBottom: '8px' }}>
-                    {status.isComplete ? (
-                      <CheckCircle size={20} color="#22c55e" />
-                    ) : (
-                      <FileText size={20} color="#f59e0b" />
-                    )}
-                    <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#111827' }}>
-                      {index + 1}. {doc.name}
-                    </h4>
-                  </div>
-                  <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '12px' }}>
-                    {doc.description}
-                  </p>
-                  
-                  <div style={{ fontSize: '14px', marginBottom: '12px' }}>
-                    <span style={{ 
-                      color: status.isComplete ? '#166534' : '#92400e',
-                      fontWeight: 'bold'
-                    }}>
-                      入力状況: {status.completed} / {status.total} 項目完了
-                    </span>
-                  </div>
-                </div>
-                
-                {!inlineEditMode && (
-                  <button
-                    onClick={() => onEdit(index)}
-                    style={{
-                      ...styles.button.secondary,
-                      padding: '8px 12px',
-                      fontSize: '14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}
-                  >
-                    <Edit size={16} />
-                    編集
-                  </button>
-                )}
-              </div>
-
-              {/* 質問と回答のプレビュー/編集 */}
-              <div style={{ 
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: '8px',
-                padding: '12px'
-              }}>
-                {doc.template_questions.map((question, qIndex) => {
-                  const answer = docData[qIndex] || '';
-                  const isEditing = editingField?.docId === doc.id && editingField?.questionIndex === qIndex;
-                  
-                  return (
-                    <div key={qIndex} style={{ marginBottom: '16px' }}>
-                      <div style={{ 
-                        fontSize: '13px', 
-                        fontWeight: '600', 
-                        color: '#374151',
-                        marginBottom: '8px'
-                      }}>
-                        {qIndex + 1}. {question}
+            <motion.div key={doc.id} layout>
+              <Card className={cn(
+                "mb-4",
+                status.isComplete
+                  ? "bg-green-50 border-green-300"
+                  : "bg-amber-50 border-amber-300"
+              )}>
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="flex items-start gap-3 mb-2">
+                        {status.isComplete ? (
+                          <CheckCircle size={20} className="text-green-500 mt-0.5" />
+                        ) : (
+                          <FileText size={20} className="text-amber-500 mt-0.5" />
+                        )}
+                        <CardTitle className="text-base">
+                          {index + 1}. {doc.name}
+                        </CardTitle>
                       </div>
+                      <CardDescription className="text-gray-600 mb-3">
+                        {doc.description}
+                      </CardDescription>
                       
-                      {inlineEditMode ? (
-                        <InlineEditor
-                          initialContent={answer}
-                          onSave={(content) => handleInlineSave(doc.id, qIndex, content)}
-                          placeholder="内容を入力してください..."
-                          autoSave={true}
-                          showDiff={true}
+                      <div className="flex items-center gap-2">
+                        <Progress 
+                          value={(status.completed / status.total) * 100} 
+                          className="w-32 h-2"
                         />
-                      ) : (
-                        <div 
-                          style={{ 
-                            fontSize: '13px', 
-                            color: answer ? '#111827' : '#9ca3af',
-                            backgroundColor: answer ? 'transparent' : '#f9fafb',
-                            padding: '12px',
-                            borderRadius: '6px',
-                            minHeight: '40px',
-                            lineHeight: '1.6',
-                            cursor: 'pointer',
-                            border: '1px solid transparent',
-                            transition: 'all 0.2s ease'
-                          }}
-                          onClick={() => {
-                            setInlineEditMode(true);
-                            setEditingField({ docId: doc.id, questionIndex: qIndex });
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = '#f3f4f6';
-                            e.currentTarget.style.borderColor = '#d1d5db';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = answer ? 'transparent' : '#f9fafb';
-                            e.currentTarget.style.borderColor = 'transparent';
-                          }}
-                        >
-                          {answer || '（未記入） - クリックして編集'}
-                        </div>
-                      )}
+                        <span className={cn(
+                          "text-sm font-semibold",
+                          status.isComplete ? "text-green-700" : "text-amber-700"
+                        )}>
+                          {status.completed} / {status.total} 項目完了
+                        </span>
+                      </div>
                     </div>
-                  );
-                })}
-              </div>
+                    
+                    {!inlineEditMode && (
+                      <Button
+                        onClick={() => onEdit(index)}
+                        variant="outline"
+                        size="sm"
+                        className="gap-1"
+                      >
+                        <Edit size={16} />
+                        編集
+                      </Button>
+                    )}
+                  </div>
+                </CardHeader>
+
+                <CardContent>
+                  <div className="bg-white/80 rounded-lg p-3">
+                    {doc.template_questions.map((question, qIndex) => {
+                      const answer = docData[qIndex] || '';
+                      const isEditing = editingField?.docId === doc.id && editingField?.questionIndex === qIndex;
+                      
+                      return (
+                        <div key={qIndex} className="mb-4 last:mb-0">
+                          <div className="text-sm font-semibold text-gray-700 mb-2">
+                            {qIndex + 1}. {question}
+                          </div>
+                          
+                          {inlineEditMode ? (
+                            <InlineEditor
+                              initialContent={answer}
+                              onSave={(content) => handleInlineSave(doc.id, qIndex, content)}
+                              placeholder="内容を入力してください..."
+                              autoSave={true}
+                              showDiff={true}
+                            />
+                          ) : (
+                            <div 
+                              className={cn(
+                                "text-sm p-3 rounded-md min-h-[40px] leading-relaxed cursor-pointer",
+                                "border transition-all duration-200",
+                                answer 
+                                  ? "text-gray-900 bg-transparent border-transparent hover:bg-gray-100 hover:border-gray-300" 
+                                  : "text-gray-400 bg-gray-50 border-transparent hover:bg-gray-100 hover:border-gray-300"
+                              )}
+                              onClick={() => {
+                                setInlineEditMode(true);
+                                setEditingField({ docId: doc.id, questionIndex: qIndex });
+                              }}
+                            >
+                              {answer || '（未記入） - クリックして編集'}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           );
         })}
       </div>
 
       {/* アクションボタン */}
-      <div style={{ ...styles.flex.between, alignItems: 'center' }}>
-        <button
+      <div className="flex justify-between items-center">
+        <Button
           onClick={onBack}
-          style={{
-            ...styles.button.secondary,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}
+          variant="outline"
+          className="gap-2"
         >
           <ArrowLeft size={16} />
           書類作成に戻る
-        </button>
+        </Button>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
-          {exportComplete && (
-            <motion.div
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              style={{
-                backgroundColor: '#dcfce7',
-                color: '#166534',
-                padding: '8px 16px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }}
-            >
-              ✓ ダウンロード完了！
-            </motion.div>
-          )}
+        <div className="flex gap-3 items-center">
+          <AnimatePresence>
+            {exportComplete && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+              >
+                <Badge variant="secondary" className="bg-green-100 text-green-700 px-4 py-2">
+                  ✓ ダウンロード完了！
+                </Badge>
+              </motion.div>
+            )}
+          </AnimatePresence>
           
-          <button
+          <Button
             onClick={handleExport}
             disabled={isExporting}
-            style={{
-              ...styles.button.primary,
-              backgroundColor: isExporting ? '#9ca3af' : '#2563eb',
-              cursor: isExporting ? 'not-allowed' : 'pointer',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              padding: '12px 24px'
-            }}
+            size="lg"
+            className="gap-2"
           >
             <Download size={20} />
             <span>
@@ -498,7 +466,7 @@ const EnhancedConfirmationScreen: React.FC<EnhancedConfirmationScreenProps> = ({
                 : 'Excelファイルをダウンロード'
               }
             </span>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -510,24 +478,18 @@ const EnhancedConfirmationScreen: React.FC<EnhancedConfirmationScreenProps> = ({
       />
 
       {/* 注意事項 */}
-      <div style={{
-        marginTop: '32px',
-        padding: '16px',
-        backgroundColor: '#f0f9ff',
-        border: '1px solid #0ea5e9',
-        borderRadius: '8px'
-      }}>
-        <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#0c4a6e', marginBottom: '8px' }}>
-          ご注意
-        </h4>
-        <ul style={{ fontSize: '13px', color: '#0c4a6e', paddingLeft: '16px', margin: 0 }}>
-          <li>インライン編集で直接内容を修正できます</li>
-          <li>Figma統合でプロフェッショナルなレイアウトを適用できます</li>
-          <li>変更は自動保存されますが、重要な変更後は手動保存を推奨します</li>
-          <li>ダウンロードしたExcelファイルは申請書類の下書きです</li>
-          <li>正式な申請前に内容をよく確認してください</li>
-        </ul>
-      </div>
+      <Alert className="mt-8 border-blue-200 bg-blue-50">
+        <AlertTitle className="text-blue-900">ご注意</AlertTitle>
+        <AlertDescription>
+          <ul className="text-sm text-blue-800 pl-4 mt-2 space-y-1 list-disc">
+            <li>インライン編集で直接内容を修正できます</li>
+            <li>Figma統合でプロフェッショナルなレイアウトを適用できます</li>
+            <li>変更は自動保存されますが、重要な変更後は手動保存を推奨します</li>
+            <li>ダウンロードしたExcelファイルは申請書類の下書きです</li>
+            <li>正式な申請前に内容をよく確認してください</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
     </div>
   );
 };
