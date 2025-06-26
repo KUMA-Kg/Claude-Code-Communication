@@ -482,5 +482,146 @@
         }
       ]
     }
+  },
+  "monozukuri": {
+    "hojo_taisho_keihi_seiyaku": {
+      "document_name": "補助対象経費誓約書【様式1】",
+      "required_fields": [
+        {
+          "field_id": "application_date",
+          "source": "auto",
+          "default": "current_date"
+        },
+        {
+          "field_id": "company_name",
+          "source": "companyData.companyName"
+        },
+        {
+          "field_id": "representative_title",
+          "source": "companyData.representativeTitle",
+          "default": "代表取締役"
+        },
+        {
+          "field_id": "representative_name",
+          "source": "companyData.representativeName"
+        },
+        {
+          "field_id": "project_name",
+          "source": "companyData.projectName"
+        }
+      ]
+    },
+    "chingin_hikiage_seiyaku": {
+      "document_name": "賃金引上げ計画の誓約書【様式2】",
+      "required_fields": [
+        {
+          "field_id": "application_date",
+          "source": "auto",
+          "default": "current_date"
+        },
+        {
+          "field_id": "company_name",
+          "source": "companyData.companyName"
+        },
+        {
+          "field_id": "representative_title",
+          "source": "companyData.representativeTitle",
+          "default": "代表取締役"
+        },
+        {
+          "field_id": "representative_name",
+          "source": "companyData.representativeName"
+        },
+        {
+          "field_id": "current_minimum_wage",
+          "source": "companyData.currentMinimumWage"
+        },
+        {
+          "field_id": "current_employee_count",
+          "source": "companyData.employeeCount"
+        },
+        {
+          "field_id": "wage_increase_amount",
+          "source": "companyData.wageIncreaseAmount",
+          "default": "30"
+        },
+        {
+          "field_id": "planned_minimum_wage",
+          "source": "companyData.plannedMinimumWage"
+        }
+      ]
+    },
+    "rodosha_meibo": {
+      "document_name": "労働者名簿",
+      "required_fields": [
+        {
+          "field_id": "company_name",
+          "source": "companyData.companyName"
+        },
+        {
+          "field_id": "creation_date",
+          "source": "auto",
+          "default": "current_date"
+        },
+        {
+          "field_id": "employees",
+          "source": "companyData.employees",
+          "type": "array",
+          "array_mapping": {
+            "name": "name",
+            "furigana": "furigana",
+            "birthDate": "birthDate",
+            "gender": "gender",
+            "address": "address",
+            "employmentType": "employmentType",
+            "hireDate": "hireDate",
+            "jobType": "jobType",
+            "wage": "wage"
+          }
+        }
+      ]
+    },
+    "ofuku_chingin_keikaku": {
+      "document_name": "大幅賃上げ計画書【様式4】",
+      "required_fields": [
+        {
+          "field_id": "application_date",
+          "source": "auto",
+          "default": "current_date"
+        },
+        {
+          "field_id": "company_name",
+          "source": "companyData.companyName"
+        },
+        {
+          "field_id": "representative_title",
+          "source": "companyData.representativeTitle",
+          "default": "代表取締役"
+        },
+        {
+          "field_id": "representative_name",
+          "source": "companyData.representativeName"
+        },
+        {
+          "field_id": "current_total_salary",
+          "source": "companyData.currentTotalSalary"
+        },
+        {
+          "field_id": "salary_increase_rate",
+          "source": "companyData.salaryIncreaseRate",
+          "default": "6.0"
+        },
+        {
+          "field_id": "planned_total_salary",
+          "source": "calculated",
+          "calculation": "current_total_salary * (1 + salary_increase_rate / 100)"
+        },
+        {
+          "field_id": "implementation_date",
+          "source": "companyData.implementationDate",
+          "default": "補助事業実施年度の翌年度末まで"
+        }
+      ]
+    }
   }
 }
