@@ -1,0 +1,12 @@
+{
+  "buildCommand": "cd it-subsidy-assistant/frontend && npm install && npm run build",
+  "outputDirectory": "it-subsidy-assistant/frontend/dist",
+  "installCommand": "cd it-subsidy-assistant/frontend && npm install",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
