@@ -53,7 +53,7 @@ export const requiredDocuments: Record<string, RequiredDocument[]> = {
     // B. 財務関係書類
     {
       id: 'B1',
-      name: '直近2期分の決算書',
+      name: '決算書（直近2期分）',
       description: '貸借対照表、損益計算書、販売費及び一般管理費内訳書等',
       required: true,
       category: 'financial',
