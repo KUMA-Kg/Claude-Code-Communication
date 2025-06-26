@@ -1,0 +1,12 @@
+{
+  "name": "excel-sample",
+  "version": "1.0.0",
+  "description": "ExcelJS sample project",
+  "main": "excel-sample.js",
+  "scripts": {
+    "start": "node excel-sample.js"
+  },
+  "dependencies": {
+    "exceljs": "^4.3.0"
+  }
+}
