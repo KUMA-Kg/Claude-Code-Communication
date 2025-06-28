@@ -605,7 +605,7 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
             onClick={() => {
               const savedData = localStorage.getItem('subsidyFormData');
               const applicantData = savedData ? JSON.parse(savedData) : {};
-              generateITSubsidyDocuments.filledApplication(applicantData);
+              generateITSubsidyDocuments.allOfficialForms(applicantData);
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
@@ -619,10 +619,10 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
                 <FileText className="w-8 h-8" style={{ color: '#10b981' }} />
                 <div>
                   <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
-                    入力済み申請書一式
+                    公式様式一式ダウンロード
                   </h4>
                   <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
-                    あなたの情報で自動入力された申請書
+                    様式1〜6の全ての公式申請書類
                   </p>
                 </div>
               </div>
@@ -640,7 +640,7 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
             onClick={() => {
               const savedData = localStorage.getItem('subsidyFormData');
               const applicantData = savedData ? JSON.parse(savedData) : {};
-              generateITSubsidyDocuments.wageReport(applicantData);
+              generateITSubsidyDocuments.form4(applicantData);
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
@@ -654,10 +654,10 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
                 <TrendingUp className="w-8 h-8" style={{ color: '#f59e0b' }} />
                 <div>
                   <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
-                    賃金報告書
+                    様式4: 賃金引上げ計画書
                   </h4>
                   <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
-                    賃金引上げ計画のテンプレート
+                    賃金引上げ計画の公式様式
                   </p>
                 </div>
               </div>
@@ -675,7 +675,7 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
             onClick={() => {
               const savedData = localStorage.getItem('subsidyFormData');
               const applicantData = savedData ? JSON.parse(savedData) : {};
-              generateITSubsidyDocuments.implementationPlan(applicantData);
+              generateITSubsidyDocuments.form2(applicantData);
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
@@ -689,10 +689,10 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
                 <Target className="w-8 h-8" style={{ color: '#8b5cf6' }} />
                 <div>
                   <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
-                    実施内容説明書
+                    様式2: 事業計画書
                   </h4>
                   <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
-                    プロジェクトの詳細とスケジュール
+                    事業計画と実施体制の公式様式
                   </p>
                 </div>
               </div>
@@ -710,7 +710,7 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
             onClick={() => {
               const savedData = localStorage.getItem('subsidyFormData');
               const applicantData = savedData ? JSON.parse(savedData) : {};
-              generateITSubsidyDocuments.priceBreakdown(applicantData);
+              generateITSubsidyDocuments.form3(applicantData);
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
@@ -724,10 +724,10 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
                 <Briefcase className="w-8 h-8" style={{ color: '#3b82f6' }} />
                 <div>
                   <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
-                    価格説明書
+                    様式3: 導入ITツール一覧
                   </h4>
                   <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
-                    経費の詳細内訳と補助金計算
+                    ITツールと費用内訳の公式様式
                   </p>
                 </div>
               </div>
@@ -742,7 +742,11 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
               transition: 'all 0.2s',
               cursor: 'pointer'
             }}
-            onClick={() => generateITSubsidyDocuments.blankTemplates()}
+            onClick={() => {
+              const savedData = localStorage.getItem('subsidyFormData');
+              const applicantData = savedData ? JSON.parse(savedData) : {};
+              generateITSubsidyDocuments.form5(applicantData);
+            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
               e.currentTarget.style.transform = 'translateY(-2px)';
@@ -755,10 +759,10 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
                 <FileCheck className="w-8 h-8" style={{ color: '#6b7280' }} />
                 <div>
                   <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
-                    ブランクテンプレート一式
+                    様式5: 労働生産性向上計画書
                   </h4>
                   <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
-                    手動入力用の空欄テンプレート
+                    労働生産性向上計画の公式様式
                   </p>
                 </div>
               </div>
@@ -773,7 +777,11 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
               transition: 'all 0.2s',
               cursor: 'pointer'
             }}
-            onClick={() => generateITSubsidyDocuments.applicationGuide()}
+            onClick={() => {
+              const savedData = localStorage.getItem('subsidyFormData');
+              const applicantData = savedData ? JSON.parse(savedData) : {};
+              generateITSubsidyDocuments.form6(applicantData);
+            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
               e.currentTarget.style.transform = 'translateY(-2px)';
@@ -786,10 +794,10 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
                 <BookOpen className="w-8 h-8" style={{ color: '#ef4444' }} />
                 <div>
                   <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
-                    IT導入補助金申請ガイド
+                    様式6: 申請者概要
                   </h4>
                   <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
-                    申請の流れと審査ポイント解説
+                    企業情報・財務情報の公式様式
                   </p>
                 </div>
               </div>
