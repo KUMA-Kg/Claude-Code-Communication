@@ -11,6 +11,7 @@ import { getDocumentGuidesBySubsidyType, DocumentGuide } from '../data/enhanced-
 import { subsidySchedules } from '../data/subsidy-schedules';
 import SubsidyTimeline from './SubsidyTimeline';
 import NextActionGuide from './NextActionGuide';
+import { generateITSubsidyDocuments } from '../utils/it-subsidy-excel-generator';
 import '../styles/modern-ui.css';
 import '../styles/enhanced-documents.css';
 
@@ -353,8 +354,118 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
     );
   };
 
+  // 締切日計算（IT導入補助金用）
+  const getDeadlineInfo = () => {
+    if (!subsidySchedules[subsidyType]) return null;
+    
+    const schedule = subsidySchedules[subsidyType];
+    const today = new Date();
+    const deadline = new Date(schedule.deadline);
+    const daysUntilDeadline = Math.ceil((deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    
+    const getDeadlineStatus = () => {
+      if (daysUntilDeadline < 0) {
+        return { color: '#6b7280', message: '締切終了', icon: '⏰' };
+      } else if (daysUntilDeadline <= 7) {
+        return { color: '#ef4444', message: '締切間近！', icon: '🚨' };
+      } else if (daysUntilDeadline <= 30) {
+        return { color: '#f59e0b', message: '準備を急ぎましょう', icon: '⚡' };
+      } else {
+        return { color: '#10b981', message: '余裕があります', icon: '✅' };
+      }
+    };
+
+    const status = getDeadlineStatus();
+    
+    return {
+      deadline,
+      daysUntilDeadline,
+      status
+    };
+  };
+
+  const deadlineInfo = getDeadlineInfo();
+
   return (
     <div className="enhanced-documents-container" ref={printRef}>
+      {/* 締切カウントダウン（最上部に移動） */}
+      {deadlineInfo && (
+        <div style={{
+          background: `linear-gradient(135deg, ${deadlineInfo.status.color}20 0%, ${deadlineInfo.status.color}10 100%)`,
+          border: `2px solid ${deadlineInfo.status.color}`,
+          borderRadius: '12px',
+          padding: '20px',
+          marginBottom: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '20px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{
+              background: deadlineInfo.status.color,
+              color: 'white',
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '28px',
+              fontWeight: 'bold'
+            }}>
+              <div>{Math.abs(deadlineInfo.daysUntilDeadline)}</div>
+              <div style={{ fontSize: '14px', fontWeight: 'normal' }}>日</div>
+            </div>
+            <div>
+              <h2 style={{ margin: 0, fontSize: '24px', color: deadlineInfo.status.color }}>
+                申請締切まで{deadlineInfo.daysUntilDeadline > 0 ? 'あと' : ''}
+              </h2>
+              <p style={{ margin: '4px 0 0 0', fontSize: '16px', color: '#4b5563' }}>
+                締切日: {deadlineInfo.deadline.toLocaleDateString('ja-JP')}
+              </p>
+              <p style={{ margin: '4px 0 0 0', fontSize: '16px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '20px' }}>{deadlineInfo.status.icon}</span>
+                <span style={{ color: deadlineInfo.status.color, fontWeight: '600' }}>
+                  {deadlineInfo.status.message}
+                </span>
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate('/minimal-form/' + subsidyType)}
+            style={{
+              padding: '12px 24px',
+              background: `linear-gradient(135deg, ${deadlineInfo.status.color} 0%, ${deadlineInfo.status.color}dd 100%)`,
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: '600',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+              transition: 'all 0.2s',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
+            }}
+          >
+            <Sparkles className="w-5 h-5" />
+            今すぐ申請準備を始める
+          </button>
+        </div>
+      )}
+
       {/* AI申請書作成プロモーション */}
       <div style={{
         background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
@@ -455,6 +566,253 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
           </div>
         </div>
       </header>
+
+      {/* IT導入補助金書類ダウンロードセクション */}
+      {subsidyType === 'it-donyu' && (
+        <div style={{
+          background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
+          borderRadius: '12px',
+          padding: '24px',
+          marginBottom: '24px',
+          border: '1px solid #d1d5db'
+        }}>
+          <h3 style={{ 
+            margin: '0 0 20px 0', 
+            fontSize: '20px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            color: '#1f2937'
+          }}>
+            <Download className="w-6 h-6" style={{ color: '#3b82f6' }} />
+            IT導入補助金 申請書類ダウンロード
+          </h3>
+          
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+            gap: '16px' 
+          }}>
+            {/* 入力済み申請書一式 */}
+            <div style={{
+              background: 'white',
+              borderRadius: '8px',
+              padding: '16px',
+              border: '1px solid #e5e7eb',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => {
+              const savedData = localStorage.getItem('subsidyFormData');
+              const applicantData = savedData ? JSON.parse(savedData) : {};
+              generateITSubsidyDocuments.filledApplication(applicantData);
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <FileText className="w-8 h-8" style={{ color: '#10b981' }} />
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
+                    入力済み申請書一式
+                  </h4>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
+                    あなたの情報で自動入力された申請書
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 賃金報告書 */}
+            <div style={{
+              background: 'white',
+              borderRadius: '8px',
+              padding: '16px',
+              border: '1px solid #e5e7eb',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => {
+              const savedData = localStorage.getItem('subsidyFormData');
+              const applicantData = savedData ? JSON.parse(savedData) : {};
+              generateITSubsidyDocuments.wageReport(applicantData);
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <TrendingUp className="w-8 h-8" style={{ color: '#f59e0b' }} />
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
+                    賃金報告書
+                  </h4>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
+                    賃金引上げ計画のテンプレート
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 実施内容説明書 */}
+            <div style={{
+              background: 'white',
+              borderRadius: '8px',
+              padding: '16px',
+              border: '1px solid #e5e7eb',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => {
+              const savedData = localStorage.getItem('subsidyFormData');
+              const applicantData = savedData ? JSON.parse(savedData) : {};
+              generateITSubsidyDocuments.implementationPlan(applicantData);
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Target className="w-8 h-8" style={{ color: '#8b5cf6' }} />
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
+                    実施内容説明書
+                  </h4>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
+                    プロジェクトの詳細とスケジュール
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 価格説明書 */}
+            <div style={{
+              background: 'white',
+              borderRadius: '8px',
+              padding: '16px',
+              border: '1px solid #e5e7eb',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => {
+              const savedData = localStorage.getItem('subsidyFormData');
+              const applicantData = savedData ? JSON.parse(savedData) : {};
+              generateITSubsidyDocuments.priceBreakdown(applicantData);
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Briefcase className="w-8 h-8" style={{ color: '#3b82f6' }} />
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
+                    価格説明書
+                  </h4>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
+                    経費の詳細内訳と補助金計算
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* ブランクテンプレート一式 */}
+            <div style={{
+              background: 'white',
+              borderRadius: '8px',
+              padding: '16px',
+              border: '1px solid #e5e7eb',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => generateITSubsidyDocuments.blankTemplates()}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <FileCheck className="w-8 h-8" style={{ color: '#6b7280' }} />
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
+                    ブランクテンプレート一式
+                  </h4>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
+                    手動入力用の空欄テンプレート
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* IT導入補助金申請ガイド */}
+            <div style={{
+              background: 'white',
+              borderRadius: '8px',
+              padding: '16px',
+              border: '1px solid #e5e7eb',
+              transition: 'all 0.2s',
+              cursor: 'pointer'
+            }}
+            onClick={() => generateITSubsidyDocuments.applicationGuide()}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <BookOpen className="w-8 h-8" style={{ color: '#ef4444' }} />
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>
+                    IT導入補助金申請ガイド
+                  </h4>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#6b7280' }}>
+                    申請の流れと審査ポイント解説
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{
+            marginTop: '16px',
+            padding: '12px',
+            background: '#fef3c7',
+            borderRadius: '6px',
+            border: '1px solid #fcd34d',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <Info className="w-5 h-5" style={{ color: '#f59e0b', flexShrink: 0 }} />
+            <p style={{ margin: 0, fontSize: '14px', color: '#92400e' }}>
+              すべての書類はExcel形式でダウンロードされます。申請前に最新の公募要領を確認し、必要に応じて内容を調整してください。
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* 進捗バーとフィルター */}
       <div className="progress-section">
@@ -660,8 +1018,11 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
         ))}
       </div>
 
-      {/* スケジュール可視化 - タイムライン表示 */}
-      {subsidySchedules[subsidyType] && (
+      {/* スケジュール可視化 - タイムライン表示 
+          ※締切カウントダウンをページ上部に移動したため、詳細タイムラインはコメントアウト
+          必要に応じて復活させることも可能
+      */}
+      {/* {subsidySchedules[subsidyType] && (
         <SubsidyTimeline 
           schedule={subsidySchedules[subsidyType]}
           completedMilestones={new Set(
@@ -678,7 +1039,7 @@ const RequiredDocumentsListEnhanced: React.FC<RequiredDocumentsListEnhancedProps
               .filter(Boolean) as string[]
           )}
         />
-      )}
+      )} */}
 
       {/* 役立つリンク集 */}
       <div className="links-section">
