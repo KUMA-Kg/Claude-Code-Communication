@@ -664,8 +664,28 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
 
   // 小規模事業者持続化補助金 - 事業効果説明書生成
   const generateJizokukaExpectedEffect = (formData: any) => {
+    // 診断アンケートデータを取得
+    const questionnaireData = JSON.parse(sessionStorage.getItem('diagnosisAnswers') || '{}');
+    
     const expectedSalesIncrease = formData?.expectedSalesIncrease || '30';
     const totalBudget = formData?.totalBudget || '2000000';
+    
+    // 投資予算からの情報を活用
+    let budgetText = '200万円';
+    let budgetRange = '';
+    if (questionnaireData.q5 === 'small') {
+      budgetText = '100万円';
+      budgetRange = '小規模投資（100万円未満）';
+    } else if (questionnaireData.q5 === 'medium') {
+      budgetText = '300万円';
+      budgetRange = '中規模投資（100-500万円）';
+    } else if (questionnaireData.q5 === 'large') {
+      budgetText = '1,000万円';
+      budgetRange = '大規模投資（500-3000万円）';
+    } else if (questionnaireData.q5 === 'xlarge') {
+      budgetText = '3,000万円';
+      budgetRange = '大型投資（3000万円以上）';
+    }
     
     return {
       sections: [
@@ -676,20 +696,20 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
         {
           title: '2. 売上・利益への影響',
           content: `【売上高への影響】
-・現在の年間売上高：1,500万円
-・補助事業実施後の売上高：1,950万円（30%増）
-・増加額：450万円
+・現在の年間売上高：${formData?.annualRevenue || '1,500'}万円
+・補助事業実施後の売上高：${Math.round((formData?.annualRevenue || 1500) * 1.3).toLocaleString()}万円（${expectedSalesIncrease}%増）
+・増加額：${Math.round((formData?.annualRevenue || 1500) * 0.3).toLocaleString()}万円
 
 【利益への影響】
 ・売上総利益率：40%
-・売上増加による利益増加：180万円
-・経費増加分：50万円
-・純利益増加：130万円
+・売上増加による利益増加：${Math.round((formData?.annualRevenue || 1500) * 0.3 * 0.4).toLocaleString()}万円
+・経費増加分：${Math.round((formData?.annualRevenue || 1500) * 0.03).toLocaleString()}万円
+・純利益増加：${Math.round((formData?.annualRevenue || 1500) * 0.3 * 0.4 - (formData?.annualRevenue || 1500) * 0.03).toLocaleString()}万円
 
 【キャッシュフローへの影響】
 ・初年度：投資により一時的にマイナス
-・2年目以降：年間130万円のプラス
-・5年間累計：500万円以上のプラス効果`
+・2年目以降：年間${Math.round((formData?.annualRevenue || 1500) * 0.1).toLocaleString()}万円のプラス
+・5年間累計：${Math.round((formData?.annualRevenue || 1500) * 0.4).toLocaleString()}万円以上のプラス効果`
         },
         {
           title: '3. 地域経済への波及効果',
@@ -726,21 +746,35 @@ SNSやウェブサイトを活用した情報発信が不十分で、潜在顧�
 ・従業員満足度の向上`
         },
         {
-          title: '5. 持続可能性の確保',
-          content: `【事業の継続性】
-・補助事業で構築したシステムの自立運営
-・継続的な改善サイクルの確立
-・次世代への事業承継準備
+          title: '5. 投資計画と費用対効果',
+          content: `【投資計画概要】
+・診断結果に基づく投資規模：${budgetRange}
+・補助金申請予定額：${budgetText}の2/3（補助率66.7%）
+・自己負担額：${budgetText}の1/3
 
-【財務的持続性】
-・売上増加による財務基盤強化
-・投資回収後の再投資サイクル確立
-・リスク分散による経営安定化
+【投資内訳】
+・販路開拓費用（${budgetRange === '小規模投資（100万円未満）' ? '40%' : '30%'}）
+  - ウェブサイト構築・リニューアル
+  - 販促物作成（チラシ、パンフレット等）
+  - 展示会出展費用
+・設備投資（${budgetRange === '大規模投資（500-3000万円）' || budgetRange === '大型投資（3000万円以上）' ? '40%' : '30%'}）
+  - 業務効率化のための機器導入
+  - 生産性向上のための設備更新
+・その他経費（${budgetRange === '中規模投資（100-500万円）' ? '40%' : '30%'}）
+  - コンサルティング費用
+  - システム導入費用
+  - 研修・教育費用
 
-【人材育成効果】
-・デジタルスキルを持つ人材の育成
-・若手従業員のモチベーション向上
-・組織全体の生産性向上`
+【費用対効果分析】
+・投資額：${budgetText}
+・年間期待収益増加：${parseInt(budgetText.replace(/[万円,]/g, '')) * 0.3}万円
+・投資回収期間：${budgetRange === '小規模投資（100万円未満）' ? '2.5年' : budgetRange === '中規模投資（100-500万円）' ? '3年' : '3.5年'}
+・5年間の累計効果：投資額の${budgetRange === '小規模投資（100万円未満）' ? '2.0倍' : budgetRange === '中規模投資（100-500万円）' ? '1.8倍' : '1.5倍'}
+
+【リスク管理】
+・市場環境の変化への対応策
+・競合他社の動向分析
+・継続的な効果測定と改善`
         }
       ]
     };

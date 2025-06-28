@@ -237,7 +237,11 @@ export const ModernSubsidyFlow: React.FC = () => {
 
   const handleBack = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentStep(currentStep - 1);
+        setIsAnimating(false);
+      }, 300);
     }
   };
 
@@ -311,40 +315,6 @@ export const ModernSubsidyFlow: React.FC = () => {
             6つの質問であなたに最適な補助金をご提案します
           </p>
           
-          {/* AI文書生成ボタン */}
-          <div style={{ marginBottom: '20px' }}>
-            <button
-              onClick={() => navigate('/ai-document-generator')}
-              style={{
-                padding: '16px 32px',
-                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                boxShadow: '0 8px 24px rgba(245, 87, 108, 0.4)',
-                transition: 'all 0.3s ease',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 12px 32px rgba(245, 87, 108, 0.5)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(245, 87, 108, 0.4)';
-              }}
-            >
-              🤖 AI申請書作成
-            </button>
-            <p style={{ fontSize: '14px', opacity: 0.8, marginTop: '8px' }}>
-              質問に答えるだけで申請書類を自動生成
-            </p>
-          </div>
         </div>
 
         {/* 進捗バー */}
@@ -408,32 +378,31 @@ export const ModernSubsidyFlow: React.FC = () => {
           </div>
 
           {/* ナビゲーション */}
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {currentStep > 0 && (
-              <button
-                onClick={handleBack}
-                style={{
-                  padding: '12px 24px',
-                  background: 'var(--bg-tertiary)',
-                  color: 'var(--text-primary)',
-                  border: 'none',
-                  borderRadius: 'var(--border-radius)',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all var(--transition-normal)'
-                }}
-              >
-                ← 前の質問
-              </button>
-            )}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <button
+              onClick={handleBack}
+              disabled={currentStep === 0}
+              style={{
+                padding: '12px 24px',
+                background: currentStep === 0 ? 'var(--bg-secondary)' : 'var(--bg-tertiary)',
+                color: currentStep === 0 ? 'var(--text-muted)' : 'var(--text-primary)',
+                border: 'none',
+                borderRadius: 'var(--border-radius)',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: currentStep === 0 ? 'not-allowed' : 'pointer',
+                transition: 'all var(--transition-normal)',
+                opacity: currentStep === 0 ? 0.5 : 1
+              }}
+            >
+              ← 前の質問
+            </button>
             <div style={{ flex: 1 }} />
             {currentStep === 0 && (
               <div style={{ 
                 color: 'var(--text-muted)', 
                 fontSize: '14px',
-                textAlign: 'center',
-                width: '100%'
+                textAlign: 'center'
               }}>
                 選択肢をクリックして次へ進んでください
               </div>
